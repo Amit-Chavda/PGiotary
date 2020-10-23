@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PG_Accomodation</string>
     <string name="email">Email</string>
+    <string name="login">Login</string>
 </resources>
