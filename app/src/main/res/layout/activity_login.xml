@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context="com.example.dhruv.pg_accomodation.LoginPage">
 
 
@@ -48,6 +49,7 @@
 
     <EditText
         android:id="@+id/emailEdittext"
+        android:background="@drawable/box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -61,6 +63,7 @@
 
     <EditText
         android:id="@+id/passwordedittext"
+        android:background="@drawable/box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"

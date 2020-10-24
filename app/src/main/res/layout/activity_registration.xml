@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".Registration">
 
     <Button
         android:id="@+id/signupbutton"
+        android:background="@drawable/logregbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
         android:gravity="center_horizontal"
-        android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +48,7 @@
 
     <EditText
         android:id="@+id/emailEdittext"
+        android:background="@drawable/box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -60,6 +62,7 @@
 
     <EditText
         android:id="@+id/passwordedittext"
+        android:background="@drawable/box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
