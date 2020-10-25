@@ -18,10 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Registration extends AppCompatActivity {
-    EditText emailid,passwordet;
+    EditText emailid,passwordet,Fullname,conformpassword;
     Button signup;
     TextView tvsignin;
     private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,8 @@ public class Registration extends AppCompatActivity {
         passwordet = findViewById(R.id.passwordedittext);
         signup = findViewById(R.id.signupbutton);
         tvsignin = findViewById(R.id.oldusertext);
+        Fullname = findViewById(R.id.fullname);
+        conformpassword = findViewById(R.id.cpasswordedittext);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
