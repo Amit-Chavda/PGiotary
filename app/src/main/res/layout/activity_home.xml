@@ -31,6 +31,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_navigation" />
 
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="416dp"
+        android:layout_height="502dp"
+        app:layout_constraintBottom_toTopOf="@+id/signoutbutton"
+        app:layout_constraintTop_toBottomOf="@+id/hometv"
+        tools:layout_editor_absoluteX="0dp" />
+
     <Button
         android:id="@+id/signoutbutton"
         android:layout_centerHorizontal="true"
