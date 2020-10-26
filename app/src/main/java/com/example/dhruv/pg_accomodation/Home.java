@@ -47,7 +47,7 @@ public class Home extends AppCompatActivity {
                     fragmentTransaction.commit();
                 }
                 if(id == R.id.Upload){
-                    startActivity(new Intent(Home.this,Profile.class));
+                    startActivity(new Intent(Home.this, uploadpost.class));
                 }
                 if(id == R.id.profile){
                     ProfileFragment fragment =new ProfileFragment();

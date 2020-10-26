@@ -16,13 +16,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
-    EditText emailid,passwordet,Fullname,conformpassword;
+    EditText emailid,passwordet,fname,conformpassword;
     Button signup;
     TextView tvsignin;
     private FirebaseAuth firebaseAuth;
-
+    FirebaseDatabase rootnode;
+    DatabaseReference userreference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +35,17 @@ public class Registration extends AppCompatActivity {
         passwordet = findViewById(R.id.passwordedittext);
         signup = findViewById(R.id.signupbutton);
         tvsignin = findViewById(R.id.oldusertext);
-        Fullname = findViewById(R.id.fullname);
         conformpassword = findViewById(R.id.cpasswordedittext);
+        fname = findViewById(R.id.fnameet);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailid.getText().toString();
+                final String email = emailid.getText().toString();
                 String password = passwordet.getText().toString();
+                final String name = fname.getText().toString();
+
+                //authentication process
                 Toast.makeText(Registration.this, ""+password.length(), Toast.LENGTH_SHORT).show();
                 if(email.isEmpty()){
                     emailid.setError("Enter Email id");
@@ -60,6 +66,13 @@ public class Registration extends AppCompatActivity {
                                 startActivity(new Intent(Registration.this,Home.class));
                                 Toast.makeText(Registration.this, "Sign up succesful", Toast.LENGTH_SHORT).show();
 
+                                //strore in realtime database of user data
+                                String id = user.getUid();
+                                User userclass = new User(name,email);
+                                rootnode = FirebaseDatabase.getInstance();
+                                userreference = rootnode.getReference().child("user");
+                                userreference.child(id).setValue(userclass);
+
                             }else{
                                 Toast.makeText(Registration.this, "Sign UP failed", Toast.LENGTH_SHORT).show();
                                 updateUI(null);
@@ -69,6 +82,11 @@ public class Registration extends AppCompatActivity {
                 }else{
                     Toast.makeText(Registration.this, "Error occurred!", Toast.LENGTH_SHORT).show();
                 }
+
+
+
+
+
 
             }//onclick
         });//onclicsignup
