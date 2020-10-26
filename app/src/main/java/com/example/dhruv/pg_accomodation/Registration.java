@@ -23,7 +23,7 @@ public class Registration extends AppCompatActivity {
     EditText emailid,passwordet,fname,conformpassword;
     Button signup;
     TextView tvsignin;
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
     FirebaseDatabase rootnode;
     DatabaseReference userreference;
     @Override
@@ -68,7 +68,7 @@ public class Registration extends AppCompatActivity {
 
                                 //strore in realtime database of user data
                                 String id = user.getUid();
-                                User userclass = new User(name,email);
+                                User userclass = new User(name,email,id);
                                 rootnode = FirebaseDatabase.getInstance();
                                 userreference = rootnode.getReference().child("user");
                                 userreference.child(id).setValue(userclass);
