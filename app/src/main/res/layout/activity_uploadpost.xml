@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".uploadpost">
 
 <LinearLayout
@@ -55,6 +56,8 @@
             <EditText
                 android:id="@+id/titleet"
                 android:padding="8dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/enter_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Title"/>
@@ -65,67 +68,159 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:textSize="18sp" />
+
 
             <EditText
-                android:layout_marginTop="25dp"
                 android:id="@+id/descriptionet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="67dp"
+                android:background="@drawable/description"
                 android:hint="Description"
                 android:inputType="textMultiLine" />
         </LinearLayout>
 
         <LinearLayout
-            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/Pricetv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rent: "
+                    android:textSize="30sp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: "
+                    android:textSize="30sp" />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="8dp"
+                android:layout_marginLeft="25dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/rentet"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/rent"
+                    android:ems="15"
+                    android:hint="Enter rent"
+                    android:inputType="phone"
+                    android:paddingTop="5dp" />
+
+                <EditText
+                    android:id="@+id/locationet"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/location"
+                    android:ems="10"
+                    android:hint="Enter city"
+                    android:inputType="textPersonName" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <TextView
-                android:id="@+id/Pricetv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rent: "
-                android:textSize="30sp"/>
-
-            <EditText
-                android:id="@+id/rentet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="phone"
-                android:hint="Enter rent"/>
+            <Spinner
+                android:id="@+id/spinnerdropdown"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textView3"
+
+                <TextView
+                    android:id="@+id/idproof"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID Proof: "
+                    android:textSize="30sp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/addressproof"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address Proof: "
+                    android:textSize="30sp" />
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginLeft="40dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location: "
-                android:textSize="24sp" />
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/locationet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="13"
-                android:hint="Enter city"
-                android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/idproofbtn"
+                    android:text="Upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:text="Upload"
+                    android:id="@+id/addressproofbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
 
         </LinearLayout>
+
+
+
 
 
     </LinearLayout>

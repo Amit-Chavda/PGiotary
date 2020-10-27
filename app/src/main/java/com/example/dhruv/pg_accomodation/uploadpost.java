@@ -11,8 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +42,10 @@ public class uploadpost extends AppCompatActivity {
     Uri imageuri;
     TextView post;
     String myUrl="";
+     String names[]={"Select House Type","Full House","1BHK","2BHK"};
     EditText rent,location,description,title;
+    Spinner spinner_d;
+    ArrayAdapter<String>arrayAdapter;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     StorageTask uploadtask;
@@ -54,8 +60,11 @@ public class uploadpost extends AppCompatActivity {
         location = findViewById(R.id.locationet);
         description = findViewById(R.id.descriptionet);
         title = findViewById(R.id.titleet);
+        spinner_d = findViewById(R.id.spinnerdropdown);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,names);
+        spinner_d.setAdapter(arrayAdapter);
 
 
         post.setOnClickListener(new View.OnClickListener() {
