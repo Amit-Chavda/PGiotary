@@ -39,7 +39,7 @@ public class uploadpost extends AppCompatActivity {
     Uri imageuri;
     TextView post;
     String myUrl="";
-    EditText rent,location,description;
+    EditText rent,location,description,title;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     StorageTask uploadtask;
@@ -53,6 +53,7 @@ public class uploadpost extends AppCompatActivity {
         rent = findViewById(R.id.rentet);
         location = findViewById(R.id.locationet);
         description = findViewById(R.id.descriptionet);
+        title = findViewById(R.id.titleet);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
@@ -136,11 +137,13 @@ public class uploadpost extends AppCompatActivity {
 
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("postid",postid);
-                    hashMap.put("Publisher",currentFirebaseUser);
+                    hashMap.put("posttitle",title.getText().toString());
                     hashMap.put("postimage",myUrl);
-                    hashMap.put("description",description.getText().toString());
-                    hashMap.put("postrent",rent.getText().toString());
-                    hashMap.put("postlocation",location.getText().toString());
+                    hashMap.put("postdescription",description.getText().toString());
+                    hashMap.put("postprice",rent.getText().toString());
+                    hashMap.put("postaddress",location.getText().toString());
+                    hashMap.put("publisher",currentFirebaseUser);
+
 
                     databaseReference.child(postid).setValue(hashMap);
                     startActivity(new Intent(uploadpost.this,Home.class));

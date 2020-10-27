@@ -41,6 +41,7 @@
         android:orientation="vertical">
         <LinearLayout
             android:padding="8dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -51,6 +52,12 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
                 tools:srcCompat="@tools:sample/avatars" />
+            <EditText
+                android:id="@+id/titleet"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Title"/>
         </LinearLayout>
 
         <LinearLayout
