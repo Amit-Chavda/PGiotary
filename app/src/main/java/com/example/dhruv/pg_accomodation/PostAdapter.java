@@ -69,6 +69,36 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
 
         Glide.with(holder.post_image.getContext()).load(model.getPostimage()).into(holder.post_image);
 
+
+        try{
+            final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(currentFirebaseUser);
+            df.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        User user = snapshot.getValue(User.class);
+                        if(user.getProfileimg()!=""){
+                            Glide.with(holder.profile_image.getContext()).load(user.getProfileimg()).into(holder.profile_image);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }catch (Exception e){
+            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
+
         if(model.getPosttitle().equals("")){
             holder.title.setVisibility(View.GONE);
         }else {

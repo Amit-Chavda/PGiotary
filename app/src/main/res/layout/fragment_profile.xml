@@ -19,6 +19,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
                 <TextView
+                    android:id="@+id/profile_Editbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -35,6 +36,7 @@
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_profileimg"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
@@ -71,11 +73,13 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/profile_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Name surname"
                         android:textSize="20dp"/>
                     <TextView
+                        android:id="@+id/profile_emailid"
                         android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
