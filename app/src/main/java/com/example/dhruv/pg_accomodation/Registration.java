@@ -83,11 +83,6 @@ public class Registration extends AppCompatActivity {
                     Toast.makeText(Registration.this, "Error occurred!", Toast.LENGTH_SHORT).show();
                 }
 
-
-
-
-
-
             }//onclick
         });//onclicsignup
 
