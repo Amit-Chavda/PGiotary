@@ -20,7 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:src="@drawable/closebtn"/>
+            android:src="@drawable/closebtn"
+            android:layout_alignParentLeft="true" />
         <TextView
             android:id="@+id/postbtn"
             android:layout_width="wrap_content"
@@ -29,7 +30,9 @@
             android:layout_marginEnd="10dp"
             android:layout_alignParentEnd="true"
             android:textSize="30sp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 </LinearLayout>
 <ScrollView
@@ -98,13 +101,13 @@
                     android:text="Rent: "
                     android:textSize="30sp"/>
 
-                <TextView
+                <Button
                     android:layout_marginTop="10dp"
-                    android:id="@+id/textView3"
+                    android:id="@+id/locationbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location: "
-                    android:textSize="30sp" />
+                    android:text="Get Location: "
+                    android:textSize="15sp" />
 
 
 
@@ -135,9 +138,9 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/location"
+                    android:text="Your location"
                     android:ems="10"
-                    android:hint="Enter city"
-                    android:inputType="textPersonName" />
+                    android:textSize="20dp"/>
 
             </LinearLayout>
 

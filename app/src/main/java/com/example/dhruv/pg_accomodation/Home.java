@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Home extends AppCompatActivity {
     Button sigout;
+    BottomNavigationView navigationView;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     @Override
@@ -22,8 +23,13 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //inisialization
         sigout = findViewById(R.id.signoutbutton);
+        navigationView =findViewById(R.id.bottom_navigation);
 
+
+
+        //signout process
         sigout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,14 +38,12 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView navigationView =findViewById(R.id.bottom_navigation);
 
+        //navigationbar selection
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
                 int id =menuItem.getItemId();
-
                 if(id == R.id.home){
                     HomeFragment fragment =new HomeFragment();
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -58,7 +62,7 @@ public class Home extends AppCompatActivity {
                 return true;
             }
         });
-
+        //difault selection
         navigationView.setSelectedItemId(R.id.home);
 
     }

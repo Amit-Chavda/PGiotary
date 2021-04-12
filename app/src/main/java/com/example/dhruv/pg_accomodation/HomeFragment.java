@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.dhruv.pg_accomodation.map_oprations.CountDistance;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment {
     public RecyclerView recyclerView;
     public PostAdapter postAdapter;
     //private List<Post> postlist;
+    CountDistance countDistance;
 
 
     public HomeFragment(){
@@ -41,6 +43,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_home, container, false);
+            countDistance = new CountDistance();
+            countDistance.getDistance(getContext());
 
             recyclerView = view.findViewById(R.id.recycleview);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

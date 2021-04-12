@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "1027521197645",
-    "firebase_url": "https://pgaccomodationsystem-80fe3.firebaseio.com",
-    "project_id": "pgaccomodationsystem-80fe3",
-    "storage_bucket": "pgaccomodationsystem-80fe3.appspot.com"
+    "project_number": "349009820247",
+    "firebase_url": "https://pghunter-c0bcb-default-rtdb.firebaseio.com",
+    "project_id": "pghunter-c0bcb",
+    "storage_bucket": "pghunter-c0bcb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1027521197645:android:0164faa5213d6c39b44e04",
+        "mobilesdk_app_id": "1:349009820247:android:7103985131677ce2d54112",
         "android_client_info": {
           "package_name": "com.example.dhruv.pg_accomodation"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1027521197645-bag1v1tt2esc3d526mii46bcenb740gj.apps.googleusercontent.com",
+          "client_id": "349009820247-mt2fi63vrugup18k6164i9ahl3nff5fq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCk8SNSQAXJm1WANpTZS608ZQCCdInawcI"
+          "current_key": "AIzaSyCeoyRH6DFmHRMTO_kzXZrZF6y1Q34zfww"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1027521197645-bag1v1tt2esc3d526mii46bcenb740gj.apps.googleusercontent.com",
+              "client_id": "349009820247-mt2fi63vrugup18k6164i9ahl3nff5fq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

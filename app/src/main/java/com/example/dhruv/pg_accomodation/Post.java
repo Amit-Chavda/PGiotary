@@ -7,19 +7,24 @@ public class Post {
     private String postdescription;
     private String postprice;
     private String postaddress;
+    private String lat;
+    private String longi;
     private String publisher;
+
 
     public Post(){
 
     }
 
-    public Post(String postid, String posttitle, String postimage, String postdescription, String postprice, String postaddress, String publisher) {
+    public Post(String postid, String posttitle, String postimage, String postdescription, String postprice, String postaddress,String lat ,String longi ,String publisher) {
         this.postid = postid;
         this.posttitle = posttitle;
         this.postimage = postimage;
         this.postdescription = postdescription;
         this.postprice = postprice;
         this.postaddress = postaddress;
+        this.lat = lat;
+        this.longi = longi;
         this.publisher = publisher;
     }
 
@@ -77,5 +82,21 @@ public class Post {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLongi() {
+        return longi;
+    }
+
+    public void setLongi(String longi) {
+        this.longi = longi;
     }
 }//end of class

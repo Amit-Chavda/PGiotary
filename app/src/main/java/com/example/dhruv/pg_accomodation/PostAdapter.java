@@ -27,12 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHolder> {
-
-//    public Context mContext;
-//    public List<Post> mPost;
     public Context context;
-
-    //private FirebaseUser firebaseUser;
 
     public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options) {
         super(options);
@@ -48,6 +43,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull Post model) {
 
+        //set username
         try{
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(model.getPublisher());
             databaseReference.addValueEventListener(new ValueEventListener() {
@@ -56,20 +52,19 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
                     User user = snapshot.getValue(User.class);
                     holder.username.setText(user.name);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
-
         }catch (Exception e){
             Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
         }
 
+        //post img
         Glide.with(holder.post_image.getContext()).load(model.getPostimage()).into(holder.post_image);
 
 
+        //set profile img
         try{
             final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(currentFirebaseUser);
@@ -83,22 +78,15 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
                         }
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
-
         }catch (Exception e){
             Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-
-
-
-
-
+        //set post title
         if(model.getPosttitle().equals("")){
             holder.title.setVisibility(View.GONE);
         }else {
@@ -106,6 +94,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
             holder.title.setText(model.getPosttitle());
         }
 
+        //set description
         if(model.getPostdescription().equals("")){
             holder.description.setVisibility(View.GONE);
         }else {
@@ -113,12 +102,15 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
             holder.description.setText(model.getPostdescription());
         }
 
+        //set address
         if(model.getPostaddress().equals("")){
             holder.address.setVisibility(View.GONE);
         }else {
             holder.address.setVisibility(View.VISIBLE);
             holder.address.setText(model.getPostaddress());
         }
+
+        //set rent
         if(model.getPostprice().equals("")){
             holder.rent.setVisibility(View.GONE);
         }else {
@@ -126,8 +118,8 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
             holder.rent.setText(model.getPostprice());
         }
 
-
     }//onbindfunction
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -144,92 +136,8 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
             description = itemView.findViewById(R.id.post_description);
             address = itemView.findViewById(R.id.addresstv);
             rent = itemView.findViewById(R.id.post_rent);
-
-        }
-
+        }//viewholder method
     }//end of view holder class
-
-
-
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        try{
-//
-//            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//            Post post = mPost.get(position);
-//            Glide.with(mContext).load(post.getPostimage()).into(holder.post_image);
-//
-//            if(post.getPostdescription().equals("")){
-//                holder.description.setVisibility(View.GONE);
-//            }else {
-//                holder.description.setVisibility(View.VISIBLE);
-//                holder.description.setText(post.getPostdescription());
-//            }
-//            if(post.getPostprice().equals("")){
-//                holder.rent.setVisibility(View.GONE);
-//            }else {
-//                holder.rent.setVisibility(View.VISIBLE);
-//                holder.rent.setText(post.getPostdescription());
-//            }
-//            if(post.getPostaddress().equals("")){
-//                holder.address.setVisibility(View.GONE);
-//            }else {
-//                holder.address.setVisibility(View.VISIBLE);
-//                holder.address.setText(post.getPostdescription());
-//            }
-//            if(post.getPosttitle().equals("")){
-//                holder.title.setVisibility(View.GONE);
-//            }else {
-//                holder.title.setVisibility(View.VISIBLE);
-//                holder.title.setText(post.getPostdescription());
-//            }
-//
-//            publisherinfo(holder.profile_image,holder.username,holder.publisher,post.getPublisher());
-//
-//        }catch (Exception e){
-//            Toast.makeText(mContext, "in OnbindViewHolder: "+e.getMessage(), Toast.LENGTH_LONG).show();
-//
-//        }
-//
-//
-//
-//
-//
-//    }//onbindviewholder
-
-
-
-//    @Override
-//    public int getItemCount() {
-//        return mPost.size() ;
-//    }
-
-
-
-
-
-
-//    private void publisherinfo(final ImageView image_profile,final TextView username, final TextView publisher,final String userid){
-//        try{
-//            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(userid);
-//            databaseReference.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    User user = snapshot.getValue(User.class);
-//                    username.setText(user.name);
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
-//
-//        }catch (Exception e){
-//            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }//publiserinfo
 
 
 }//post adapter class
