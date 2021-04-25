@@ -23,7 +23,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //inisialization
+        //initialization
         sigout = findViewById(R.id.signoutbutton);
         navigationView =findViewById(R.id.bottom_navigation);
 

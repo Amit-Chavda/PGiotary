@@ -6,11 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dhruv.pg_accomodation.profile_RecycleView.RecyclerViewAdapater;
+import com.example.dhruv.pg_accomodation.profile_RecycleView.RecyclerViewAdapater;
+import com.example.dhruv.pg_accomodation.profile_RecycleView.Recycleview_post;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +36,12 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
-import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -49,9 +53,13 @@ public class ProfileFragment extends Fragment {
     Uri imageuri;
     String myUrl="";
     StorageTask uploadtask;
+
+    public RecyclerViewAdapater postAdapter;
     private StorageReference storageReference;
     private FirebaseStorage firebaseStorage;
     private String type;
+    private RecyclerView recyclerView1;
+
 
     public ProfileFragment(){
 
@@ -68,6 +76,26 @@ public class ProfileFragment extends Fragment {
         profileimg = view.findViewById(R.id.profile_profileimg);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        recyclerView1 =view.findViewById(R.id.recycleview1);
+
+
+
+        try{
+
+            recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
+            FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().
+                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts"),Recycleview_post.class).build();
+
+
+            postAdapter = new RecyclerViewAdapater(options);
+            recyclerView1.setAdapter(postAdapter);
+
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+
+
 
         final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(currentFirebaseUser);
@@ -85,8 +113,9 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        try{
 
+        //upload ptofil
+        try{
             DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(currentFirebaseUser);
             df.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -125,6 +154,19 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }//oncreateview
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        postAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        postAdapter.stopListening();
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

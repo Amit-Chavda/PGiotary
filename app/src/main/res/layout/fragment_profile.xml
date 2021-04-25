@@ -88,22 +88,31 @@
                         android:text="Abc@gmail.com "
                         android:textSize="20dp"/>
 
-                </LinearLayout>
+                    <TextView
+
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Displaying Posts "
+                        android:textSize="30dp"/>
 
             </LinearLayout>
 
 
-
-
-
-
-
-
         </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recycleview1"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
-
-
 
 </LinearLayout>

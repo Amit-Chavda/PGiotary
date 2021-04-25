@@ -31,7 +31,7 @@ public class CountDistance {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String key = ds.getKey();
                     keys.add(key);
-                    Toast.makeText(context, ""+keys, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, ""+keys, Toast.LENGTH_SHORT).show();
                 }
             }
 

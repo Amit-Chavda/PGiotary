@@ -148,11 +148,6 @@
 
         </LinearLayout>
 
-
-
-
-
-
         <LinearLayout
             android:layout_margin="10dp"
             android:background="@color/white"
@@ -166,69 +161,7 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:padding="8dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:id="@+id/idproof"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID Proof: "
-                    android:textSize="30sp"/>
-
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/addressproof"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Address Proof: "
-                    android:textSize="30sp" />
-
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_marginLeft="40dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <Button
-                    android:id="@+id/idproofbtn"
-                    android:text="Upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <Button
-                    android:text="Upload"
-                    android:id="@+id/addressproofbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-
-
-
     </LinearLayout>
-
-
 
 </ScrollView>
 
