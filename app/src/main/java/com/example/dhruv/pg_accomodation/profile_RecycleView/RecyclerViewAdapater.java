@@ -204,7 +204,16 @@ public class RecyclerViewAdapater extends FirebaseRecyclerAdapter<Recycleview_po
         holder.post_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference()
+                        .child("Posts")
+                        .child(getRef(position).getKey())
+                        .removeValue()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
+                            }
+                        });
             }
         });
 
