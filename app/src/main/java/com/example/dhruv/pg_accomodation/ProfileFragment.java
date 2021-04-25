@@ -94,7 +94,7 @@ import static android.app.Activity.RESULT_OK;
                     setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("publisher").equalTo(currentFirebaseUser),Recycleview_post.class).build();
 
 
-            postAdapter = new RecyclerViewAdapater(options);
+            postAdapter = new RecyclerViewAdapater(options , getContext());
             recyclerView1.setAdapter(postAdapter);
 
         }catch (Exception e){
@@ -166,8 +166,6 @@ import static android.app.Activity.RESULT_OK;
                 startActivityForResult(intent,1);
             }
         });
-
-
 
         return view;
     }//oncreateview

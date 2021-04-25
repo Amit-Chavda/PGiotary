@@ -35,13 +35,47 @@
                 android:textSize="20sp"
                 android:text="username"
                 android:textStyle="bold"/>
+            <RelativeLayout
+                android:id="@+id/updlbtnholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterButton
+                    android:id="@+id/posteditbutton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="20px"
+                    android:layout_toLeftOf="@+id/postdeletebtn"
+                    android:layout_toStartOf="@+id/postdeletebtn"
+                    android:onClick="edit"
+                    android:src="@drawable/editbtn" />
+
+                <androidx.constraintlayout.utils.widget.ImageFilterButton
+                    android:id="@+id/postdeletebtn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="20px"
+                    android:layout_marginEnd="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="20px"
+                    android:onClick="delete"
+                    android:src="@drawable/deletebtn" />
+
+            </RelativeLayout>
+
         </LinearLayout>
 
         <ImageView
             android:id="@+id/p_post_image"
             android:layout_width="match_parent"
             android:layout_height="500px"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher" />
+
         <TextView
             android:id="@+id/p_post_title"
             android:layout_width="match_parent"
