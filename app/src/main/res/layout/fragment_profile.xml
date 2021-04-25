@@ -88,13 +88,7 @@
                         android:text="Abc@gmail.com "
                         android:textSize="20dp"/>
 
-                    <TextView
 
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Displaying Posts "
-                        android:textSize="30dp"/>
 
             </LinearLayout>
 
@@ -103,7 +97,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your Posts: "
+                    android:textSize="30dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"

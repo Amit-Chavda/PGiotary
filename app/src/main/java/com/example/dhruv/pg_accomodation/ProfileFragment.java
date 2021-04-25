@@ -46,7 +46,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import static android.app.Activity.RESULT_OK;
 
 
-public class ProfileFragment extends Fragment {
+    public class ProfileFragment extends Fragment {
     Context context;
     TextView username,emailid,editbtn;
     ImageView profileimg;
@@ -59,6 +59,8 @@ public class ProfileFragment extends Fragment {
     private FirebaseStorage firebaseStorage;
     private String type;
     private RecyclerView recyclerView1;
+    String currentFirebaseUser;
+
 
 
     public ProfileFragment(){
@@ -70,6 +72,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        //inisialization
         username = view.findViewById(R.id.profile_username);
         emailid = view.findViewById(R.id.profile_emailid);
         editbtn = view.findViewById(R.id.profile_Editbtn);
@@ -77,14 +80,18 @@ public class ProfileFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
         recyclerView1 =view.findViewById(R.id.recycleview1);
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
 
+
+
+        //to set profile pic with is stored in profileiges in database
         try{
 
             recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
             FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().
-                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts"),Recycleview_post.class).build();
+                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("publisher").equalTo(currentFirebaseUser),Recycleview_post.class).build();
 
 
             postAdapter = new RecyclerViewAdapater(options);
@@ -97,7 +104,10 @@ public class ProfileFragment extends Fragment {
 
 
 
-        final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        // this code is to set username and email id in profile
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(currentFirebaseUser);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,6 +122,10 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(context, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        // this code is to set username and email id in profile end
+
+
+
 
 
         //upload ptofil
@@ -137,11 +151,12 @@ public class ProfileFragment extends Fragment {
         }catch (Exception e){
             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        //to set profile pic end
 
 
 
 
-
+        // go to local Directory to get the profile pic
         profileimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,8 +167,16 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+
         return view;
     }//oncreateview
+
+
+
+
+
+
 
     @Override
     public void onStart() {
@@ -178,8 +201,10 @@ public class ProfileFragment extends Fragment {
         }
     }//onactivity
 
-    private void uploadPicture() {
 
+
+    // to uplod image to of profile.
+    private void uploadPicture() {
         try{
             final ProgressDialog pd = new ProgressDialog(getContext());
 
@@ -232,16 +257,12 @@ public class ProfileFragment extends Fragment {
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("profileimg",myUrl);
                     databaseReference.child(currentFirebaseUser).setValue(hashMap);
-
-
                 }//oncompletlisner
             });
-
 
         }catch (Exception e){
             Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_LONG).show();
         }
-
     }//end of upload function
 
 
