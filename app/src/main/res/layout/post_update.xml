@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Post...."
+        android:textSize="70px"/>
+    <EditText
+        android:id="@+id/upposttitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title"/>
+    <EditText
+        android:id="@+id/uppostdescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"/>
+    <EditText
+        android:id="@+id/uppostaddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Address"/>
+    <EditText
+        android:id="@+id/uppostrent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rent"/>
+
+    <Button
+        android:id="@+id/uppostupdatebtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:textSize="70px"/>
+
+</LinearLayout>

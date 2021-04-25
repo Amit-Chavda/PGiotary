@@ -66,7 +66,6 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
 
         //set profile img
         try{
-            //final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(model.getPublisher());
             df.addValueEventListener(new ValueEventListener() {
