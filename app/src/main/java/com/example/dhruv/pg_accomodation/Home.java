@@ -6,38 +6,65 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Home extends AppCompatActivity {
-    Button sigout;
+
     BottomNavigationView navigationView;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater =getMenuInflater();
+        inflater.inflate(R.menu.toolbar,menu);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    try {
+
+        switch (item.getItemId()){
+            case R.id.signoutbutton:{
+
+                        firebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(Home.this,LoginPage.class));
+
+            }
+        }
+
+
+    }
+    catch (Exception e){
+        Toast.makeText(this, "Error:"+ e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+                return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         //initialization
-        sigout = findViewById(R.id.signoutbutton);
+
         navigationView =findViewById(R.id.bottom_navigation);
 
+    /*    //signout process
 
-
-        //signout process
-        sigout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuth.getInstance().signOut();
-                startActivity(new Intent(Home.this,LoginPage.class));
-            }
-        });
-
+*/
 
         //navigationbar selection
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,4 +93,6 @@ public class Home extends AppCompatActivity {
         navigationView.setSelectedItemId(R.id.home);
 
     }
+
+
 }

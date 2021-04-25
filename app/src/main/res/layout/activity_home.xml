@@ -7,6 +7,7 @@
     tools:context=".Home">
 
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -18,18 +19,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signoutbutton"
         app:menu="@menu/menu_navigation" />
+
+
 
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="416dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/signoutbutton"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+<!--
     <Button
         android:id="@+id/signoutbutton"
         android:layout_width="wrap_content"
@@ -42,4 +45,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/framelayout" />
+        -->
 </androidx.constraintlayout.widget.ConstraintLayout>

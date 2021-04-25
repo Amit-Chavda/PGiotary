@@ -36,6 +36,7 @@ public class LoginPage extends AppCompatActivity {
         passwordet = findViewById(R.id.passwordedittext);
         signin = findViewById(R.id.signupbutton);
         tvsignup = findViewById(R.id.oldusertext);
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
 
             @Override
@@ -49,9 +50,6 @@ public class LoginPage extends AppCompatActivity {
                 }
             }
         };
-
-
-
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +94,8 @@ public class LoginPage extends AppCompatActivity {
                 startActivity(new Intent(LoginPage.this,Registration.class));
             }
         });
+
+
     }//oncreate
 
 
