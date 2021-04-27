@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="purple_200">#000</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#ffffff</color>
-    <color name="black">#000</color>
+    <color name="bg_mainactivity">#d4e6e3</color>
+    <!-- Screens background color-->
+    <color name="bg_screen1">#16c266</color>
+    <color name="bg_screen2">#90c2bb</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_inactive_color">#80EDF3F4</color>
+
+    <!-- dots active colors -->
+    <color name="dot_active_color">#FFFFFF</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_active_color</item>
+        <item>@color/dot_active_color</item>
+        <item>@color/dot_active_color</item>
+        <item>@color/dot_active_color</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_inactive_color</item>
+        <item>@color/dot_inactive_color</item>
+        <item>@color/dot_inactive_color</item>
+        <item>@color/dot_inactive_color</item>
+    </array>
+
+    <!--input edittext hint -->
+    <color name="hint_color">#79000000</color>
 </resources>

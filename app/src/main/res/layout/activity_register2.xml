@@ -21,84 +21,66 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:shadowColor="@null"
-        android:text="Log in"
+        android:text="Register"
         android:textColor="@color/black"
         android:textSize="50sp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_layout"
+        android:id="@+id/phone_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_textview"
         android:layout_marginTop="40dp"
-        android:autofillHints="@string/login"
-        android:hint="Email id"
+        android:hint="Mobile number"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="2dp"
         app:hintTextColor="@color/hint_color"
-        app:placeholderText="Email id"
+        app:placeholderText="Mobile number"
         app:placeholderTextColor="@color/hint_color">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email_edittext"
+            android:id="@+id/mobile_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:inputType="phone"
             android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/citySpinnerLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:hint="@string/password_hint"
+        android:layout_marginTop="10dp"
+        android:hint="City"
+        android:backgroundTint="@color/white"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="2dp"
-        app:endIconMode="password_toggle"
-        app:endIconTint="@color/black"
-        app:hintTextColor="@color/black"
-        app:placeholderText="@string/password_hint"
-        app:placeholderTextColor="@color/hint_color">
+        app:hintTextColor="@color/hint_color">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password_edittext"
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/cityTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textColor="@color/black" />
+            android:clickable="true"
+            android:hint="City"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/forgot_password_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:gravity="right"
-            android:textColor="#00f"
-            android:textSize="@dimen/btn_textsize" />
-
-    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_height"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/black"
-        android:text="@string/login"
+        android:text="@string/next"
         android:textColor="@color/white"
         android:textSize="@dimen/btn_textsize"
         app:cornerRadius="@dimen/btn_radius"
         app:rippleColor="#CDFFFFFF" />
+
 
 </LinearLayout>

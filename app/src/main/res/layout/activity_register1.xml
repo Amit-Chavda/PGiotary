@@ -22,80 +22,62 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:shadowColor="@null"
-        android:text="Log in"
+        android:text="Register"
         android:textColor="@color/black"
         android:textSize="50sp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_layout"
+        android:id="@+id/email_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_textview"
         android:layout_marginTop="40dp"
-        android:autofillHints="@string/login"
-        android:hint="Email id"
+        app:hintTextColor="@color/black"
+        android:hint="@string/email_hint"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color"
-        app:placeholderText="Email id"
-        app:placeholderTextColor="@color/hint_color">
+        app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email_edittext"
+            android:id="@+id/email_edittext_reg1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:hint="@string/email_hint"
+            android:textColorHint="@color/hint_color"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass_layout"
+        android:id="@+id/paas_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:hint="@string/password_hint"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="password_toggle"
-        app:endIconTint="@color/black"
-        app:hintTextColor="@color/black"
-        app:placeholderText="@string/password_hint"
-        app:placeholderTextColor="@color/hint_color">
+        android:hint="Password"
+        app:passwordToggleTint="@color/hint_color"
+        app:passwordToggleEnabled="true"
+        app:hintTextColor="@color/hint_color"
+        app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password_edittext"
+            android:id="@+id/password_edittext_reg1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:textColor="@color/black" />
+            android:textColorHint="@color/hint_color"/>
+
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/forgot_password_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:gravity="right"
-            android:textColor="#00f"
-            android:textSize="@dimen/btn_textsize" />
-
-    </LinearLayout>
-
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_height"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/black"
-        android:text="@string/login"
+        android:text="@string/next"
         android:textColor="@color/white"
         android:textSize="@dimen/btn_textsize"
         app:cornerRadius="@dimen/btn_radius"

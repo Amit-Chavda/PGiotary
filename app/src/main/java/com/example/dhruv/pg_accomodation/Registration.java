@@ -20,9 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
-    EditText emailid,passwordet,fname,conformpassword;
-    Button signup;
-    TextView tvsignin;
+
     FirebaseAuth firebaseAuth;
     FirebaseDatabase rootnode;
     DatabaseReference userreference;
@@ -31,12 +29,7 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         firebaseAuth = FirebaseAuth.getInstance();
-        emailid = findViewById(R.id.emailEdittext);
-        passwordet = findViewById(R.id.passwordedittext);
-        signup = findViewById(R.id.signupbutton);
-        tvsignin = findViewById(R.id.oldusertext);
-        conformpassword = findViewById(R.id.cpasswordedittext);
-        fname = findViewById(R.id.fnameet);
+/*
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override

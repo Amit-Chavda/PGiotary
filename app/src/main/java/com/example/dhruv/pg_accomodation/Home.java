@@ -40,7 +40,7 @@ public class Home extends AppCompatActivity {
             case R.id.signoutbutton:{
 
                         firebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(Home.this,LoginPage.class));
+                        startActivity(new Intent(Home.this,LoginActivity.class));
 
             }
         }
