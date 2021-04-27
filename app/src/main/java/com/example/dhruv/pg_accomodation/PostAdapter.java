@@ -2,6 +2,7 @@ package com.example.dhruv.pg_accomodation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;
+
 public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHolder> {
     public Context context;
 
@@ -51,8 +54,11 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    User user = snapshot.getValue(User.class);
-                    holder.username.setText(user.name);
+                    UserModel user = snapshot.getValue(UserModel.class);
+                    holder.username.setText(user.getUsername());
+                    Bitmap bitmap;
+                    bitmap = StringToBitMap(user.getProfileImage());
+                    holder.profile_image.setImageBitmap(bitmap);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -75,26 +81,26 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
          });
 
         //set profile img
-        try{
-
-            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(model.getPublisher());
-            df.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
-                        User user = snapshot.getValue(User.class);
-                        if(user.getProfileimg()!=""){
-                            Glide.with(holder.profile_image.getContext()).load(user.getProfileimg()).into(holder.profile_image);
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-        }catch (Exception e){
-            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+//        try{
+//
+//            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(model.getPublisher());
+//            df.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if(snapshot.exists()){
+//                        User user = snapshot.getValue(User.class);
+//                        if(user.getProfileimg()!=""){
+//                            Glide.with(holder.profile_image.getContext()).load(user.getProfileimg()).into(holder.profile_image);
+//                        }
+//                    }
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                }
+//            });
+//        }catch (Exception e){
+//            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
 
         //set post title
         if(model.getPosttitle().equals("")){
@@ -127,6 +133,8 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
             holder.rent.setVisibility(View.VISIBLE);
             holder.rent.setText(model.getPostprice());
         }
+
+
 
     }//onbindfunction
 

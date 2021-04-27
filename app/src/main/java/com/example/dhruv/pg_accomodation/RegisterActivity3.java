@@ -43,10 +43,8 @@ public class RegisterActivity3 extends AppCompatActivity {
 
     private ImageButton btnBack;
     private MaterialButton btnSignup;
-
     private ImageButton btnImage;
     private TextInputEditText usernameEdittext;
-
     private ProgressDialog progressDialog;
 
     //firebase code
@@ -205,7 +203,12 @@ public class RegisterActivity3 extends AppCompatActivity {
                     if (currentUser != null) {
                         userId = currentUser.getUid();
                         user.setUserId(userId);
-                        databaseReference.child(user.getUserId()).setValue(user);
+                        databaseReference.child(user.getUserId()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(RegisterActivity3.this, "Data Saved", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                         //send email verification
                         currentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {

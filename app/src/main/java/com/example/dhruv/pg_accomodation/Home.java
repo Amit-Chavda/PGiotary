@@ -22,11 +22,13 @@ public class Home extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private PrefManager prefManager;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater =getMenuInflater();
         inflater.inflate(R.menu.toolbar,menu);
+        prefManager=new PrefManager(getApplicationContext());
 
         return true;
     }
@@ -39,8 +41,9 @@ public class Home extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.signoutbutton:{
 
-                        firebaseAuth.getInstance().signOut();
+
                         startActivity(new Intent(Home.this,LoginActivity.class));
+                        prefManager.setIsLoggedIn(false);
 
             }
         }

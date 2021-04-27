@@ -3,6 +3,7 @@ package com.example.dhruv.pg_accomodation.profile_RecycleView;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.dhruv.pg_accomodation.Post;
 import com.example.dhruv.pg_accomodation.R;
 import com.example.dhruv.pg_accomodation.User;
+import com.example.dhruv.pg_accomodation.UserModel;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +50,8 @@ import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;
+
 public class RecyclerViewAdapater extends FirebaseRecyclerAdapter<Recycleview_post,RecyclerViewAdapater.ViewHolder> {
     public Context context;
 
@@ -67,8 +71,11 @@ public class RecyclerViewAdapater extends FirebaseRecyclerAdapter<Recycleview_po
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    User user = snapshot.getValue(User.class);
-                    holder.username.setText(user.getName());
+                    UserModel user = snapshot.getValue(UserModel.class);
+                    holder.username.setText(user.getUsername());
+                    Bitmap bitmap;
+                    bitmap = StringToBitMap(user.getProfileImage());
+                    holder.profile_image.setImageBitmap(bitmap);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -99,33 +106,33 @@ public class RecyclerViewAdapater extends FirebaseRecyclerAdapter<Recycleview_po
 
 
 
-        //set profile img
-        try{
-            final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(currentFirebaseUser);
-            df.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
-                        User user = snapshot.getValue(User.class);
-                        if(user.getProfileimg()!=""){
-                            try{
-                                Glide.with(holder.profile_image.getContext()).load(user.getProfileimg()).into(holder.profile_image);
-                            }catch (Exception e){
-                                Toast.makeText(context, "G Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }catch (Exception e){
-            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+//        //set profile img
+//        try{
+//            final String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(currentFirebaseUser);
+//            df.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if(snapshot.exists()){
+//                        User user = snapshot.getValue(User.class);
+//                        if(user.getProfileimg()!=""){
+//                            try{
+//                                Glide.with(holder.profile_image.getContext()).load(user.getProfileimg()).into(holder.profile_image);
+//                            }catch (Exception e){
+//                                Toast.makeText(context, "G Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+//                            }
+//
+//                        }
+//                    }
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    Toast.makeText(context, "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }catch (Exception e){
+//            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
 
         //set post title
         if(model.getPosttitle().equals("")){

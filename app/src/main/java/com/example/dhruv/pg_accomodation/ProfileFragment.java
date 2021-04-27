@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
@@ -44,9 +47,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.dhruv.pg_accomodation.BitMapUtility.BitMapToString;
+import static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;
 
 
-    public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment {
     Context context;
     TextView username,emailid,editbtn;
     ImageView profileimg;
@@ -112,9 +117,13 @@ import static android.app.Activity.RESULT_OK;
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                username.setText(user.name);
-                emailid.setText(user.emailid);
+                UserModel user = snapshot.getValue(UserModel.class);
+                username.setText(user.getUsername());
+                emailid.setText(user.getEmail());
+                Bitmap bitmap;
+                bitmap = StringToBitMap(user.getProfileImage());
+                profileimg.setImageBitmap(bitmap);
+
             }
 
             @Override
@@ -174,8 +183,6 @@ import static android.app.Activity.RESULT_OK;
 
 
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -195,7 +202,27 @@ import static android.app.Activity.RESULT_OK;
         if(requestCode==1 && resultCode==RESULT_OK && data != null && data.getData() != null){
             imageuri = data.getData();
             profileimg.setImageURI(imageuri);
-            uploadPicture();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageuri);
+                //bitmap to string
+                String profileImage = BitMapToString(bitmap);
+                //string to bitmap
+                bitmap = StringToBitMap(profileImage);
+                profileimg.setImageBitmap(bitmap);
+                FirebaseDatabase.getInstance().getReference().child("user").child(currentFirebaseUser)
+                        .child("profileImage").setValue(profileImage)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getContext(), "Update successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (IOException e) {
+                Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+
+            //uploadPicture();
         }
     }//onactivity
 

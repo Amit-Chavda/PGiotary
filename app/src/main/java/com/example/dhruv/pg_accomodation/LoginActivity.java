@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.view.View.*;
 import static com.example.dhruv.pg_accomodation.ValidationUtility.isValidEmail;
 import static com.example.dhruv.pg_accomodation.ValidationUtility.isValidPassword;
 
@@ -53,8 +54,10 @@ public class LoginActivity extends AppCompatActivity {
         MaterialButton btnLogin = findViewById(R.id.btn_login);
         ImageButton btnBack = (ImageButton) findViewById(R.id.btn_back);
 
+
+
         //go back btn
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
@@ -63,13 +66,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+        forgotPasswordTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
             }
         });
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = emailEdittext.getText().toString();
