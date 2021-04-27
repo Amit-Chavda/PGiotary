@@ -1,6 +1,7 @@
 package com.example.dhruv.pg_accomodation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHolder> {
     public Context context;
 
-    public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options) {
+    public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options , Context context) {
         super(options);
+        this.context = context;
     }
 
     @NonNull
@@ -41,7 +43,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull Post model) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post model) {
 
         //set username
         try{
@@ -62,7 +64,15 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
 
         //post img
         Glide.with(holder.post_image.getContext()).load(model.getPostimage()).into(holder.post_image);
-
+         holder.post_image.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent= new Intent(context,View_post.class);
+                 intent.putExtra("Postid",model.getPostid()+"");
+                 intent.putExtra("Publisherid",model.getPublisher()+"");
+                 context.startActivity(intent);
+             }
+         });
 
         //set profile img
         try{
