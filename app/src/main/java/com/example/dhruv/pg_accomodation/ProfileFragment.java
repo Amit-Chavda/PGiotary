@@ -86,6 +86,7 @@ public class ProfileFragment extends Fragment {
         storageReference = firebaseStorage.getReference();
         recyclerView1 =view.findViewById(R.id.recycleview1);
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        context = getContext();
 
 
 
@@ -96,9 +97,8 @@ public class ProfileFragment extends Fragment {
 
             recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
             FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().
-                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("publisher").equalTo(currentFirebaseUser),Recycleview_post.class).build();
-
-
+                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("publisher")
+                            .equalTo(currentFirebaseUser),Recycleview_post.class).build();
             postAdapter = new RecyclerViewAdapater(options , getContext());
             recyclerView1.setAdapter(postAdapter);
 
@@ -112,7 +112,6 @@ public class ProfileFragment extends Fragment {
 
 
         // this code is to set username and email id in profile
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(currentFirebaseUser);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -153,7 +152,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Toast.makeText(getContext(), "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -178,10 +177,6 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }//oncreateview
-
-
-
-
 
     @Override
     public void onStart() {
@@ -229,7 +224,7 @@ public class ProfileFragment extends Fragment {
 
 
     // to uplod image to of profile.
-    private void uploadPicture() {
+    /*private void uploadPicture() {
         try{
             final ProgressDialog pd = new ProgressDialog(getContext());
 
@@ -288,7 +283,7 @@ public class ProfileFragment extends Fragment {
         }catch (Exception e){
             Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_LONG).show();
         }
-    }//end of upload function
+    }//end of upload function */
 
 
 
