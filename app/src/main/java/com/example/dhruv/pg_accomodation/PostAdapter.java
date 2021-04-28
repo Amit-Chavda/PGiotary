@@ -54,14 +54,19 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     //set user details
                     UserModel user = snapshot.getValue(UserModel.class);
-                    holder.usernameTextView.setText(user.getUsername());
-                    Bitmap bitmap;
-                    bitmap = StringToBitMap(user.getProfileImage());
-                    holder.profileImageView.setImageBitmap(bitmap);
+                    if(user!=null){
+                        Toast.makeText(context, "U"+user.getUsername(), Toast.LENGTH_SHORT).show();
+                        holder.usernameTextView.setText(user.getUsername()+"");
+                        Bitmap bitmap;
+                        bitmap = StringToBitMap(user.getProfileImage());
+                        holder.profileImageView.setImageBitmap(bitmap);
+                    }
+
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(context, "Error p: "+error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
@@ -105,6 +110,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 //        }
 
         //set post details
+
         holder.postImageView.setImageBitmap(StringToBitMap(model.getPostImage()));
         holder.postTypeTextView.setText(model.getPostType());
         holder.postStatustextView.setText(model.getPostStatus());
