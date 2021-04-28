@@ -72,20 +72,13 @@ public class UploadPostActivity2 extends AppCompatActivity {
                 progressDialog.show();
                 String address = getIntent().getStringExtra("address");
                 String description = getIntent().getStringExtra("description");
+                String imageString=getIntent().getStringExtra("imageUri");
 
-
-                //byte[] byteArray = getIntent().getByteArrayExtra("imageByteArray");
-
-                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(UploadPostActivity2.this.getContentResolver(), Uri.parse());
-                //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                //Uri uri = (Uri) getIntent().getStringExtra("imageUri");
-                //String imageString = BitMapUtility.BitMapToString(bmp);
                 String rent = postRentEditText.getText().toString();
                 String facility = postFacilityEditText.getText().toString();
                 String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                 Post post = new Post();
-                Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("postImage");
-                String imageString=BitMapUtility.BitMapToString(bitmap);
                 post.setPostImage(imageString);
                 post.setPostAddress(address);
                 post.setPostDescription(description);

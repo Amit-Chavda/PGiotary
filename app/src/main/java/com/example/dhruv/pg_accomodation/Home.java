@@ -39,7 +39,8 @@ public class Home extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.signoutbutton: {
                     prefManager.setIsLoggedIn(false);
-                    startActivity(new Intent(Home.this, LoginActivity.class));
+                    startActivity(new Intent(Home.this, WelcomeActivity.class));
+                    finish();
 
                 }
             }

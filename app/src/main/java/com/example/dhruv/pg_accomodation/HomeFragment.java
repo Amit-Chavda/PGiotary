@@ -50,8 +50,11 @@ public class HomeFragment extends Fragment {
 
         FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts"), Post.class).build();
-        postAdapter = new PostAdapter(options, getContext());
-        recyclerView.setAdapter(postAdapter);
+        if(options!=null){
+            postAdapter = new PostAdapter(options, getContext());
+            recyclerView.setAdapter(postAdapter);
+        }
+
 
         return view;
     }//end of oncreateview

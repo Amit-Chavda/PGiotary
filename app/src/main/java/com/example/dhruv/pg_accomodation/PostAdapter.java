@@ -46,43 +46,47 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post model) {
 
-        //set username
-        try {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(model.getPostOwner());
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    //set user details
-                    UserModel user = snapshot.getValue(UserModel.class);
-                    holder.usernameTextView.setText(user.getUsername());
-                    Bitmap bitmap;
-                    bitmap = StringToBitMap(user.getProfileImage());
-                    holder.profileImageView.setImageBitmap(bitmap);
-                }
+        if (model != null) {
+            //set username
+            try {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(model.getPostOwner());
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //set user details
+                        UserModel user = snapshot.getValue(UserModel.class);
+                        if (user!=null) {
+                            holder.usernameTextView.setText(user.getUsername());
+                            Bitmap bitmap;
+                            bitmap = StringToBitMap(user.getProfileImage());
+                            holder.profileImageView.setImageBitmap(bitmap);
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, error.getMessage() + "", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+            }
+
+
+            //post img
+            Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).into(holder.postImageView);
+
+            holder.postImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ViewPostActivity.class);
+                    intent.putExtra("postId", model.getPostId() + "");
+                    intent.putExtra("ownerId", model.getPostOwner() + "");
+                    context.startActivity(intent);
                 }
             });
-        } catch (Exception e) {
-            Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
-        }
 
-
-        //post img
-        Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).into(holder.postImageView);
-
-        holder.postImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ViewPostActivity.class);
-                intent.putExtra("postId", model.getPostId() + "");
-                intent.putExtra("ownerId", model.getPostOwner() + "");
-                context.startActivity(intent);
-            }
-        });
-
-        //set profile img
+            //set profile img
 //        try{
 //
 //            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(model.getPublisher());
@@ -104,11 +108,11 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 //            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 //        }
 
-        //set post details
-        holder.postImageView.setImageBitmap(StringToBitMap(model.getPostImage()));
-        holder.postTypeTextView.setText(model.getPostType());
-        holder.postStatustextView.setText(model.getPostStatus());
-        //holder.usernameTextView.setText(model.getPostOwner());
+            //set post details
+            holder.postImageView.setImageBitmap(StringToBitMap(model.getPostImage()));
+            holder.postTypeTextView.setText(model.getPostType());
+            holder.postStatustextView.setText(model.getPostStatus());
+        }
     }
 
 
