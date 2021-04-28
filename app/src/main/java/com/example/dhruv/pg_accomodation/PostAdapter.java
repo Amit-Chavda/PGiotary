@@ -86,7 +86,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                 }
             });
 
-            //set profile img
+        //set profile img
 //        try{
 //
 //            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(model.getPublisher());
