@@ -70,15 +70,21 @@ public class UploadPostActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.setMessage("Processing...");
                 progressDialog.show();
+
                 String address = getIntent().getStringExtra("address");
                 String description = getIntent().getStringExtra("description");
                 String imageString=getIntent().getStringExtra("imageUri");
-
+                if(address==null){
+                    Toast.makeText(UploadPostActivity2.this, "Null adres", Toast.LENGTH_SHORT).show();
+                }
                 String rent = postRentEditText.getText().toString();
                 String facility = postFacilityEditText.getText().toString();
                 String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 Post post = new Post();
+                if(imageString==null){
+                    Toast.makeText(UploadPostActivity2.this, "Null image", Toast.LENGTH_SHORT).show();
+                }
                 post.setPostImage(imageString);
                 post.setPostAddress(address);
                 post.setPostDescription(description);

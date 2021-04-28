@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -109,7 +110,6 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 //        }
 
             //set post details
-            holder.postImageView.setImageBitmap(StringToBitMap(model.getPostImage()));
             holder.postTypeTextView.setText(model.getPostType());
             holder.postStatustextView.setText(model.getPostStatus());
         }
@@ -118,7 +118,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView postImageView;
+        public ShapeableImageView postImageView;
         public CircleImageView profileImageView;
         public MaterialTextView usernameTextView, postTypeTextView, postStatustextView;
         public AppCompatRatingBar ratingBar;
@@ -126,13 +126,11 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
         public ViewHolder(@NotNull View itemView) {
             super(itemView);
             profileImageView = (CircleImageView) itemView.findViewById(R.id.user_profile_imageView);
-            postImageView = itemView.findViewById(R.id.post_image_imageView);
+            postImageView = itemView.findViewById(R.id.post_image_imageView_postItem);
             usernameTextView = itemView.findViewById(R.id.username_textView);
             postStatustextView = itemView.findViewById(R.id.post_status_textView);
             postTypeTextView = itemView.findViewById(R.id.post_type_textView);
             ratingBar = itemView.findViewById(R.id.post_ratings_ratingBar);
         }
     }
-
-
 }//post adapter class

@@ -44,6 +44,7 @@ public class UploadPostActivity1 extends AppCompatActivity {
     private String postImageString;
     private Bitmap postBitmapImage;
     private Uri imageUri;
+    private Post post;
     //    ImageView himg;
 //    Uri imageuri;
 //    TextView post;
@@ -58,11 +59,12 @@ public class UploadPostActivity1 extends AppCompatActivity {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private StorageTask uploadtask;
-
+private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uploadpost);
+        post=new Post();
 
         firebaseStorage =FirebaseStorage.getInstance();
         storageReference=firebaseStorage.getReference();
@@ -85,15 +87,7 @@ public class UploadPostActivity1 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String address = postAdddressEditText.getText().toString();
-                String description = postDescriptionEditText.getText().toString();
-                Intent intent = new Intent(UploadPostActivity1.this, UploadPostActivity2.class);
                 uploadPicture();
-                intent.putExtra("imageUri", postImageString);
-                intent.putExtra("address", address);
-                intent.putExtra("description", description);
-
-                startActivity(intent);
             }
         });
 
@@ -140,12 +134,26 @@ public class UploadPostActivity1 extends AppCompatActivity {
 
             final StorageReference riversRef = storageReference.child(System.currentTimeMillis()
                     + "." + mime.getExtensionFromMimeType(contentResolver.getType(imageUri)));
-            uploadtask = riversRef.putFile(imageUri)
+            riversRef.putFile(imageUri)
+                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                        }
+                    })
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             pd.dismiss();
-                            Toast.makeText(UploadPostActivity1.this, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+                            String address = postAdddressEditText.getText().toString();
+                            String description = postDescriptionEditText.getText().toString();
+                            intent = new Intent(UploadPostActivity1.this, UploadPostActivity2.class);
+                            Toast.makeText(UploadPostActivity1.this, taskSnapshot.getUploadSessionUri()+"", Toast.LENGTH_SHORT).show();
+                            intent.putExtra("imageUri", taskSnapshot.getUploadSessionUri().toString());
+                            intent.putExtra("address", address);
+                            intent.putExtra("description", description);
+                            post.setPostImage(taskSnapshot.getUploadSessionUri().toString());
+                            startActivity(intent);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -155,24 +163,6 @@ public class UploadPostActivity1 extends AppCompatActivity {
                             Toast.makeText(UploadPostActivity1.this, "Error while file uploading " + exception.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-            uploadtask.continueWithTask(new Continuation() {
-                @Override
-                public Object then(@NonNull Task task) throws Exception {
-                    if (!task.isComplete()) {
-                        throw task.getException();
-                    }
-                    return riversRef.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    Uri downloaduri = task.getResult();
-                    postImageString = downloaduri.toString();
-
-                }//oncompletlisner
-            });
-
-
         } catch (Exception e) {
             Toast.makeText(this, "Error: " + e, Toast.LENGTH_SHORT).show();
         }
