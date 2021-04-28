@@ -1,83 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="15dp"
+    tools:context=".UploadPostActivity1">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_back"
+
+    <ImageView
+        android:id="@+id/btn_back_uploadpost2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:scaleType="center"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
         android:src="@drawable/union" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/login_textview"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/postTypeSpinnerLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:shadowColor="@null"
-        android:text="Register"
-        android:textColor="@color/black"
-        android:textSize="50sp" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_textview"
-        android:layout_marginTop="40dp"
-        app:hintTextColor="@color/black"
-        android:hint="@string/email_hint"
+        android:backgroundTint="@color/white"
+        android:hint="Select Type"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp">
+        app:boxStrokeWidth="2dp"
+        app:hintTextColor="@color/hint_color">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email_edittext_reg1"
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/postTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Select Type"
             android:textColor="@color/black"
-            android:hint="@string/email_hint"
-            android:textColorHint="@color/hint_color"/>
+            android:textColorHint="@color/hint_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/paas_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:hint="Rent amount here"
         app:boxStrokeColor="@color/black"
-        android:hint="Password"
-        app:passwordToggleTint="@color/black"
-        app:passwordToggleEnabled="true"
-        app:hintTextColor="@color/hint_color"
-        app:boxStrokeWidth="2dp">
+        app:boxStrokeWidth="2dp"
+        app:hintTextColor="@color/hint_color">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password_edittext_reg1"
+            android:id="@+id/post_rent_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Rent amount here"
+            android:inputType="numberDecimal"
             android:textColor="@color/black"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:textColorHint="@color/hint_color"/>
+            android:textColorHint="@color/hint_color" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="Type facility"
+        app:boxStrokeColor="@color/black"
+        app:boxStrokeWidth="2dp"
+        app:hintTextColor="@color/hint_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/post_facility_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Type facility"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_upload"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_height"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/black"
-        android:text="@string/next"
+        android:text="Upload"
         android:textColor="@color/white"
         android:textSize="@dimen/btn_textsize"
         app:cornerRadius="@dimen/btn_radius"

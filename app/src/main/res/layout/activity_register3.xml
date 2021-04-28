@@ -25,15 +25,27 @@
         android:textColor="@color/black"
         android:textSize="50sp" />
 
-    <ImageButton
-        android:id="@+id/profile_pic"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/no_border"
-        android:scaleType="center"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/single_man_circle" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/ic_launcher"
+            android:background="@drawable/no_border"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="#B9000000"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center_vertical"
+            android:text="Change" />
+    </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username_layout"

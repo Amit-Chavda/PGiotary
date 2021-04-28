@@ -29,36 +29,31 @@ import static android.content.ContentValues.TAG;
 
 public class HomeFragment extends Fragment {
 
-    public RecyclerView recyclerView;
-    public PostAdapter postAdapter;
-    //private List<Post> postlist;
-    CountDistance countDistance;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+    private CountDistance countDistance;
 
 
-    public HomeFragment(){
+    public HomeFragment() {
 
     }
 
-   @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_home, container, false);
-            countDistance = new CountDistance();
-            countDistance.getDistance(getContext());
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        countDistance = new CountDistance();
+        countDistance.getDistance(getContext());
 
-            recyclerView = view.findViewById(R.id.recycleview);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView = view.findViewById(R.id.recycleview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>()
-                       .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts"), Post.class).build();
-            postAdapter = new PostAdapter(options,getContext());
-            recyclerView.setAdapter(postAdapter);
+        FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts"), Post.class).build();
+        postAdapter = new PostAdapter(options, getContext());
+        recyclerView.setAdapter(postAdapter);
 
-
-//            postlist = new ArrayList<>();
-//            readPosts();
-
-            return view;
+        return view;
     }//end of oncreateview
 
     @Override
@@ -72,24 +67,4 @@ public class HomeFragment extends Fragment {
         super.onStop();
         postAdapter.stopListening();
     }
-
-//    private void readPosts(){
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                postlist.clear();
-//                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-//                    Post post = snapshot.getValue(Post.class);
-//                    postlist.add(post);
-//                }
-//                postAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
 }//end of class

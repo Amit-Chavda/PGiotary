@@ -34,16 +34,16 @@
         android:hint="Mobile number"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color"
-        app:placeholderText="Mobile number"
-        app:placeholderTextColor="@color/hint_color">
+        app:hintTextColor="@color/hint_color">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/mobile_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:hint="Mobile number"
+            android:textColorHint="@color/hint_color"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 

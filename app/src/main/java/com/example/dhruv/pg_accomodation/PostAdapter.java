@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,18 +20,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.RecyclerView;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;
 
-public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHolder> {
+public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewHolder> {
     public Context context;
 
-    public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options , Context context) {
+    public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options, Context context) {
         super(options);
         this.context = context;
     }
@@ -41,7 +39,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,36 +47,40 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
     protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post model) {
 
         //set username
-        try{
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(model.getPublisher());
+        try {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(model.getPostOwner());
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    //set user details
                     UserModel user = snapshot.getValue(UserModel.class);
-                    holder.username.setText(user.getUsername());
+                    holder.usernameTextView.setText(user.getUsername());
                     Bitmap bitmap;
                     bitmap = StringToBitMap(user.getProfileImage());
-                    holder.profile_image.setImageBitmap(bitmap);
+                    holder.profileImageView.setImageBitmap(bitmap);
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
-        }catch (Exception e){
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
         }
 
+
         //post img
-        Glide.with(holder.post_image.getContext()).load(model.getPostimage()).into(holder.post_image);
-         holder.post_image.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 Intent intent= new Intent(context,View_post.class);
-                 intent.putExtra("Postid",model.getPostid()+"");
-                 intent.putExtra("Publisherid",model.getPublisher()+"");
-                 context.startActivity(intent);
-             }
-         });
+        Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).into(holder.postImageView);
+
+        holder.postImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ViewPostActivity.class);
+                intent.putExtra("postId", model.getPostId() + "");
+                intent.putExtra("ownerId", model.getPostOwner() + "");
+                context.startActivity(intent);
+            }
+        });
 
         //set profile img
 //        try{
@@ -102,60 +104,31 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post,PostAdapter.ViewHo
 //            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 //        }
 
-        //set post title
-        if(model.getPosttitle().equals("")){
-            holder.title.setVisibility(View.GONE);
-        }else {
-            holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(model.getPosttitle());
-        }
+        //set post details
+        holder.postImageView.setImageBitmap(StringToBitMap(model.getPostImage()));
+        holder.postTypeTextView.setText(model.getPostType());
+        holder.postStatustextView.setText(model.getPostStatus());
 
-        //set description
-        if(model.getPostdescription().equals("")){
-            holder.description.setVisibility(View.GONE);
-        }else {
-            holder.description.setVisibility(View.VISIBLE);
-            holder.description.setText(model.getPostdescription());
-        }
-
-        //set address
-        if(model.getPostaddress().equals("")){
-            holder.address.setVisibility(View.GONE);
-        }else {
-            holder.address.setVisibility(View.VISIBLE);
-            holder.address.setText(model.getPostaddress());
-        }
-
-        //set rent
-        if(model.getPostprice().equals("")){
-            holder.rent.setVisibility(View.GONE);
-        }else {
-            holder.rent.setVisibility(View.VISIBLE);
-            holder.rent.setText(model.getPostprice());
-        }
+    }
 
 
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-    }//onbindfunction
+        public ImageView postImageView;
+        public CircleImageView profileImageView;
+        public MaterialTextView usernameTextView, postTypeTextView, postStatustextView;
+        public AppCompatRatingBar ratingBar;
 
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
-        public ImageView post_image;
-        public CircleImageView profile_image;
-        public TextView username,title,description,address,rent,publisher;
-
-        public ViewHolder(@NotNull View itemView){
+        public ViewHolder(@NotNull View itemView) {
             super(itemView);
-            profile_image =(CircleImageView) itemView.findViewById(R.id.profile_image);
-            post_image = itemView.findViewById(R.id.post_image);
-            username = itemView.findViewById(R.id.username);
-            title = itemView.findViewById(R.id.post_title);
-            description = itemView.findViewById(R.id.post_description);
-            address = itemView.findViewById(R.id.addresstv);
-            rent = itemView.findViewById(R.id.post_rent);
-        }//viewholder method
-    }//end of view holder class
+            profileImageView = (CircleImageView) itemView.findViewById(R.id.user_profile_imageView);
+            postImageView = itemView.findViewById(R.id.post_image_imageView);
+            usernameTextView = itemView.findViewById(R.id.username_textView);
+            postStatustextView = itemView.findViewById(R.id.post_status_textView);
+            postTypeTextView = itemView.findViewById(R.id.post_type_textView);
+            ratingBar = itemView.findViewById(R.id.post_ratings_ratingBar);
+        }
+    }
 
 
 }//post adapter class

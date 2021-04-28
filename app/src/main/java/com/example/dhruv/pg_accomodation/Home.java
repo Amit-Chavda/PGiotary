@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,9 +24,9 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater =getMenuInflater();
-        inflater.inflate(R.menu.toolbar,menu);
-        prefManager=new PrefManager(getApplicationContext());
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar, menu);
+        prefManager = new PrefManager(getApplicationContext());
 
         return true;
     }
@@ -36,24 +34,21 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    try {
+        try {
 
-        switch (item.getItemId()){
-            case R.id.signoutbutton:{
+            switch (item.getItemId()) {
+                case R.id.signoutbutton: {
+                    prefManager.setIsLoggedIn(false);
+                    startActivity(new Intent(Home.this, LoginActivity.class));
 
-
-                        startActivity(new Intent(Home.this,LoginActivity.class));
-                        prefManager.setIsLoggedIn(false);
-
+                }
             }
+
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-
-    }
-    catch (Exception e){
-        Toast.makeText(this, "Error:"+ e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-                return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -63,28 +58,28 @@ public class Home extends AppCompatActivity {
 
         //initialization
 
-        navigationView =findViewById(R.id.bottom_navigation);
+        navigationView = findViewById(R.id.bottom_navigation);
 
-    /*    //signout process
+        /*    //signout process
 
-*/
+         */
 
         //navigationbar selection
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id =menuItem.getItemId();
-                if(id == R.id.home){
-                    HomeFragment fragment =new HomeFragment();
+                int id = menuItem.getItemId();
+                if (id == R.id.home_item) {
+                    HomeFragment fragment = new HomeFragment();
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.framelayout, fragment);
                     fragmentTransaction.commit();
                 }
-                if(id == R.id.Upload){
-                    startActivity(new Intent(Home.this, uploadpost.class));
+                if (id == R.id.upload_item) {
+                    startActivity(new Intent(Home.this, UploadPostActivity1.class));
                 }
-                if(id == R.id.profile){
-                    ProfileFragment fragment =new ProfileFragment();
+                if (id == R.id.profile_item) {
+                    ProfileFragment fragment = new ProfileFragment();
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.framelayout, fragment);
                     fragmentTransaction.commit();
@@ -93,8 +88,7 @@ public class Home extends AppCompatActivity {
             }
         });
         //difault selection
-        navigationView.setSelectedItemId(R.id.home);
-
+        navigationView.setSelectedItemId(R.id.home_item);
     }
 
 

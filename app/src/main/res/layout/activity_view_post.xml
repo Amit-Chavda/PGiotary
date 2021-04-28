@@ -1,91 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp"
+    android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
+    android:padding="15dp">
+<!--
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"> -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/vp_profile_image"
+                android:id="@+id/user_profile_imageView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"
                 android:layout_margin="10dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000"/>
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
 
-            <TextView
-                android:id="@+id/vp_username"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/username_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textSize="20sp"
                 android:text="username"
-                android:textStyle="bold"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/vp_post_image"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/post_image_imageView"
             android:layout_width="match_parent"
-            android:layout_height="500px"
-            android:src="@mipmap/ic_launcher"/>
-        <TextView
-            android:id="@+id/vp_post_title"
+            android:layout_height="350dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/layoutDots"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dots_height"
+            android:layout_above="@+id/btn_layout"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/btn_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textColor="@color/hint_color" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/post_status_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/btn_textsize" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type"
+                    android:textColor="@color/hint_color" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/post_type_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Luxurius - 2 BHK"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/btn_textsize" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/post_ratings_ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp"
+                android:numStars="5"
+                android:progressBackgroundTint="@color/black"
+                android:progressTint="#FFC107"
+                android:rating="4" />
+        </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Title"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/vp_post_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:text="Description"
-            android:textSize="15dp"/>
-        <TextView
-            android:id="@+id/vp_addresstv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:text="Address"
-            android:textSize="15dp"/>
+            android:textColor="@color/hint_color" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/post_address_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="101- AC flats, Nr. Polytechnic College, Ahmedabad - 380016"
+            android:textColor="@color/black"
+            android:textSize="@dimen/btn_textsize" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Description"
+            android:textColor="@color/hint_color" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/post_description_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A per fect house for students....Read more"
+            android:textColor="@color/black"
+            android:textSize="@dimen/btn_textsize" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Facility Available"
+            android:textColor="@color/hint_color" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp">
 
-            <TextView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rent: "
-                android:textSize="25dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/vp_post_rent"
+                android:src="@drawable/vector" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/post_facility1_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6500"
-                android:textSize="25dp"
+                android:layout_marginLeft="5dp"
+                android:text="24x7 Water and Electricity"
+                android:textColor="@color/black"
+                android:textSize="@dimen/btn_textsize" />
+        </LinearLayout>
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cotact"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/black"
+        android:text="Contact now"
+        android:textColor="@color/white"
+        android:textSize="@dimen/btn_textsize"
+        app:cornerRadius="@dimen/btn_radius"
+        app:rippleColor="#CDFFFFFF" />
+</LinearLayout>
+
+
+    <!--
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/vp_profile_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_margin="10dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
+
+                <TextView
+                    android:id="@+id/vp_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:text="username"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/vp_post_image"
+                android:layout_width="match_parent"
+                android:layout_height="500px"
+                android:src="@mipmap/ic_launcher"/>
+            <TextView
+                android:id="@+id/vp_post_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Title"
+                android:textSize="30dp"
                 android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/vp_post_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Description"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/vp_addresstv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Address"
+                android:textSize="15dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rent: "
+                    android:textSize="25dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/vp_post_rent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6500"
+                    android:textSize="25dp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</LinearLayout>
+    </LinearLayout> -->

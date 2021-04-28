@@ -1,87 +1,106 @@
 package com.example.dhruv.pg_accomodation;
 
 public class Post {
-    private String postid;
-    private String posttitle;
-    private String postimage;
-    private String postdescription;
-    private String postprice;
-    private String postaddress;
+    private String postId;
+    private String postType;
+    private String postImage;
+    private String postDescription;
+    private String postRent;
+    private String postAddress;
+    private String postRatings;
+    private String postStatus;
+    private String postOwner;
     private String lat;
     private String longi;
-    private String publisher;
+    private String facility;
 
+    public Post(){}
 
-    public Post(){
-
-    }
-
-    public Post(String postid, String posttitle, String postimage, String postdescription, String postprice, String postaddress,String lat ,String longi ,String publisher) {
-        this.postid = postid;
-        this.posttitle = posttitle;
-        this.postimage = postimage;
-        this.postdescription = postdescription;
-        this.postprice = postprice;
-        this.postaddress = postaddress;
+    public Post(String postId, String postType, String postImage, String postDescription, String postRent, String postAddress, String postRatings, String postStatus, String postOwner, String lat, String longi, String facility) {
+        this.postId = postId;
+        this.postType = postType;
+        this.postImage = postImage;
+        this.postDescription = postDescription;
+        this.postRent = postRent;
+        this.postAddress = postAddress;
+        this.postRatings = postRatings;
+        this.postStatus = postStatus;
+        this.postOwner = postOwner;
         this.lat = lat;
         this.longi = longi;
-        this.publisher = publisher;
+        this.facility = facility;
     }
 
-    public String getPostid() {
-        return postid;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setPostid(String postid) {
-        this.postid = postid;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public String getPosttitle() {
-        return posttitle;
+    public String getPostType() {
+        return postType;
     }
 
-    public void setPosttitle(String posttitle) {
-        this.posttitle = posttitle;
+    public void setPostType(String postType) {
+        this.postType = postType;
     }
 
-    public String getPostimage() {
-        return postimage;
+    public String getPostImage() {
+        return postImage;
     }
 
-    public void setPostimage(String postimage) {
-        this.postimage = postimage;
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
     }
 
-    public String getPostdescription() {
-        return postdescription;
+    public String getPostDescription() {
+        return postDescription;
     }
 
-    public void setPostdescription(String postdescription) {
-        this.postdescription = postdescription;
+    public void setPostDescription(String postDescription) {
+        this.postDescription = postDescription;
     }
 
-    public String getPostprice() {
-        return postprice;
+    public String getPostRent() {
+        return postRent;
     }
 
-    public void setPostprice(String postprice) {
-        this.postprice = postprice;
+    public void setPostRent(String postRent) {
+        this.postRent = postRent;
     }
 
-    public String getPostaddress() {
-        return postaddress;
+    public String getPostAddress() {
+        return postAddress;
     }
 
-    public void setPostaddress(String postaddress) {
-        this.postaddress = postaddress;
+    public void setPostAddress(String postAddress) {
+        this.postAddress = postAddress;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public String getPostRatings() {
+        return postRatings;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPostRatings(String postRatings) {
+        this.postRatings = postRatings;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
+    }
+
+    public String getPostOwner() {
+        return postOwner;
+    }
+
+    public void setPostOwner(String postOwner) {
+        this.postOwner = postOwner;
     }
 
     public String getLat() {
@@ -99,4 +118,12 @@ public class Post {
     public void setLongi(String longi) {
         this.longi = longi;
     }
-}//end of class
+
+    public String getFacility() {
+        return facility;
+    }
+
+    public void setFacility(String facility) {
+        this.facility = facility;
+    }
+}
