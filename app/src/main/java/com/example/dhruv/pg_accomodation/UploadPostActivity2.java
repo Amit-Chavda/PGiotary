@@ -72,7 +72,11 @@ public class UploadPostActivity2 extends AppCompatActivity {
                 progressDialog.show();
                 String address = getIntent().getStringExtra("address");
                 String description = getIntent().getStringExtra("description");
-                String imageString=getIntent().getStringExtra("imageUri");
+                String lat = getIntent().getStringExtra("lat");
+                String logi = getIntent().getStringExtra("longi");
+                Toast.makeText(UploadPostActivity2.this, ""+lat+logi, Toast.LENGTH_SHORT).show();
+                String imageString = getIntent().getStringExtra("imageUri");
+
 
                 String rent = postRentEditText.getText().toString();
                 String facility = postFacilityEditText.getText().toString();

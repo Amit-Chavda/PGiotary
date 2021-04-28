@@ -48,14 +48,28 @@
                 app:boxStrokeWidth="2dp"
                 app:hintTextColor="@color/hint_color">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/post_address_edittext"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Address here"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/hint_color" />
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/post_address_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Address here"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_color" />
+                    <Button
+                        android:id="@+id/getlocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="getAddress"/>
+
+                </LinearLayout>
+
+
 
             </com.google.android.material.textfield.TextInputLayout>
 

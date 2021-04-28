@@ -57,10 +57,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:text="Name: "
                         android:textSize="20dp"/>
                     <TextView
                         android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email ID: "
@@ -78,6 +80,7 @@
                         android:id="@+id/profile_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:text="Name surname"
                         android:textSize="20dp"/>
                     <TextView
@@ -85,6 +88,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:text="Abc@gmail.com "
                         android:textSize="20dp"/>
 
@@ -101,7 +105,7 @@
                 android:orientation="vertical">
 
                 <TextView
-
+                    android:textColor="@color/black"
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
