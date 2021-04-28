@@ -8,11 +8,17 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.example.dhruv.pg_accomodation.map_oprations.LocationProvider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
@@ -31,10 +38,12 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class UploadPostActivity1 extends AppCompatActivity {
 
-
+    Button getlocation;
     private TextInputEditText postAdddressEditText;
     private TextInputEditText postDescriptionEditText;
     private ImageView postImageView;
@@ -59,6 +68,17 @@ public class UploadPostActivity1 extends AppCompatActivity {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private StorageTask uploadtask;
+
+   // @Override
+//    private FirebaseStorage firebaseStorage;
+//    private StorageReference storageReference;
+//    StorageTask uploadtask;
+//
+//    //class
+    LocationProvider locationProvider;
+    Location userlocation;
+//
+//    @Override
 private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +95,8 @@ private Intent intent;
 
         btnBack = findViewById(R.id.btn_back_uploadpost1);
         btnNext = findViewById(R.id.btn_next_uploadpost1);
+        getlocation = findViewById(R.id.getlocation);
+        locationProvider = new LocationProvider();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +105,43 @@ private Intent intent;
             }
         });
 
+        getlocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    String address;
+                    userlocation = locationProvider.getLocation(UploadPostActivity1.this);
+                    if (userlocation != null) {
+                        Geocoder geocoder = new Geocoder(UploadPostActivity1.this, Locale.getDefault());
+                        List<Address> addresses = geocoder.getFromLocation(userlocation.getLatitude(), userlocation.getLongitude(), 1);
+                        address = addresses.get(0).getAddressLine(0);
+                        postAdddressEditText.setText(address);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Move you mobile and try again", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                }//try catch
+
+
+            }
+        });
+
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadPicture();
+                intent.putExtra("imageUri", postImageString);
+                intent.putExtra("address", address);
+                intent.putExtra("description", description);
+                intent.putExtra("lat", userlocation.getLatitude());
+                intent.putExtra("longi", userlocation.getLongitude());
+
+                startActivity(intent);
             }
         });
 

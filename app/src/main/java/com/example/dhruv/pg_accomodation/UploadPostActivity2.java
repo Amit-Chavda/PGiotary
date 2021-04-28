@@ -73,6 +73,12 @@ public class UploadPostActivity2 extends AppCompatActivity {
 
                 String address = getIntent().getStringExtra("address");
                 String description = getIntent().getStringExtra("description");
+                String lat = getIntent().getStringExtra("lat");
+                String logi = getIntent().getStringExtra("longi");
+                Toast.makeText(UploadPostActivity2.this, ""+lat+logi, Toast.LENGTH_SHORT).show();
+                String imageString = getIntent().getStringExtra("imageUri");
+
+
                 String imageString=getIntent().getStringExtra("imageUri");
                 if(address==null){
                     Toast.makeText(UploadPostActivity2.this, "Null adres", Toast.LENGTH_SHORT).show();
