@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.example.dhruv.pg_accomodation.BitMapUtility.BitMapToString;
 import static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;
 import static com.example.dhruv.pg_accomodation.ValidationUtility.isValidUsername;
@@ -43,7 +45,7 @@ public class RegisterActivity3 extends AppCompatActivity {
 
     private ImageButton btnBack;
     private MaterialButton btnSignup;
-    private ImageButton btnImage;
+    private CircleImageView btnImage;
     private TextInputEditText usernameEdittext;
     private ProgressDialog progressDialog;
 

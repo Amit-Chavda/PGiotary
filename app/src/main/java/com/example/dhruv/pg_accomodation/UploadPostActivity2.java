@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -83,8 +84,9 @@ public class UploadPostActivity2 extends AppCompatActivity {
                 String facility = postFacilityEditText.getText().toString();
                 String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 Post post = new Post();
-
-                //post.setPostImage(imageString);
+                Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("postImage");
+                String imageString=BitMapUtility.BitMapToString(bitmap);
+                post.setPostImage(imageString);
                 post.setPostAddress(address);
                 post.setPostDescription(description);
                 post.setFacility(facility);

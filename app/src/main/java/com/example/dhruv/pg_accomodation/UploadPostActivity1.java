@@ -77,7 +77,13 @@ public class UploadPostActivity1 extends AppCompatActivity {
                 //ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 //postBitmapImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 //byte[] byteArray = stream.toByteArray();
+                postImageView.setDrawingCacheEnabled(true);
+                Bitmap b=postImageView.getDrawingCache();
+                Intent i = new Intent(UploadPostActivity1.this, UploadPostActivity2.class);
+                startActivity(i);
 
+                i.putExtra("postImage", b);
+                startActivity(i);
                 Intent intent = new Intent(UploadPostActivity1.this, UploadPostActivity2.class);
                 intent.putExtra("imageUri",imageUri);
                 intent.putExtra("address", address);

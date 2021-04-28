@@ -108,7 +108,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
         holder.postImageView.setImageBitmap(StringToBitMap(model.getPostImage()));
         holder.postTypeTextView.setText(model.getPostType());
         holder.postStatustextView.setText(model.getPostStatus());
-
+        //holder.usernameTextView.setText(model.getPostOwner());
     }
 
 
