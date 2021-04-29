@@ -27,31 +27,50 @@
                 android:layout_marginTop="15dp"
                 android:src="@drawable/union" />
 
-
-            <ImageView
-                android:id="@+id/post_image_uploadpost1"
+            <FrameLayout
+                android:id="@+id/post_framelayout"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/android___1" />
+                android:layout_height="wrap_content">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Address here"
-                app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/hint_color">
-
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/post_image_uploadpost1"
+                    android:layout_width="match_parent"
+                    android:layout_height="330dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/default_upload_post_image" />
+                <TextView
+                    android:id="@+id/post_image_textview_uploadpost1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="Upload Picture"
+                    android:textAllCaps="true"
+                    android:textSize="20sp"
+                    android:background="@color/black"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_gravity="bottom" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_edittext_uploadpost1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    app:boxStrokeColor="@color/black"
+                    app:boxStrokeWidth="2dp"
+                    app:endIconDrawable="@drawable/my_location"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/black"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/post_address_edittext"
@@ -61,17 +80,10 @@
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_color" />
-                    <Button
-                        android:id="@+id/getlocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="getAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+            </LinearLayout>
 
-
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -79,10 +91,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/login_textview"
                 android:layout_marginTop="20dp"
-                android:hint="Description here"
                 app:boxStrokeColor="@color/black"
                 app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/black">
+                app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/post_description_edittext"
@@ -110,10 +121,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-
-
-
 
 
 </LinearLayout>

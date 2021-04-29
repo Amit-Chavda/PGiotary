@@ -25,17 +25,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/white"
-        android:hint="Select Type"
+        app:hintEnabled="false"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color">
+        app:boxStrokeWidth="2dp">
 
         <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/postTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select Type"
+            android:hint="PG type"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_color" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -45,16 +43,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:hint="Rent amount here"
+        android:hint="PG rent(per month)"
+        app:hintEnabled="false"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color">
+        app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/post_rent_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Rent amount here"
+            android:hint="PG rent(per month)"
             android:inputType="numberDecimal"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_color" />
@@ -66,20 +64,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:hint="Type facility"
+        android:hint="Available facilitites"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color">
+        app:hintEnabled="false"
+        app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/post_facility_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type facility"
+            android:hint="Available facilities"
             android:inputType="textMultiLine"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_color" />
 
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/availability_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:hintEnabled="false"
+        app:boxStrokeColor="@color/black"
+        app:boxStrokeWidth="2dp">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/availability_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Availability status"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -93,5 +110,4 @@
         android:textSize="@dimen/btn_textsize"
         app:cornerRadius="@dimen/btn_radius"
         app:rippleColor="#CDFFFFFF" />
-
 </LinearLayout>

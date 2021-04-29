@@ -32,7 +32,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/post_image_imageView_postItem"
             android:layout_width="match_parent"
             android:layout_height="350dp"

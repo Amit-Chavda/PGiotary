@@ -31,29 +31,29 @@ import java.util.UUID;
 
 public class UploadPostActivity2 extends AppCompatActivity {
 
-    private TextInputEditText postTypeEditText;
     private TextInputEditText postRentEditText;
     private TextInputEditText postFacilityEditText;
     private ImageView btnBack;
     private MaterialButton btnUpload;
-    private String postImageString;
     private String houseType;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser currentUser;
     private ProgressDialog progressDialog;
     private AutoCompleteTextView postTypeAutoTV;
+    private AutoCompleteTextView availabilityStatusTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_post2);
         postTypeAutoTV = findViewById(R.id.postTypeTextView);
-        initCityAdapterUI();
+        setPGTypeAdapter();
+
+        availabilityStatusTV=findViewById(R.id.availability_edittext);
+        setAvailabilityAdapter();
 
         postRentEditText=findViewById(R.id.post_rent_edittext);
         postFacilityEditText=findViewById(R.id.post_facility_edittext);
         progressDialog = new ProgressDialog(UploadPostActivity2.this);
-        progressDialog.setMessage("Processing...");
+
         btnBack = findViewById(R.id.btn_back_uploadpost2);
         btnUpload = findViewById(R.id.btn_upload);
 
@@ -73,35 +73,29 @@ public class UploadPostActivity2 extends AppCompatActivity {
 
                 String address = getIntent().getStringExtra("address");
                 String description = getIntent().getStringExtra("description");
-                String lat = getIntent().getStringExtra("lat");
-                String logi = getIntent().getStringExtra("longi");
-                Toast.makeText(UploadPostActivity2.this, ""+lat+logi, Toast.LENGTH_SHORT).show();
+                double lat =getIntent().getDoubleExtra("latitude",0.0d);
+                double logi = getIntent().getDoubleExtra("longitude",0.0d);
                 String imageString = getIntent().getStringExtra("imageUri");
+                Toast.makeText(UploadPostActivity2.this, lat+"  "+logi, Toast.LENGTH_SHORT).show();
 
-
-                String imageString=getIntent().getStringExtra("imageUri");
-                if(address==null){
-                    Toast.makeText(UploadPostActivity2.this, "Null adres", Toast.LENGTH_SHORT).show();
-                }
                 String rent = postRentEditText.getText().toString();
                 String facility = postFacilityEditText.getText().toString();
                 String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String type=postTypeAutoTV.getText().toString();
+                String status= availabilityStatusTV.getText().toString();
 
                 Post post = new Post();
-                if(imageString==null){
-                    Toast.makeText(UploadPostActivity2.this, "Null image", Toast.LENGTH_SHORT).show();
-                }
                 post.setPostImage(imageString);
                 post.setPostAddress(address);
                 post.setPostDescription(description);
                 post.setFacility(facility);
                 post.setPostRent(rent);
-                post.setPostType(houseType);
+                post.setPostType(type);
                 post.setPostRatings("0.0");
                 post.setPostOwner(ownerId);
-                post.setPostStatus("Available");
-                post.setLat(MyLocationListener.getLat()+"");
-                post.setLongi(MyLocationListener.getLong()+"");
+                post.setPostStatus(status);
+                post.setLat(lat+"");
+                post.setLongi(logi+"");
                 saveDatatoDatabase(post);
                 progressDialog.dismiss();
             }
@@ -109,36 +103,23 @@ public class UploadPostActivity2 extends AppCompatActivity {
 
     }
 
-    private void initCityAdapterUI() {
-        // create list of customer
-        final ArrayList<String> typeList = getHouseTypeList();
-        //Create adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, typeList);
-        //Set adapter
-        postTypeAutoTV.setAdapter(adapter);
-        postTypeAutoTV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                houseType = typeList.get(position);
-            }
+    private void setPGTypeAdapter() {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private ArrayList<String> getHouseTypeList() {
         ArrayList<String> houseTypes = new ArrayList<>();
         houseTypes.add("1-BHK");
         houseTypes.add("2-BHK");
-        houseTypes.add("Rowhouse");
         houseTypes.add("2-BHK Flat");
-        houseTypes.add("Luxurious Bunglow");
         houseTypes.add("3-BHK House");
-
-        return houseTypes;
+        houseTypes.add("Row house");
+        houseTypes.add("Luxurious Bunglow");
+        postTypeAutoTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, houseTypes));
+    }
+    private void setAvailabilityAdapter(){
+        ArrayList<String> availabilityList = new ArrayList<>();
+        availabilityList.add("Available Now");
+        availabilityList.add("Available Soon");
+        availabilityList.add("Not Available");
+        availabilityStatusTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, availabilityList));
     }
 
 
@@ -155,7 +136,6 @@ public class UploadPostActivity2 extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
-                    Toast.makeText(UploadPostActivity2.this, "Data Saved", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(UploadPostActivity2.this,Home.class));
                     finish();
                 }
@@ -170,20 +150,4 @@ public class UploadPostActivity2 extends AppCompatActivity {
         });
     }
 
-}
-
-class MyLocationListener implements LocationListener {
-    static double currentLatitude, currentLongitude;
-
-    public void onLocationChanged(Location location) {
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
-    }
-
-    public static double getLat(){
-        return currentLatitude;
-    }
-    public static double getLong(){
-        return currentLongitude;
-    }
 }
