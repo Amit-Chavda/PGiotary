@@ -135,7 +135,6 @@ public class LocationTracker extends Service implements LocationListener {
 
     public void stopListener() {
         if (locationManager != null) {
-
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }

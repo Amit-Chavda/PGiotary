@@ -35,7 +35,6 @@ public class UploadPostActivity2 extends AppCompatActivity {
     private TextInputEditText postFacilityEditText;
     private ImageView btnBack;
     private MaterialButton btnUpload;
-    private String houseType;
     private ProgressDialog progressDialog;
     private AutoCompleteTextView postTypeAutoTV;
     private AutoCompleteTextView availabilityStatusTV;
@@ -76,7 +75,7 @@ public class UploadPostActivity2 extends AppCompatActivity {
                 double lat =getIntent().getDoubleExtra("latitude",0.0d);
                 double logi = getIntent().getDoubleExtra("longitude",0.0d);
                 String imageString = getIntent().getStringExtra("imageUri");
-                Toast.makeText(UploadPostActivity2.this, lat+"  "+logi, Toast.LENGTH_SHORT).show();
+
 
                 String rent = postRentEditText.getText().toString();
                 String facility = postFacilityEditText.getText().toString();
@@ -128,7 +127,6 @@ public class UploadPostActivity2 extends AppCompatActivity {
 
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-        final String randomKey = UUID.randomUUID().toString();
         String postId = databaseReference.push().getKey();
         post.setPostId(postId);
         databaseReference.child(postId).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {

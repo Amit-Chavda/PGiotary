@@ -255,8 +255,8 @@ public class UploadPostActivity1 extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         locationTracker.stopListener();
     }
 

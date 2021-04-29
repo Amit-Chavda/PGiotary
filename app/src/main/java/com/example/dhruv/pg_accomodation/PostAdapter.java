@@ -63,7 +63,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                         //set user details
                         UserModel user = snapshot.getValue(UserModel.class);
                         if (user!=null) {
-                            holder.usernameTextView.setText(user.getUsername());
+                            holder.usernameTextView.setText("@"+user.getUsername());
                             Bitmap bitmap;
                             bitmap = StringToBitMap(user.getProfileImage());
                             holder.profileImageView.setImageBitmap(bitmap);
@@ -81,19 +81,9 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 
 
             //post img
-            Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    //Toast.makeText(holder.postImageView.getContext(), e.getMessage()+"", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
+            Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).placeholder(R.drawable.ic_launcher_background).dontAnimate().into(holder.postImageView);
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    return false;
-                }
-            }).placeholder(R.drawable.ic_launcher_background).dontAnimate().into(holder.postImageView);
-            //Toast.makeText(getC, "", Toast.LENGTH_SHORT).show();
+
             holder.postImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -103,28 +93,6 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                     context.startActivity(intent);
                 }
             });
-
-        //set profile img
-//        try{
-//
-//            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(model.getPublisher());
-//            df.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    if(snapshot.exists()){
-//                        User user = snapshot.getValue(User.class);
-//                        if(user.getProfileimg()!=""){
-//                            Glide.with(holder.profile_image.getContext()).load(user.getProfileimg()).into(holder.profile_image);
-//                        }
-//                    }
-//                }
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                }
-//            });
-//        }catch (Exception e){
-//            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
 
             //set post details
             holder.postTypeTextView.setText(model.getPostType());
