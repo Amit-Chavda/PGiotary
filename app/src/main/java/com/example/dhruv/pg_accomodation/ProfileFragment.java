@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
 
             recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
             FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().
-                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("publisher")
+                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("postOwner")
                             .equalTo(currentFirebaseUser),Recycleview_post.class).build();
             postAdapter = new RecyclerViewAdapater(options , getContext());
             recyclerView1.setAdapter(postAdapter);
@@ -138,14 +138,14 @@ public class ProfileFragment extends Fragment {
 
         //upload ptofil
         try{
-            DatabaseReference df = FirebaseDatabase.getInstance().getReference("profileiges").child(currentFirebaseUser);
+            DatabaseReference df = FirebaseDatabase.getInstance().getReference("user").child(currentFirebaseUser);
             df.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
-                        User user = snapshot.getValue(User.class);
-                        if(user.getProfileimg()!=""){
-                            Glide.with(profileimg.getContext()).load(user.getProfileimg()).into(profileimg);
+                        UserModel user = snapshot.getValue(UserModel.class);
+                        if(user.getProfileImage()!=""){
+                            Glide.with(profileimg.getContext()).load(user.getProfileImage()).into(profileimg);
                         }
                     }
                 }

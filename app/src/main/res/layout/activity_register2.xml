@@ -22,8 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Register"
+        android:fontFamily="serif-monospace"
+        android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="50sp" />
+        android:textSize="30sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phone_layout"
@@ -31,10 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:hint="Mobile number"
+        app:hintEnabled="false"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color">
+        app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/mobile_edittext"
@@ -53,11 +54,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="City"
         android:backgroundTint="@color/white"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color">
+        app:hintEnabled="false">
 
         <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/cityTextView"

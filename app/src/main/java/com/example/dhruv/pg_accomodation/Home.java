@@ -77,7 +77,9 @@ public class Home extends AppCompatActivity {
                     fragmentTransaction.commit();
                 }
                 if (id == R.id.upload_item) {
+                    navigationView.setSelectedItemId(R.id.home_item);
                     startActivity(new Intent(Home.this, UploadPostActivity1.class));
+
                 }
                 if (id == R.id.profile_item) {
                     ProfileFragment fragment = new ProfileFragment();

@@ -254,12 +254,6 @@ public class UploadPostActivity1 extends AppCompatActivity {
                 .show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        locationTracker.stopListener();
-    }
-
     //getting image from local storage
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

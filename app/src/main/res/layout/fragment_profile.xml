@@ -3,10 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ProfileFragment">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,17 +21,19 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
+
                 <TextView
                     android:id="@+id/profile_Editbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_margin="20dp"
                     android:layout_marginLeft="10dp"
                     android:text="Edit"
+                    android:textColor="@color/black"
                     android:textSize="30dp"
-                    android:textStyle="bold"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true" />
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <LinearLayout
@@ -41,63 +46,77 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <LinearLayout
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text="Name: "
-                        android:textSize="20dp"/>
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Email ID: "
-                        android:textSize="20dp"/>
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="serif-monospace"
+                    android:text="Username"
+                    android:textColor="@color/hint_color" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/profile_username"
+                        android:layout_width="380dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif-monospace"
+                        android:text="USername"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/btn_textsize"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-                <LinearLayout
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:orientation="vertical">
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="serif-monospace"
+                    android:text="Email id"
+                    android:textColor="@color/hint_color" />
 
-                    <TextView
-                        android:id="@+id/profile_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text="Name surname"
-                        android:textSize="20dp"/>
-                    <TextView
-                        android:id="@+id/profile_emailid"
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text="Abc@gmail.com "
-                        android:textSize="20dp"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_emailid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif-monospace"
+                    android:text="Email id"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/btn_textsize"
+                    android:textStyle="bold" />
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="serif-monospace"
+                    android:text="Mobile number"
+                    android:textColor="@color/hint_color" />
 
-
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/post_facility1_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif-monospace"
+                    android:text="000-000-0000"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/btn_textsize"
+                    android:textStyle="bold" />
             </LinearLayout>
-
-
-        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -105,22 +124,20 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="@color/black"
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="Your Posts: "
+                    android:textColor="@color/black"
                     android:textSize="30dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleview1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/recycleview1"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

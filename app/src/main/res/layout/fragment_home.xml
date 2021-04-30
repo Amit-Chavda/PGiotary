@@ -5,21 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:padding="15dp"
     tools:context=".HomeFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Discover"
-        android:textStyle="normal"
+        android:layout_marginLeft="2dp"
+        android:textStyle="bold"
+        android:fontFamily="serif-monospace"
         android:textColor="@color/black"
-        android:textSize="50dp" />
+        android:textSize="42dp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="what's best for you"
+        android:fontFamily="serif-monospace"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:layout_marginTop="10dp"
@@ -28,7 +30,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>
 

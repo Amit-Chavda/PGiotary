@@ -23,8 +23,9 @@
         android:layout_marginTop="20dp"
         android:shadowColor="@null"
         android:text="Log in"
+        android:fontFamily="serif-monospace"
         android:textColor="@color/black"
-        android:textSize="50sp" />
+        android:textSize="30sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
@@ -34,10 +35,9 @@
         android:layout_below="@+id/login_textview"
         android:layout_marginTop="40dp"
         android:autofillHints="@string/login"
-        android:hint="Email id"
+        app:hintEnabled="false"
         app:boxStrokeColor="@color/black"
-        app:boxStrokeWidth="2dp"
-        app:hintTextColor="@color/hint_color">
+        app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_edittext"
@@ -55,12 +55,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:hint="@string/password_hint"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="2dp"
+        app:hintEnabled="false"
         app:endIconMode="password_toggle"
-        app:endIconTint="@color/black"
-        app:hintTextColor="@color/black">
+        app:endIconTint="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_edittext"
@@ -85,6 +84,7 @@
             android:text="Forgot Password?"
             android:gravity="right"
             android:textColor="#000"
+            android:fontFamily="serif-monospace"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textSize="@dimen/btn_textsize" />

@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,8 +38,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = resetEditText.getText().toString();
                 if (isValidEmail(email)) {
-                    sendResetPasswordResetMail(email);
-                    showMsgDialog();
+                    sendMail(email);
                 }
             }
         });
@@ -46,7 +48,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private void showMsgDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(ResetPasswordActivity.this);
-        builder1.setMessage("Password reset mail is sent. Please check your mailbox and login!");
+        builder1.setMessage("Please check inbox and follow steps given in mail!");
 
         builder1.setPositiveButton(
                 "OK",
@@ -61,18 +63,25 @@ public class ResetPasswordActivity extends AppCompatActivity {
         alert11.show();
     }
 
-    private void sendResetPasswordResetMail(String email) {
+    private void sendMail(String email) {
+        final ProgressDialog progressDialog=new ProgressDialog(ResetPasswordActivity.this);
+        progressDialog.setMessage("Processing...");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-
-                        } else {
-                            // ...
+                            progressDialog.dismiss();
+                            showMsgDialog();
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(ResetPasswordActivity.this, e.getMessage()+"", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

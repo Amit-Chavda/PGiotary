@@ -16,26 +16,27 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
 import static com.example.dhruv.pg_accomodation.ValidationUtility.isValidMobile;
+import static com.example.dhruv.pg_accomodation.ValidationUtility.isValidateCity;
 
 public class RegisterActivity2 extends AppCompatActivity {
 
     private ImageButton btnBack;
     private MaterialButton btnNext;
     private TextInputEditText phone;
-    private AutoCompleteTextView cityrAutoTV;
-    private String city;
+    private AutoCompleteTextView cityAutoTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register2);
-        //initilize city dropdown list
-        cityrAutoTV= findViewById(R.id.cityTextView);
+        cityAutoTV= findViewById(R.id.cityTextView);
+
+        //initialize city dropdown list
         initCityAdapterUI();
 
 
-        btnBack = (ImageButton) findViewById(R.id.btn_back);
-        btnNext = (MaterialButton) findViewById(R.id.btn_next);
+        btnBack = findViewById(R.id.btn_back);
+        btnNext = findViewById(R.id.btn_next);
 
         phone = findViewById(R.id.mobile_edittext);
 
@@ -54,15 +55,19 @@ public class RegisterActivity2 extends AppCompatActivity {
                 String mobile = phone.getText().toString();
 
                 if (isValidMobile(mobile)) {
-                    String email = getIntent().getStringExtra("email");
-                    String password = getIntent().getStringExtra("password");
-
-                    Intent intent = new Intent(RegisterActivity2.this, RegisterActivity3.class);
-                    intent.putExtra("email", email);
-                    intent.putExtra("password", password);
-                    intent.putExtra("mobile", mobile);
-                    intent.putExtra("city", city);
-                    startActivity(intent);
+                    String city= cityAutoTV.getText().toString();
+                    if(isValidateCity(city)){
+                        String email = getIntent().getStringExtra("email");
+                        String password = getIntent().getStringExtra("password");
+                        Intent intent = new Intent(RegisterActivity2.this, RegisterActivity3.class);
+                        intent.putExtra("email", email);
+                        intent.putExtra("password", password);
+                        intent.putExtra("mobile", mobile);
+                        intent.putExtra("city", city);
+                        startActivity(intent);
+                    }else {
+                        cityAutoTV.setError("Invalid City Selected!");
+                    }
                 } else {
                     phone.setError("Invalid Mobile Number!");
                 }
@@ -74,44 +79,21 @@ public class RegisterActivity2 extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         phone.setError(null);
-        cityrAutoTV.setError(null);
+        cityAutoTV.setError(null);
     }
 
     private void initCityAdapterUI() {
-        //UI reference of textView
-
-
-        // create list of customer
-        final ArrayList<String> cityList = getCityList();
-
-        //Create adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity2.this, android.R.layout.simple_spinner_dropdown_item, cityList);
-        //Set adapter
-        cityrAutoTV.setAdapter(adapter);
-        cityrAutoTV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                city=cityList.get(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private ArrayList<String> getCityList() {
         ArrayList<String> cities = new ArrayList<>();
         cities.add("Ahmedabad");
+        cities.add("Gandhinagar");
         cities.add("Surat");
+        cities.add("Vadodara");
         cities.add("Mehsana");
         cities.add("Modasa");
-        cities.add("New york");
-        cities.add("Ambaji");
-        cities.add("Mumbai");
         cities.add("Junagadh");
-        return cities;
+        cities.add("Mumbai");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity2.this, android.R.layout.simple_spinner_dropdown_item, cities);
+        cityAutoTV.setAdapter(adapter);
     }
 
 }

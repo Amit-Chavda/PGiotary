@@ -4,103 +4,88 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:layout_marginBottom="50dp"
     android:orientation="vertical">
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#79BFB9B9"/>
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#11BFB9B9" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile_imageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="@color/hint_color" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/username_textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:text="username"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:fontFamily="serif-monospace" />
+    </LinearLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_profile_imageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"
-                app:civ_border_color="#FF000000"
-                android:layout_margin="5dp"
-                app:civ_border_width="2dp" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/username_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="username"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/post_image_imageView_postItem"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:background="@color/black" />
+    <ImageView
+        android:id="@+id/post_image_imageView_postItem"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@color/black" />
 
 
-        <LinearLayout
-            android:id="@+id/btn_layout"
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/post_status_textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/white"
-            android:layout_marginBottom="30dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:layout_marginLeft="5dp"
+            android:text="Available Now"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            app:fontFamily="serif-monospace" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/post_type_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/post_status_textView"
+            android:layout_marginLeft="5dp"
+            android:text="Luxurius - 2 BHK"
+            android:textColor="@color/black"
+            android:textSize="@dimen/btn_textsize"
+            app:fontFamily="serif-monospace" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status"
-                    android:textColor="@color/hint_color" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/post_status_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Available"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/btn_textsize" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:orientation="vertical">
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Type"
-                    android:textColor="@color/hint_color" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/post_type_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Luxurius - 2 BHK"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/btn_textsize" />
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/post_ratings_ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:numStars="5"
-                android:progressBackgroundTint="@color/black"
-                android:progressTint="#FFC107"
-                android:rating="4" />
-        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/post_ratings_ratingBar"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/black"
+            android:progressTint="#FFC107"
+            android:rating="4"
+            android:scaleX=".5"
+            android:scaleY=".5" />
+    </RelativeLayout>
 </LinearLayout>

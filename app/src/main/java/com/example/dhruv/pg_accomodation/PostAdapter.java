@@ -63,10 +63,8 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                         //set user details
                         UserModel user = snapshot.getValue(UserModel.class);
                         if (user!=null) {
-                            holder.usernameTextView.setText("@"+user.getUsername());
-                            Bitmap bitmap;
-                            bitmap = StringToBitMap(user.getProfileImage());
-                            holder.profileImageView.setImageBitmap(bitmap);
+                            holder.usernameTextView.setText("@"+user.getUsername().toLowerCase());
+                            Glide.with(context).load(user.getProfileImage()).into(holder.profileImageView);
                         }
                     }
 
