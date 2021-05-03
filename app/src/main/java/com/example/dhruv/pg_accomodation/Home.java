@@ -81,6 +81,13 @@ public class Home extends AppCompatActivity {
                     startActivity(new Intent(Home.this, UploadPostActivity1.class));
 
                 }
+                if (id == R.id.chat_item) {
+                    ChatFragment fragment = new ChatFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.framelayout, fragment);
+                    fragmentTransaction.commit();
+                }
+
                 if (id == R.id.profile_item) {
                     ProfileFragment fragment = new ProfileFragment();
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

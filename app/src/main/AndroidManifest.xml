@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dhruv.pg_accomodation">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
@@ -15,18 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents">
-
+        <activity android:name=".ChatActivity"></activity>
         <activity android:name=".UploadPostActivity2" />
         <activity android:name=".ViewPostActivity" />
-        <activity android:name=".UploadPostActivity1"
-            android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
+        <activity
+            android:name=".UploadPostActivity1"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".Home" />
         <activity android:name=".RegisterActivity1" />
         <activity android:name=".RegisterActivity2" />
         <activity android:name=".RegisterActivity3" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".WelcomeActivity"
+        <activity
+            android:name=".WelcomeActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,5 +33,9 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

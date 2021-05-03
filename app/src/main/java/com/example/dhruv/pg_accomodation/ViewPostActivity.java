@@ -28,9 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dhruv.pg_accomodation.chat_data.UserListModel;
 import com.example.dhruv.pg_accomodation.map_oprations.LocationProvider;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +51,7 @@ import static com.example.dhruv.pg_accomodation.R.drawable.vector;
 public class ViewPostActivity extends AppCompatActivity {
 
     private ImageButton viewInMapBtn;
+    private MaterialButton contect;
     private LinearLayout linearLayout;
     private CircleImageView userProfileImageView;
     private MaterialTextView usernameTextView;
@@ -59,6 +63,12 @@ public class ViewPostActivity extends AppCompatActivity {
     private MaterialTextView postFacilityTextView;
     private AppCompatRatingBar ratingBar;
     private Post post;
+    String currentFirebaseUser;
+    String chatid;
+    String postid;
+    String publisherid;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
 
     //new code
@@ -83,6 +93,10 @@ public class ViewPostActivity extends AppCompatActivity {
         postAddressTextView = findViewById(R.id.post_address_textView);
         postFacilityTextView = findViewById(R.id.post_facility1_textView);
         ratingBar = findViewById(R.id.post_ratings_ratingBar);
+        contect = findViewById(R.id.btn_cotact);
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
 /*
         linearLayout=findViewById(R.id.linear_layout);
 
@@ -120,8 +134,8 @@ public class ViewPostActivity extends AppCompatActivity {
         */
 
         Intent intent = getIntent();
-        final String postid = intent.getStringExtra("postId");
-        String publisherid = intent.getStringExtra("ownerId");
+        postid = intent.getStringExtra("postId");
+        publisherid = intent.getStringExtra("ownerId");
 
 
         //set profile pic and username
@@ -223,7 +237,73 @@ public class ViewPostActivity extends AppCompatActivity {
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
-    }
+
+
+        contect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    getChatId();
+                    Intent intent = new Intent(ViewPostActivity.this,ChatActivity.class);
+                    intent.putExtra("firstuser",currentFirebaseUser);
+                    intent.putExtra("seconduser",publisherid);
+                    intent.putExtra("chatid",chatid+"");
+                    Toast.makeText(ViewPostActivity.this, "chatid: "+chatid, Toast.LENGTH_SHORT).show();
+                    if(chatid.equals(null)){
+                        Toast.makeText(ViewPostActivity.this, "try again", Toast.LENGTH_SHORT).show();
+                    }else{
+                        startActivity(intent);
+                    }
+
+
+                }catch (Exception e){
+                    Toast.makeText(ViewPostActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }//onclick
+        });
+
+
+
+    }//oncreate
+
+    private void getChatId() {
+        try {
+
+            databaseReference = firebaseDatabase.getReference().child("user_chatswith").child(currentFirebaseUser)
+                    .child("chatwith").child(publisherid);
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.hasChildren()){
+                        UserListModel user = snapshot.getValue(UserListModel.class);
+                        chatid = user.getChatid();
+                    }else{
+                        DatabaseReference user_chatswithReference = firebaseDatabase.getReference().child("user_chatswith")
+                                .child(currentFirebaseUser).child("chatwith").child(publisherid);
+                        DatabaseReference user_chatswithReference1 = firebaseDatabase.getReference().child("user_chatswith");
+                        chatid = user_chatswithReference.push().getKey();
+                        UserListModel  users1 = new UserListModel();
+                        users1.setChatid(chatid);
+                        users1.setUserid(publisherid);
+                        user_chatswithReference1.child(currentFirebaseUser).child("chatwith").child(publisherid).setValue(users1);
+
+                        UserListModel  users2 = new UserListModel();
+                        users2.setChatid(chatid);
+                        users2.setUserid(currentFirebaseUser);
+                        user_chatswithReference1.child(publisherid).child("chatwith").child(currentFirebaseUser).setValue(users2);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(ViewPostActivity.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }catch (Exception e){
+            Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }//getchatid
 
     //check needed permisi=sion allowed or not
     private ArrayList findUnAskedPermissions(ArrayList wanted) {
@@ -291,5 +371,9 @@ public class ViewPostActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
-    }//oncreate
+
+    }
+
+
+
 }//class
