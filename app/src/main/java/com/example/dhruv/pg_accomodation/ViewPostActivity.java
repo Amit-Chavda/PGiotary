@@ -243,12 +243,13 @@ public class ViewPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
+                    //if you call this fuction outside btn listener, from oncreate, you will not get error
                     getChatId();
                     Intent intent = new Intent(ViewPostActivity.this,ChatActivity.class);
                     intent.putExtra("firstuser",currentFirebaseUser);
                     intent.putExtra("seconduser",publisherid);
                     intent.putExtra("chatid",chatid+"");
-                    Toast.makeText(ViewPostActivity.this, "chatid: "+chatid, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ViewPostActivity.this, "chatid: "+chatid, Toast.LENGTH_SHORT).show();
                     if(chatid.equals(null)){
                         Toast.makeText(ViewPostActivity.this, "try again", Toast.LENGTH_SHORT).show();
                     }else{

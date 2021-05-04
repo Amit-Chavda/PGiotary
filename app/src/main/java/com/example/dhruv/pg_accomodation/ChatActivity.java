@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dhruv.pg_accomodation.chat_data.ChatModel;
 import com.example.dhruv.pg_accomodation.chat_data.MessageViewAdapter;
 import com.example.dhruv.pg_accomodation.chat_data.UserListModel;
@@ -230,9 +231,10 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserModel user = snapshot.getValue(UserModel.class);
                 username.setText(user.getUsername());
-                Bitmap bitmap;
-                bitmap = StringToBitMap(user.getProfileImage());
-                profilepic.setImageBitmap(bitmap);
+                Glide.with(ChatActivity.this).load(user.getProfileImage()).into(profilepic);
+//                Bitmap bitmap;
+//                bitmap = StringToBitMap(user.getProfileImage());
+//                profilepic.setImageBitmap(bitmap);
             }
 
             @Override
