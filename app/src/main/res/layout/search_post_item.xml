@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="1dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/search_post_item1"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/deafult_user_pic" />
+
+    <TextView
+        android:id="@+id/type_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/search_post_item1"
+        android:fontFamily="serif"
+        android:text="2 BHK"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/city_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="bottom"
+        android:layout_above="@id/rent_textview"
+        android:layout_toRightOf="@+id/type_textView"
+        android:fontFamily="serif-monospace"
+        android:text="in Ahmedabad"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/rent_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/search_post_item1"
+        android:layout_below="@+id/type_textView"
+        android:fontFamily="serif"
+        android:text="2,000/month"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/addresss_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/search_post_item1"
+        android:layout_below="@+id/rent_textview"
+        android:fontFamily="serif"
+        android:maxLines="5"
+        android:justificationMode="inter_word"
+        android:text="aI need to implement a search feature. search feature.I need to implement a search feature.I need to implement a search feature.I need to implement a search feature."
+        android:textColor="@color/black"
+        android:textSize="10sp" />
+</RelativeLayout>

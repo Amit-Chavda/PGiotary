@@ -1,40 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update Post...."
+        android:text="Edit Post"
+        android:textColor="@color/black"
+        android:fontFamily="serif"
         android:textSize="70px"/>
+
     <EditText
         android:id="@+id/upposttitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:hint="Type"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
+        android:textColorHint="@color/hint_color"
         android:text="Title"/>
+
     <EditText
         android:id="@+id/uppostdescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Description"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
+        android:textColorHint="@color/hint_color"
+        android:textColor="@color/black"
         android:text="Description"/>
     <EditText
         android:id="@+id/uppostaddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Address"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/hint_color"
+        android:textColor="@color/black"
         android:text="Address"/>
+
     <EditText
         android:id="@+id/uppostrent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Rent(per month)"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/hint_color"
+        android:textColor="@color/black"
         android:text="Rent"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/uppostupdatebtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Update"
-        android:textSize="70px"/>
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/black"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:textSize="@dimen/btn_textsize"
+        app:cornerRadius="@dimen/btn_radius"
+        app:rippleColor="#CDFFFFFF" />
 
 </LinearLayout>

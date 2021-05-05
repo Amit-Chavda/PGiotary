@@ -11,6 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.dhruv.pg_accomodation.actvities.UploadPostActivity1;
+import com.example.dhruv.pg_accomodation.actvities.WelcomeActivity;
+import com.example.dhruv.pg_accomodation.fragments.ChatFragment;
+import com.example.dhruv.pg_accomodation.fragments.HomeFragment;
+import com.example.dhruv.pg_accomodation.fragments.ProfileFragment;
+import com.example.dhruv.pg_accomodation.fragments.SearchFragment;
+import com.example.dhruv.pg_accomodation.helper_classes.PrefManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -74,6 +81,12 @@ public class Home extends AppCompatActivity {
                     HomeFragment fragment = new HomeFragment();
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.framelayout, fragment);
+                    fragmentTransaction.commit();
+                }
+                if(id == R.id.search_item){
+                    SearchFragment searchFragment=new SearchFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.framelayout, searchFragment);
                     fragmentTransaction.commit();
                 }
                 if (id == R.id.upload_item) {

@@ -17,10 +17,10 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:padding="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="0dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_profile_imageView"
@@ -34,11 +34,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="username"
-                    android:textStyle="bold"
                     android:fontFamily="serif-monospace"
+                    android:text="username"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -50,12 +50,12 @@
             <LinearLayout
                 android:id="@+id/btn_layout"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_marginTop="10dp"
                 android:background="@color/white"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
 
                 <LinearLayout
@@ -66,19 +66,19 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Availability"
                         android:fontFamily="serif-monospace"
+                        android:text="Availability"
                         android:textColor="@color/hint_color" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/post_status_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Available Soon"
                         android:fontFamily="serif-monospace"
-                        android:textStyle="bold"
+                        android:text="Available Soon"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/btn_textsize" />
+                        android:textSize="@dimen/btn_textsize"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
@@ -95,24 +95,32 @@
                         android:textSize="@dimen/btn_textsize" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:gravity="right">
 
-                <androidx.appcompat.widget.AppCompatRatingBar
-                    android:id="@+id/post_ratings_ratingBar"
-                    android:layout_marginTop="5dp"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
-                    android:numStars="5"
-                    android:scaleX="1.5"
-                    android:scaleY="1.5"
-                    android:progressBackgroundTint="@color/black"
-                    android:progressTint="#FFC107"
-                    android:rating="4" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/like_btn_postitem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_baseline_unlike_empty_heart"
+                        app:tint="@color/black" />
+
+                    <TextView
+                        android:id="@+id/likes_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/like_btn_postitem"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:text="0 likes"
+                        android:textColor="@color/black"
+                        android:textSize="8sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -121,9 +129,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="serif-monospace"
                 android:padding="5dp"
                 android:text="Address"
-                android:fontFamily="serif-monospace"
                 android:textColor="@color/hint_color" />
 
             <RelativeLayout
@@ -135,11 +143,11 @@
                     android:id="@+id/post_address_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/view_in_map_btn"
                     android:layout_toStartOf="@+id/view_in_map_btn"
+                    android:layout_toLeftOf="@+id/view_in_map_btn"
                     android:fontFamily="serif-monospace"
                     android:text="Address"
                     android:textColor="@color/black"
@@ -147,21 +155,21 @@
                     android:textStyle="bold" />
 
                 <ImageButton
-                android:id="@+id/view_in_map_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:tooltipText="View in Map"
-                android:layout_alignParentEnd="true"
-                android:background="@color/white"
-                android:src="@drawable/view_location_map"
-                android:layout_alignParentRight="true" />
+                    android:id="@+id/view_in_map_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/white"
+                    android:src="@drawable/view_location_map"
+                    android:tooltipText="View in Map" />
             </RelativeLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="serif-monospace"
                 android:layout_marginTop="10dp"
+                android:fontFamily="serif-monospace"
                 android:padding="5dp"
                 android:text="Description"
                 android:textColor="@color/hint_color" />
@@ -170,20 +178,20 @@
                 android:id="@+id/post_description_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:fontFamily="serif-monospace"
-                android:textStyle="bold"
+                android:padding="5dp"
                 android:text="A per fect house for students....Read more"
                 android:textColor="@color/black"
-                android:textSize="@dimen/btn_textsize" />
+                android:textSize="@dimen/btn_textsize"
+                android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Available Facility"
                 android:fontFamily="serif-monospace"
+                android:padding="5dp"
+                android:text="Available Facility"
                 android:textColor="@color/hint_color" />
 
 
@@ -191,8 +199,8 @@
                 android:id="@+id/facility_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:padding="5dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
@@ -203,20 +211,20 @@
                     android:id="@+id/post_facility1_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="serif-monospace"
-                    android:textStyle="bold"
                     android:layout_marginLeft="5dp"
+                    android:fontFamily="serif-monospace"
                     android:text="24x7 Water and Electricity"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/btn_textsize" />
+                    android:textSize="@dimen/btn_textsize"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cotact"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height"
-                android:layout_margin="5dp"
                 android:layout_gravity="bottom"
+                android:layout_margin="5dp"
                 android:backgroundTint="@color/black"
                 android:text="Contact now"
                 android:textColor="@color/white"

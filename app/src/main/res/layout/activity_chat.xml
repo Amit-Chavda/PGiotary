@@ -6,20 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ChatActivity">
+    tools:context=".actvities.ChatActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_profilepic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_margin="10dp"
+            android:layout_height="80dp"
             android:src="@mipmap/ic_launcher_round" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -28,11 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="User name"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
-
-
-
+            android:fontFamily="serif"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/black"
+            android:textSize="25dp" />
 
     </LinearLayout>
 
@@ -47,35 +49,58 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@+id/chat_relativelayout"
+        android:background="@color/black"/>
     <RelativeLayout
         android:id="@+id/chat_relativelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chat_recyclerview"
-        tools:ignore="MissingConstraints">
+        android:background="@color/white"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/chat_recyclerview">
 
-        <EditText
-            android:id="@+id/chat_edittext"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/message_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/chat_sendbtn"
             android:layout_toStartOf="@+id/chat_sendbtn"
+            app:hintEnabled="false"
+            android:background="@color/white"
+            android:gravity="center"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/chat_edittext"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
             android:textColor="@color/black"
-            android:textSize="20dp"
-            android:hint="Enter text"
-            android:textColorHint="@color/black" />
+            android:hint="Type a message"
+            android:textColorHint="@color/hint_color"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageButton
             android:id="@+id/chat_sendbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:src="@drawable/send_message"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:background="@color/white"
+            android:layout_alignParentRight="true"/>
 
 
     </RelativeLayout>

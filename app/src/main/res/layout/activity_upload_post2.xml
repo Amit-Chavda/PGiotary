@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".UploadPostActivity1">
+    tools:context=".actvities.UploadPostActivity1">
 
 
     <ImageView
@@ -18,6 +18,27 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="20dp"
         android:src="@drawable/union" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/citySpinnerLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        app:boxStrokeColor="@color/black"
+        app:boxStrokeWidth="2dp"
+        app:hintEnabled="false">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/post_city_uploadpost2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:hint="City"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/postTypeSpinnerLayout"

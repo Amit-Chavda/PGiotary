@@ -4,124 +4,99 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="5dp"
-    android:layout_centerHorizontal="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
+    android:layout_centerHorizontal="true">
+    
+    <RelativeLayout
+        android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/p_profile_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"
-                android:layout_margin="10dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000"/>
-
-            <TextView
-                android:id="@+id/p_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textSize="20sp"
-                android:text="username"
-                android:textStyle="bold"/>
-            <RelativeLayout
-                android:id="@+id/updlbtnholder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.constraintlayout.utils.widget.ImageFilterButton
-                    android:id="@+id/posteditbutton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="20px"
-                    android:layout_marginRight="20px"
-                    android:layout_marginTop="20px"
-                    android:layout_toLeftOf="@+id/postdeletebtn"
-                    android:layout_toStartOf="@+id/postdeletebtn"
-                    android:onClick="edit"
-                    android:src="@drawable/editbtn" />
-
-                <androidx.constraintlayout.utils.widget.ImageFilterButton
-                    android:id="@+id/postdeletebtn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="20px"
-                    android:layout_marginEnd="20px"
-                    android:layout_marginRight="20px"
-                    android:layout_marginTop="20px"
-                    android:onClick="delete"
-                    android:src="@drawable/deletebtn" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
+        android:padding="1dp"
+        android:background="@color/white">
 
         <ImageView
-            android:id="@+id/p_post_image"
-            android:layout_width="match_parent"
-            android:layout_height="500px"
-            android:src="@mipmap/ic_launcher" />
+            android:id="@+id/post_image_edit"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/deafult_user_pic" />
 
         <TextView
-            android:id="@+id/p_post_title"
-            android:layout_width="match_parent"
+            android:id="@+id/type_textView_edit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Title"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:layout_toRightOf="@+id/post_image_edit"
+            android:fontFamily="serif"
+            android:text="2 BHK"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
         <TextView
-            android:id="@+id/p_post_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:text="Description"
-            android:textSize="15dp"/>
+            android:id="@+id/city_textView_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="3dp"
+            android:gravity="bottom"
+            android:layout_above="@id/rent_textview_edit"
+            android:layout_toRightOf="@+id/type_textView_edit"
+            android:fontFamily="serif"
+            android:text="in Ahmedabad"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
         <TextView
-            android:id="@+id/p_addresstv"
-            android:layout_width="match_parent"
+            android:id="@+id/rent_textview_edit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:text="Address"
-            android:textSize="15dp"/>
+            android:layout_toRightOf="@id/post_image_edit"
+            android:layout_below="@+id/type_textView_edit"
+            android:fontFamily="serif"
+            android:text="2,000/month"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/addresss_textview_edit_edit"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/post_image_edit"
+            android:layout_below="@+id/rent_textview_edit"
+            android:fontFamily="serif"
+            android:maxLines="5"
+            android:justificationMode="inter_word"
+            android:text="I need to implement a search feature. search feature.I need to implement a search feature.I need to implement a search feature.I need to implement a search feature."
+            android:textColor="@color/black"
+            android:textSize="10sp" />
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/updlbtnholder"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal">
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rent: "
-                android:textSize="25dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/p_post_rent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="6500"
-                android:textSize="25dp"
-                android:textStyle="bold"/>
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/post_edit_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/update_delete_btn"
+                android:layout_gravity="center"
+                android:onClick="edit"
+                android:src="@drawable/editbtn" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/post_delete_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:onClick="delete"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/update_delete_btn"
+                android:src="@drawable/deletebtn" />
 
         </LinearLayout>
-
-    </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_below="@+id/post_image_edit"/>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

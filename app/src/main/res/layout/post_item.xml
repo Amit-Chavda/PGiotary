@@ -46,8 +46,8 @@
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
         android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
@@ -74,18 +74,36 @@
             android:textSize="@dimen/btn_textsize"
             app:fontFamily="serif-monospace" />
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/post_ratings_ratingBar"
-            style="?android:attr/ratingBarStyleIndicator"
+
+        <TextView
+            android:id="@+id/city_textview_postitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="27dp"
+            android:layout_toRightOf="@+id/post_type_textView"
+            android:text="in Ahemedabad"
+            android:textColor="@color/hint_color"
+            android:textSize="8sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/like_btn_postitem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:progressBackgroundTint="@color/black"
-            android:progressTint="#FFC107"
-            android:rating="4"
-            android:scaleX=".5"
-            android:scaleY=".5" />
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_baseline_unlike_empty_heart"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/likes_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/like_btn_postitem"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="0 likes"
+            android:textColor="@color/black"
+            android:textSize="8sp" />
     </RelativeLayout>
 </LinearLayout>

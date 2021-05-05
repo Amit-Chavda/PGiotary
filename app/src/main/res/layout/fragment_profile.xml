@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ProfileFragment">
+    tools:context=".fragments.ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,33 +21,34 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
-
-                <TextView
-                    android:id="@+id/profile_Editbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="Edit"
-                    android:textColor="@color/black"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
             </RelativeLayout>
 
-            <LinearLayout
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_profileimg"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:id="@+id/profile_pic"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/ic_launcher" />
-            </LinearLayout>
+                    android:src="@drawable/deafult_user_pic" />
+
+                <TextView
+                    android:id="@+id/change_profile_pic_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:textSize="20dp"
+                    android:textColor="#B9000000"
+                    android:fontFamily="serif-monospace"
+                    android:textStyle="bold"
+                    android:background="@color/white"
+                    android:layout_marginTop="84dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Change" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                         android:layout_width="380dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="serif-monospace"
-                        android:text="USername"
+                        android:text="Username"
                         android:textColor="@color/black"
                         android:textSize="@dimen/btn_textsize"
                         android:textStyle="bold" />
@@ -108,7 +109,7 @@
                     android:textColor="@color/hint_color" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/post_facility1_textView"
+                    android:id="@+id/proflie_mobile_no_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif-monospace"
@@ -122,20 +123,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
                 <TextView
-                    android:layout_width="175dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="serif-monospace"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Your Posts: "
-                    android:textColor="@color/black"
-                    android:textSize="30dp" />
+                    android:text="My uploads"
+                    android:background="@color/white"
+                    android:textColor="@color/hint_color"
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycleview1"
+                    android:id="@+id/post_recycleview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:scrollbarAlwaysDrawHorizontalTrack="true"
+                    android:scrollbars="vertical"
+                    android:layout_height="480dp" />
 
             </LinearLayout>
         </LinearLayout>

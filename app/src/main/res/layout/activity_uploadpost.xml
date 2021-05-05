@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".UploadPostActivity1">
+    tools:context=".actvities.UploadPostActivity1">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                         android:id="@+id/post_address_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Address here"
+                        android:hint="Full address "
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_color" />

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".HomeFragment">
+    tools:context=".fragments.HomeFragment">
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/discover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Discover"
@@ -18,7 +19,9 @@
         android:textSize="42dp" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:id="@+id/best"
+        android:layout_below="@+id/discover"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="what's best for you"
         android:fontFamily="serif-monospace"
@@ -27,11 +30,30 @@
         android:layout_marginTop="10dp"
         android:textSize="18dp" />
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleview"
+        android:id="@+id/city_post_recycleview"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/best"
+        android:layout_weight="1">
     </androidx.recyclerview.widget.RecyclerView>
 
-</LinearLayout>
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/other_city_recycleview1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_below="@+id/city_post_recycleview"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1">-->
+<!--    </androidx.recyclerview.widget.RecyclerView>-->
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/other_city_recycleview2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_height="wrap_content">-->
+<!--    </androidx.recyclerview.widget.RecyclerView>-->
+
+</RelativeLayout>

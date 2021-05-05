@@ -1,0 +1,1363 @@
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/PostAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.drawable.Drawable;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\nimport android.widget.Toast;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.bumptech.glide.load.DataSource;\r\nimport com.bumptech.glide.load.engine.GlideException;\r\nimport com.bumptech.glide.request.RequestListener;\r\nimport com.bumptech.glide.request.target.Target;\r\nimport com.firebase.ui.database.FirebaseRecyclerAdapter;\r\nimport com.firebase.ui.database.FirebaseRecyclerOptions;\r\nimport com.google.android.material.imageview.ShapeableImageView;\r\nimport com.google.android.material.textview.MaterialTextView;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.google.firebase.database.annotations.NotNull;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.widget.AppCompatRatingBar;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport de.hdodenhof.circleimageview.CircleImageView;\r\n\r\nimport static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;\r\n\r\npublic class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewHolder> {\r\n    public Context context;\r\n\r\n    public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options, Context context) {\r\n        super(options);\r\n        this.context = context;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);\r\n        return new ViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post model) {\r\n\r\n        if (model != null) {\r\n            //set username\r\n            try {\r\n                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"user\").child(model.getPostOwner());\r\n                databaseReference.addValueEventListener(new ValueEventListener() {\r\n                    @Override\r\n                    public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                        //set user details\r\n                        UserModel user = snapshot.getValue(UserModel.class);\r\n                        if (user!=null) {\r\n                            holder.usernameTextView.setText(\"@\"+user.getUsername().toLowerCase());\r\n                            Glide.with(context).load(user.getProfileImage()).into(holder.profileImageView);\r\n                        }\r\n                    }\r\n\r\n                    @Override\r\n                    public void onCancelled(@NonNull DatabaseError error) {\r\n                        Toast.makeText(context, error.getMessage() + \"\", Toast.LENGTH_SHORT).show();\r\n                    }\r\n                });\r\n            } catch (Exception e) {\r\n                Toast.makeText(context, e.getMessage() + \"\", Toast.LENGTH_SHORT).show();\r\n            }\r\n\r\n\r\n            //post img\r\n            Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).placeholder(R.drawable.ic_launcher_background).dontAnimate().into(holder.postImageView);\r\n\r\n\r\n            holder.postImageView.setOnClickListener(new View.OnClickListener() {\r\n                @Override\r\n                public void onClick(View view) {\r\n                    Intent intent = new Intent(context, ViewPostActivity.class);\r\n                    intent.putExtra(\"postId\", model.getPostId() + \"\");\r\n                    intent.putExtra(\"ownerId\", model.getPostOwner() + \"\");\r\n                    context.startActivity(intent);\r\n                }\r\n            });\r\n\r\n            //set post details\r\n            holder.postTypeTextView.setText(model.getPostType());\r\n            holder.postStatustextView.setText(model.getPostStatus());\r\n        }\r\n    }\r\n\r\n\r\n    public class ViewHolder extends RecyclerView.ViewHolder {\r\n\r\n        public ImageView postImageView;\r\n        public CircleImageView profileImageView;\r\n        public MaterialTextView usernameTextView, postTypeTextView, postStatustextView;\r\n        public AppCompatRatingBar ratingBar;\r\n\r\n        public ViewHolder(@NotNull View itemView) {\r\n            super(itemView);\r\n            profileImageView = (CircleImageView) itemView.findViewById(R.id.user_profile_imageView);\r\n            postImageView = itemView.findViewById(R.id.post_image_imageView_postItem);\r\n            usernameTextView = itemView.findViewById(R.id.username_textView);\r\n            postStatustextView = itemView.findViewById(R.id.post_status_textView);\r\n            postTypeTextView = itemView.findViewById(R.id.post_type_textView);\r\n            ratingBar = itemView.findViewById(R.id.post_ratings_ratingBar);\r\n        }\r\n    }\r\n}//post adapter class\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/PostAdapter.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/PostAdapter.java	(date 1620048806333)
+@@ -8,6 +8,7 @@
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.ImageView;
++import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import com.bumptech.glide.Glide;
+@@ -19,6 +20,7 @@
+ import com.firebase.ui.database.FirebaseRecyclerOptions;
+ import com.google.android.material.imageview.ShapeableImageView;
+ import com.google.android.material.textview.MaterialTextView;
++import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.database.DataSnapshot;
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+@@ -31,16 +33,26 @@
+ import androidx.appcompat.widget.AppCompatRatingBar;
+ import androidx.recyclerview.widget.RecyclerView;
+ 
++import java.util.ArrayList;
++
+ import de.hdodenhof.circleimageview.CircleImageView;
+ 
+ import static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;
+ 
+ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewHolder> {
+     public Context context;
++    private boolean isLiked;
++    private ArrayList<Post> postArrayList;
++    private int postCount;
+ 
+     public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options, Context context) {
+         super(options);
+         this.context = context;
++        postArrayList = new ArrayList<>();
++        postCount=0;
++    }
++    public void filterOptions(FirebaseRecyclerOptions<Post> options,Context context){
++        //Toast.makeText(context, options.getSnapshots().size()+"", Toast.LENGTH_SHORT).show();
+     }
+ 
+     @NonNull
+@@ -51,8 +63,14 @@
+     }
+ 
+     @Override
+-    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post model) {
++    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post post) {
++
++                preparePostItem(post, holder);
++    }
+ 
++
++
++    private void preparePostItem(final Post model, final ViewHolder holder) {
+         if (model != null) {
+             //set username
+             try {
+@@ -62,9 +80,9 @@
+                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         //set user details
+                         UserModel user = snapshot.getValue(UserModel.class);
+-                        if (user!=null) {
+-                            holder.usernameTextView.setText("@"+user.getUsername().toLowerCase());
+-                            Glide.with(context).load(user.getProfileImage()).into(holder.profileImageView);
++                        if (user != null) {
++                            holder.usernameTextView.setText("@" + user.getUsername().toLowerCase());
++                            Glide.with(context.getApplicationContext()).load(user.getProfileImage()).into(holder.profileImageView);
+                         }
+                     }
+ 
+@@ -77,43 +95,126 @@
+                 Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+             }
+ 
++            //set post details
++            holder.postTypeTextView.setText(model.getPostType());
++            holder.postStatustextView.setText(model.getPostStatus());
++            holder.postCityTextView.setText(" in " + model.getPostCity());
++
++            //get btn status
++            final Post post = model;
++            //Toast.makeText(context, position+"", Toast.LENGTH_SHORT).show();
++            final String postId = post.getPostId();
++            final String currentUserId = FirebaseAuth.getInstance().getUid();
+ 
++
++            holder.getLikeBtnStatus(postId, currentUserId);
+             //post img
+-            Glide.with(holder.postImageView.getContext()).load(model.getPostImage()).placeholder(R.drawable.ic_launcher_background).dontAnimate().into(holder.postImageView);
++            Glide.with(holder.postImageView.getContext()).load(post.getPostImage()).placeholder(R.drawable.ic_launcher_background).dontAnimate().into(holder.postImageView);
+ 
+ 
+             holder.postImageView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+                     Intent intent = new Intent(context, ViewPostActivity.class);
+-                    intent.putExtra("postId", model.getPostId() + "");
+-                    intent.putExtra("ownerId", model.getPostOwner() + "");
++                    intent.putExtra("postId", post.getPostId() + "");
++                    intent.putExtra("ownerId", post.getPostOwner() + "");
+                     context.startActivity(intent);
+                 }
+             });
+ 
+-            //set post details
+-            holder.postTypeTextView.setText(model.getPostType());
+-            holder.postStatustextView.setText(model.getPostStatus());
+-        }
+-    }
++            holder.likeBtn.setOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    isLiked = true;
++                    final DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("likes");
++                    likeRef.addValueEventListener(new ValueEventListener() {
++                        @Override
++                        public void onDataChange(@NonNull DataSnapshot snapshot) {
++                            if (isLiked == true) {
++                                if (snapshot.child(postId).hasChild(currentUserId)) {
++                                    likeRef.child(postId).removeValue();
++                                    isLiked = false;
++                                } else {
++                                    likeRef.child(postId).child(currentUserId).setValue(true);
++                                    isLiked = false;
++                                }
++                            }
++                        }
++
++                        @Override
++                        public void onCancelled(@NonNull DatabaseError error) {
++                            Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
++                        }
++                    });
+ 
++                }
++            });
++        }
++
++    }
++
++    private int getPostCount() {
++        DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("Posts");
++        likeRef.addValueEventListener(new ValueEventListener() {
++            @Override
++            public void onDataChange(@NonNull DataSnapshot snapshot) {
++                setLocalVar((int) snapshot.getChildrenCount());
++            }
++            @Override
++            public void onCancelled(@NonNull DatabaseError error) {
++                Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_SHORT).show();
++            }
++        });
++        return postCount;
++    }
++
++    private void setLocalVar(int var){
++         postCount=var;
++    }
+ 
+     public class ViewHolder extends RecyclerView.ViewHolder {
+ 
+-        public ImageView postImageView;
+-        public CircleImageView profileImageView;
+-        public MaterialTextView usernameTextView, postTypeTextView, postStatustextView;
+-        public AppCompatRatingBar ratingBar;
++        private ImageView postImageView;
++        private CircleImageView profileImageView;
++        private MaterialTextView usernameTextView, postTypeTextView, postStatustextView, postCityTextView;
++
++        private ImageView likeBtn;
++        private TextView likesTextView;
+ 
+         public ViewHolder(@NotNull View itemView) {
+             super(itemView);
+-            profileImageView = (CircleImageView) itemView.findViewById(R.id.user_profile_imageView);
++            profileImageView = itemView.findViewById(R.id.user_profile_imageView);
+             postImageView = itemView.findViewById(R.id.post_image_imageView_postItem);
+             usernameTextView = itemView.findViewById(R.id.username_textView);
+             postStatustextView = itemView.findViewById(R.id.post_status_textView);
+             postTypeTextView = itemView.findViewById(R.id.post_type_textView);
+-            ratingBar = itemView.findViewById(R.id.post_ratings_ratingBar);
++            postCityTextView = itemView.findViewById(R.id.city_textview_postitem);
++            likeBtn = itemView.findViewById(R.id.like_btn_postitem);
++            likesTextView = itemView.findViewById(R.id.likes_textview);
++        }
++
++        public void getLikeBtnStatus(final String pid, final String uid) {
++            DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("likes");
++            likeRef.addValueEventListener(new ValueEventListener() {
++                @Override
++                public void onDataChange(@NonNull DataSnapshot snapshot) {
++                    if (snapshot.child(pid).hasChild(uid)) {
++                        int likeCount = (int) snapshot.child(pid).getChildrenCount();
++                        likesTextView.setText(likeCount + " likes");
++                        Toast.makeText(context, likeCount + "", Toast.LENGTH_SHORT).show();
++                        likeBtn.setImageResource(R.drawable.ic_baseline_like_filled_heart);
++                    } else {
++                        int likeCount = (int) snapshot.child(pid).getChildrenCount();
++                        likesTextView.setText(likeCount + " likes");
++                        likeBtn.setImageResource(R.drawable.ic_baseline_unlike_empty_heart);
++                    }
++                }
++
++                @Override
++                public void onCancelled(@NonNull DatabaseError error) {
++
++                }
++            });
+         }
+     }
+ }//post adapter class
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/ProfileFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport android.app.ProgressDialog;\r\nimport android.content.ContentResolver;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\nimport android.provider.MediaStore;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.webkit.MimeTypeMap;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.dhruv.pg_accomodation.profile_RecycleView.RecyclerViewAdapater;\r\nimport com.example.dhruv.pg_accomodation.profile_RecycleView.RecyclerViewAdapater;\r\nimport com.example.dhruv.pg_accomodation.profile_RecycleView.Recycleview_post;\r\nimport com.firebase.ui.database.FirebaseRecyclerOptions;\r\nimport com.google.android.gms.tasks.Continuation;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.google.firebase.storage.FirebaseStorage;\r\nimport com.google.firebase.storage.StorageReference;\r\nimport com.google.firebase.storage.StorageTask;\r\nimport com.google.firebase.storage.UploadTask;\r\n\r\nimport java.io.IOException;\r\nimport java.util.HashMap;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport static android.app.Activity.RESULT_OK;\r\nimport static com.example.dhruv.pg_accomodation.BitMapUtility.BitMapToString;\r\nimport static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;\r\n\r\n\r\npublic class ProfileFragment extends Fragment {\r\n    Context context;\r\n    TextView username,emailid,editbtn;\r\n    ImageView profileimg;\r\n    Uri imageuri;\r\n    String myUrl=\"\";\r\n    StorageTask uploadtask;\r\n\r\n    public RecyclerViewAdapater postAdapter;\r\n    private StorageReference storageReference;\r\n    private FirebaseStorage firebaseStorage;\r\n    private String type;\r\n    private RecyclerView recyclerView1;\r\n    String currentFirebaseUser;\r\n\r\n\r\n\r\n    public ProfileFragment(){\r\n\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        View view = inflater.inflate(R.layout.fragment_profile, container, false);\r\n\r\n        //inisialization\r\n        username = view.findViewById(R.id.profile_username);\r\n        emailid = view.findViewById(R.id.profile_emailid);\r\n        editbtn = view.findViewById(R.id.profile_Editbtn);\r\n        profileimg = view.findViewById(R.id.profile_profileimg);\r\n        firebaseStorage = FirebaseStorage.getInstance();\r\n        storageReference = firebaseStorage.getReference();\r\n        recyclerView1 =view.findViewById(R.id.recycleview1);\r\n        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();\r\n        context = getContext();\r\n\r\n\r\n\r\n\r\n\r\n        //to set profile pic with is stored in profileiges in database\r\n        try{\r\n\r\n            recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));\r\n            FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().\r\n                    setQuery(FirebaseDatabase.getInstance().getReference().child(\"Posts\").orderByChild(\"postOwner\")\r\n                            .equalTo(currentFirebaseUser),Recycleview_post.class).build();\r\n            postAdapter = new RecyclerViewAdapater(options , getContext());\r\n            recyclerView1.setAdapter(postAdapter);\r\n\r\n        }catch (Exception e){\r\n            Toast.makeText(getContext(), \"Error: \"+e.getMessage(), Toast.LENGTH_LONG).show();\r\n        }\r\n\r\n\r\n\r\n\r\n\r\n\r\n        // this code is to set username and email id in profile\r\n        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"user\").child(currentFirebaseUser);\r\n        databaseReference.addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                UserModel user = snapshot.getValue(UserModel.class);\r\n                username.setText(user.getUsername());\r\n                emailid.setText(user.getEmail());\r\n                Bitmap bitmap;\r\n                bitmap = StringToBitMap(user.getProfileImage());\r\n                profileimg.setImageBitmap(bitmap);\r\n\r\n            }\r\n\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n                Toast.makeText(context, \"\"+error.getMessage(), Toast.LENGTH_SHORT).show();\r\n            }\r\n        });\r\n        // this code is to set username and email id in profile end\r\n\r\n\r\n\r\n\r\n\r\n        //upload ptofil\r\n        try{\r\n            DatabaseReference df = FirebaseDatabase.getInstance().getReference(\"user\").child(currentFirebaseUser);\r\n            df.addValueEventListener(new ValueEventListener() {\r\n                @Override\r\n                public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                    if(snapshot.exists()){\r\n                        UserModel user = snapshot.getValue(UserModel.class);\r\n                        if(user.getProfileImage()!=\"\"){\r\n                            Glide.with(profileimg.getContext()).load(user.getProfileImage()).into(profileimg);\r\n                        }\r\n                    }\r\n                }\r\n\r\n                @Override\r\n                public void onCancelled(@NonNull DatabaseError error) {\r\n                    Toast.makeText(getContext(), \"Error: \"+error.getMessage(), Toast.LENGTH_SHORT).show();\r\n                }\r\n            });\r\n\r\n        }catch (Exception e){\r\n            Toast.makeText(getContext(), \"\"+e.getMessage(), Toast.LENGTH_SHORT).show();\r\n        }\r\n        //to set profile pic end\r\n\r\n\r\n\r\n\r\n        // go to local Directory to get the profile pic\r\n        profileimg.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent();\r\n                intent.setType(\"image/*\");\r\n                intent.setAction(Intent.ACTION_GET_CONTENT);\r\n                startActivityForResult(intent,1);\r\n            }\r\n        });\r\n\r\n        return view;\r\n    }//oncreateview\r\n\r\n    @Override\r\n    public void onStart() {\r\n        super.onStart();\r\n        postAdapter.startListening();\r\n    }\r\n\r\n    @Override\r\n    public void onStop() {\r\n        super.onStop();\r\n        postAdapter.stopListening();\r\n    }\r\n\r\n\r\n    @Override\r\n    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {\r\n        super.onActivityResult(requestCode, resultCode, data);\r\n        if(requestCode==1 && resultCode==RESULT_OK && data != null && data.getData() != null){\r\n            imageuri = data.getData();\r\n            profileimg.setImageURI(imageuri);\r\n            try {\r\n                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageuri);\r\n                //bitmap to string\r\n                String profileImage = BitMapToString(bitmap);\r\n                //string to bitmap\r\n                bitmap = StringToBitMap(profileImage);\r\n                profileimg.setImageBitmap(bitmap);\r\n                FirebaseDatabase.getInstance().getReference().child(\"user\").child(currentFirebaseUser)\r\n                        .child(\"profileImage\").setValue(profileImage)\r\n                        .addOnCompleteListener(new OnCompleteListener<Void>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<Void> task) {\r\n                        Toast.makeText(getContext(), \"Update successfully\", Toast.LENGTH_SHORT).show();\r\n                    }\r\n                });\r\n            } catch (IOException e) {\r\n                Toast.makeText(context, e.getMessage() + \"\", Toast.LENGTH_SHORT).show();\r\n                e.printStackTrace();\r\n            }\r\n\r\n            //uploadPicture();\r\n        }\r\n    }//onactivity\r\n\r\n\r\n\r\n    // to uplod image to of profile.\r\n    /*private void uploadPicture() {\r\n        try{\r\n            final ProgressDialog pd = new ProgressDialog(getContext());\r\n\r\n            ContentResolver contentResolver = getActivity().getContentResolver();\r\n            MimeTypeMap mime = MimeTypeMap.getSingleton();\r\n            try{\r\n                this.type = mime.getExtensionFromMimeType(contentResolver.getType(imageuri));\r\n\r\n            }catch (Exception e){\r\n                Toast.makeText(getContext(), \"type: \"+e.getMessage(), Toast.LENGTH_SHORT).show();\r\n            }\r\n            final StorageReference riversRef = storageReference.child(System.currentTimeMillis()\r\n                    +\".\"+type);\r\n\r\n            pd.setTitle(\"Uploading Image...\");\r\n            pd.show();\r\n            uploadtask = riversRef.putFile(imageuri)\r\n                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {\r\n                        @Override\r\n                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {\r\n                            pd.dismiss();\r\n\r\n                            Toast.makeText(getContext(), \"File uploaded successfully\", Toast.LENGTH_SHORT).show();\r\n                        }\r\n                    })\r\n                    .addOnFailureListener(new OnFailureListener() {\r\n                        @Override\r\n                        public void onFailure(@NonNull Exception exception) {\r\n                            pd.dismiss();\r\n                            Toast.makeText(getContext(), \"Error while file uploading \"+exception.getMessage(), Toast.LENGTH_SHORT).show();\r\n                        }\r\n                    });\r\n            uploadtask.continueWithTask(new Continuation() {\r\n                @Override\r\n                public Object then(@NonNull Task task) throws Exception {\r\n                    if(!task.isComplete()){\r\n                        throw task.getException();\r\n                    }\r\n                    return riversRef.getDownloadUrl();\r\n                }\r\n            }).addOnCompleteListener(new OnCompleteListener<Uri>() {\r\n                @Override\r\n                public void onComplete(@NonNull Task<Uri> task) {\r\n                    Uri downloaduri = task.getResult();\r\n                    myUrl = downloaduri.toString();\r\n\r\n                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"profileiges\");\r\n                    String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();\r\n\r\n                    HashMap<String, Object> hashMap = new HashMap<>();\r\n                    hashMap.put(\"profileimg\",myUrl);\r\n                    databaseReference.child(currentFirebaseUser).setValue(hashMap);\r\n                }//oncompletlisner\r\n            });\r\n\r\n        }catch (Exception e){\r\n            Toast.makeText(getContext(), \"Error: \"+e, Toast.LENGTH_LONG).show();\r\n        }\r\n    }//end of upload function */\r\n\r\n\r\n\r\n}//fregment class
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/ProfileFragment.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/ProfileFragment.java	(date 1619950572352)
+@@ -3,6 +3,7 @@
+ import android.app.ProgressDialog;
+ import android.content.ContentResolver;
+ import android.content.Context;
++import android.content.DialogInterface;
+ import android.content.Intent;
+ import android.graphics.Bitmap;
+ import android.net.Uri;
+@@ -38,10 +39,12 @@
+ import com.google.firebase.storage.UploadTask;
+ 
+ import java.io.IOException;
++import java.security.PrivilegedAction;
+ import java.util.HashMap;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
++import androidx.appcompat.app.AlertDialog;
+ import androidx.fragment.app.Fragment;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
+@@ -52,23 +55,24 @@
+ 
+ 
+ public class ProfileFragment extends Fragment {
+-    Context context;
+-    TextView username,emailid,editbtn;
+-    ImageView profileimg;
+-    Uri imageuri;
+-    String myUrl="";
+-    StorageTask uploadtask;
++
+ 
+-    public RecyclerViewAdapater postAdapter;
++    private Context context;
++    private TextView usernameTextView;
++    private TextView emailTextView;
++    private TextView editbtn;
++    private TextView changeProfilePic;
++    private ImageView profileImageView;
++
++    private Uri imageUri;
++    private RecyclerViewAdapater postAdapter;
+     private StorageReference storageReference;
+     private FirebaseStorage firebaseStorage;
+-    private String type;
+     private RecyclerView recyclerView1;
+-    String currentFirebaseUser;
+-
++    private String currentFirebaseUser;
+ 
+ 
+-    public ProfileFragment(){
++    public ProfileFragment() {
+ 
+     }
+ 
+@@ -78,38 +82,33 @@
+         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+ 
+         //inisialization
+-        username = view.findViewById(R.id.profile_username);
+-        emailid = view.findViewById(R.id.profile_emailid);
++        usernameTextView = view.findViewById(R.id.profile_username);
++        emailTextView = view.findViewById(R.id.profile_emailid);
+         editbtn = view.findViewById(R.id.profile_Editbtn);
+-        profileimg = view.findViewById(R.id.profile_profileimg);
++        profileImageView = view.findViewById(R.id.profile_pic);
++        changeProfilePic = view.findViewById(R.id.change_profile_pic_textview);
++
+         firebaseStorage = FirebaseStorage.getInstance();
+         storageReference = firebaseStorage.getReference();
+-        recyclerView1 =view.findViewById(R.id.recycleview1);
++        recyclerView1 = view.findViewById(R.id.recycleview1);
+         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+         context = getContext();
+ 
+ 
+-
+-
+-
+         //to set profile pic with is stored in profileiges in database
+-        try{
+-
+-            recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
+-            FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().
+-                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("postOwner")
+-                            .equalTo(currentFirebaseUser),Recycleview_post.class).build();
+-            postAdapter = new RecyclerViewAdapater(options , getContext());
+-            recyclerView1.setAdapter(postAdapter);
+-
+-        }catch (Exception e){
+-            Toast.makeText(getContext(), "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+-        }
+-
+-
+-
+-
+-
++//        try {
++//
++//            recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
++//            FirebaseRecyclerOptions<Recycleview_post> options = new FirebaseRecyclerOptions.Builder<Recycleview_post>().
++//                    setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("postOwner")
++//                            .equalTo(currentFirebaseUser), Recycleview_post.class).build();
++//            postAdapter = new RecyclerViewAdapater(options, getContext());
++//            recyclerView1.setAdapter(postAdapter);
++//
++//        } catch (Exception e) {
++//            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
++//        }
++//
+ 
+         // this code is to set username and email id in profile
+         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(currentFirebaseUser);
+@@ -117,174 +116,127 @@
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 UserModel user = snapshot.getValue(UserModel.class);
+-                username.setText(user.getUsername());
+-                emailid.setText(user.getEmail());
+-                Bitmap bitmap;
+-                bitmap = StringToBitMap(user.getProfileImage());
+-                profileimg.setImageBitmap(bitmap);
+-
++                usernameTextView.setText(user.getUsername());
++                emailTextView.setText(user.getEmail());
++                Glide.with(profileImageView.getContext()).load(user.getProfileImage()).into(profileImageView);
+             }
+ 
+             @Override
+             public void onCancelled(@NonNull DatabaseError error) {
+-                Toast.makeText(context, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
++                Toast.makeText(context, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+             }
+         });
+-        // this code is to set username and email id in profile end
+-
+ 
+ 
+-
+-
+-        //upload ptofil
+-        try{
+-            DatabaseReference df = FirebaseDatabase.getInstance().getReference("user").child(currentFirebaseUser);
+-            df.addValueEventListener(new ValueEventListener() {
+-                @Override
+-                public void onDataChange(@NonNull DataSnapshot snapshot) {
+-                    if(snapshot.exists()){
+-                        UserModel user = snapshot.getValue(UserModel.class);
+-                        if(user.getProfileImage()!=""){
+-                            Glide.with(profileimg.getContext()).load(user.getProfileImage()).into(profileimg);
+-                        }
+-                    }
+-                }
+-
+-                @Override
+-                public void onCancelled(@NonNull DatabaseError error) {
+-                    Toast.makeText(getContext(), "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+-                }
+-            });
+-
+-        }catch (Exception e){
+-            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+-        }
+-        //to set profile pic end
+-
+-
+-
+-
+-        // go to local Directory to get the profile pic
+-        profileimg.setOnClickListener(new View.OnClickListener() {
++        changeProfilePic.setOnClickListener(new View.OnClickListener() {
+             @Override
+-            public void onClick(View view) {
+-                Intent intent = new Intent();
+-                intent.setType("image/*");
+-                intent.setAction(Intent.ACTION_GET_CONTENT);
+-                startActivityForResult(intent,1);
+-            }
+-        });
++            public void onClick(View v) {
++                createImageChooser();
++            }
++        });
++        return view;
++    }
++
++    private void createImageChooser() {
++        if (isInternetConnected()) {
++            Intent intent = new Intent();
++            intent.setType("image/*");
++            intent.setAction(Intent.ACTION_GET_CONTENT);
++            startActivityForResult(intent, 1);
++        } else {
++            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
++            builder1.setTitle("Network Connection Error");
++            builder1.setMessage("Please check your internet connection and try again!");
++            builder1.setPositiveButton(
++                    "OK",
++                    new DialogInterface.OnClickListener() {
++                        public void onClick(DialogInterface dialog, int id) {
++                            dialog.cancel();
++                        }
++                    });
+ 
+-        return view;
+-    }//oncreateview
++            AlertDialog alert11 = builder1.create();
++            alert11.show();
++        }
++    }
+ 
+     @Override
+     public void onStart() {
+         super.onStart();
+-        postAdapter.startListening();
++//        postAdapter.startListening();
+     }
+ 
+     @Override
+     public void onStop() {
+         super.onStop();
+-        postAdapter.stopListening();
++  //      postAdapter.stopListening();
+     }
+ 
+ 
+     @Override
+     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+         super.onActivityResult(requestCode, resultCode, data);
+-        if(requestCode==1 && resultCode==RESULT_OK && data != null && data.getData() != null){
+-            imageuri = data.getData();
+-            profileimg.setImageURI(imageuri);
+-            try {
+-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageuri);
+-                //bitmap to string
+-                String profileImage = BitMapToString(bitmap);
+-                //string to bitmap
+-                bitmap = StringToBitMap(profileImage);
+-                profileimg.setImageBitmap(bitmap);
+-                FirebaseDatabase.getInstance().getReference().child("user").child(currentFirebaseUser)
+-                        .child("profileImage").setValue(profileImage)
+-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+-                    @Override
+-                    public void onComplete(@NonNull Task<Void> task) {
+-                        Toast.makeText(getContext(), "Update successfully", Toast.LENGTH_SHORT).show();
+-                    }
+-                });
+-            } catch (IOException e) {
+-                Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+-                e.printStackTrace();
+-            }
+-
+-            //uploadPicture();
+-        }
+-    }//onactivity
++        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
++            imageUri = data.getData();
++            Glide.with(context).load(imageUri).into(profileImageView);
++            uploadPicture();
++        }
++    }
+ 
+-
+-
+-    // to uplod image to of profile.
+-    /*private void uploadPicture() {
+-        try{
+-            final ProgressDialog pd = new ProgressDialog(getContext());
+-
+-            ContentResolver contentResolver = getActivity().getContentResolver();
+-            MimeTypeMap mime = MimeTypeMap.getSingleton();
+-            try{
+-                this.type = mime.getExtensionFromMimeType(contentResolver.getType(imageuri));
+-
+-            }catch (Exception e){
+-                Toast.makeText(getContext(), "type: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+-            }
+-            final StorageReference riversRef = storageReference.child(System.currentTimeMillis()
+-                    +"."+type);
++    public boolean isInternetConnected() {
++        try {
++            String command = "ping -c 1 google.com";
++            return (Runtime.getRuntime().exec(command).waitFor() == 0);
++        } catch (Exception e) {
++            return false;
++        }
++    }
+ 
+-            pd.setTitle("Uploading Image...");
+-            pd.show();
+-            uploadtask = riversRef.putFile(imageuri)
+-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+-                        @Override
+-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+-                            pd.dismiss();
+-
+-                            Toast.makeText(getContext(), "File uploaded successfully", Toast.LENGTH_SHORT).show();
+-                        }
+-                    })
+-                    .addOnFailureListener(new OnFailureListener() {
+-                        @Override
+-                        public void onFailure(@NonNull Exception exception) {
+-                            pd.dismiss();
+-                            Toast.makeText(getContext(), "Error while file uploading "+exception.getMessage(), Toast.LENGTH_SHORT).show();
+-                        }
+-                    });
+-            uploadtask.continueWithTask(new Continuation() {
+-                @Override
+-                public Object then(@NonNull Task task) throws Exception {
+-                    if(!task.isComplete()){
+-                        throw task.getException();
+-                    }
+-                    return riversRef.getDownloadUrl();
+-                }
+-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+-                @Override
+-                public void onComplete(@NonNull Task<Uri> task) {
+-                    Uri downloaduri = task.getResult();
+-                    myUrl = downloaduri.toString();
+-
+-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("profileiges");
+-                    String currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+-
+-                    HashMap<String, Object> hashMap = new HashMap<>();
+-                    hashMap.put("profileimg",myUrl);
+-                    databaseReference.child(currentFirebaseUser).setValue(hashMap);
+-                }//oncompletlisner
+-            });
+-
+-        }catch (Exception e){
+-            Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_LONG).show();
+-        }
+-    }//end of upload function */
+-
+-
+-
+-}//fregment class
+\ No newline at end of file
++    private void uploadPicture() {
++        if (imageUri == null) {
++            return;
++        }
++        final ProgressDialog progressDialog = new ProgressDialog(context);
++        progressDialog.setMessage("Processing...");
++        progressDialog.show();
++        ContentResolver contentResolver = context.getContentResolver();
++        MimeTypeMap mime = MimeTypeMap.getSingleton();
++
++        //creating path and file name to store image
++        StorageReference postImageRef = storageReference.child("user-profiles").child(FirebaseAuth.getInstance().getUid()).child(System.currentTimeMillis()
++                + "." + mime.getExtensionFromMimeType(contentResolver.getType(imageUri)));
++        postImageRef.putFile(imageUri)
++                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
++                    @Override
++                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
++                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
++                            @Override
++                            public void onSuccess(Uri uri) {
++                                Toast.makeText(context, uri.toString()+"", Toast.LENGTH_SHORT).show();
++                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(FirebaseAuth.getInstance().getUid()).child("profileImage");
++                                databaseReference.setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
++                                    @Override
++                                    public void onSuccess(Void aVoid) {
++                                        progressDialog.dismiss();
++                                        Toast.makeText(context, "Profile picture updated.", Toast.LENGTH_SHORT).show();
++                                    }
++                                }).addOnFailureListener(new OnFailureListener() {
++                                    @Override
++                                    public void onFailure(@NonNull Exception e) {
++                                        progressDialog.dismiss();
++                                        Toast.makeText(context, e.getMessage() + "", Toast.LENGTH_SHORT).show();
++                                    }
++                                });
++                            }
++                        });
++                    }
++                })
++                .addOnFailureListener(new OnFailureListener() {
++                    @Override
++                    public void onFailure(@NonNull Exception exception) {
++                        progressDialog.dismiss();
++                        Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
++                    }
++                });
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/HomeFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.dhruv.pg_accomodation.map_oprations.CountDistance;\r\nimport com.firebase.ui.database.FirebaseRecyclerOptions;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport static android.content.ContentValues.TAG;\r\n\r\n\r\npublic class HomeFragment extends Fragment {\r\n\r\n    private RecyclerView recyclerView;\r\n    private PostAdapter postAdapter;\r\n    private CountDistance countDistance;\r\n\r\n\r\n    public HomeFragment() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        View view = inflater.inflate(R.layout.fragment_home, container, false);\r\n        countDistance = new CountDistance();\r\n        countDistance.getDistance(getContext());\r\n\r\n        recyclerView = view.findViewById(R.id.recycleview);\r\n        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));\r\n\r\n        FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>()\r\n                .setQuery(FirebaseDatabase.getInstance().getReference().child(\"Posts\"), Post.class).build();\r\n        if(options!=null){\r\n            postAdapter = new PostAdapter(options, getContext());\r\n            recyclerView.setAdapter(postAdapter);\r\n        }\r\n\r\n\r\n        return view;\r\n    }//end of oncreateview\r\n\r\n    @Override\r\n    public void onStart() {\r\n        super.onStart();\r\n        postAdapter.startListening();\r\n    }\r\n\r\n    @Override\r\n    public void onStop() {\r\n        super.onStop();\r\n        postAdapter.stopListening();\r\n    }\r\n}//end of class
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/HomeFragment.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/HomeFragment.java	(date 1620048806304)
+@@ -13,13 +13,17 @@
+ import android.view.ViewGroup;
+ import android.widget.Toast;
+ 
++import com.bumptech.glide.Glide;
+ import com.example.dhruv.pg_accomodation.map_oprations.CountDistance;
+ import com.firebase.ui.database.FirebaseRecyclerOptions;
++import com.firebase.ui.database.ObservableSnapshotArray;
++import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.database.DataSnapshot;
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+ import com.google.firebase.database.FirebaseDatabase;
+ import com.google.firebase.database.ValueEventListener;
++import com.squareup.okhttp.internal.DiskLruCache;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -29,10 +33,11 @@
+ 
+ public class HomeFragment extends Fragment {
+ 
+-    private RecyclerView recyclerView;
++    private RecyclerView recyclerView,recyclerView1,recyclerView2;
+     private PostAdapter postAdapter;
+     private CountDistance countDistance;
+-
++    private String city;
++    private String userId;
+ 
+     public HomeFragment() {
+ 
+@@ -44,21 +49,51 @@
+         View view = inflater.inflate(R.layout.fragment_home, container, false);
+         countDistance = new CountDistance();
+         countDistance.getDistance(getContext());
++        getInfoOfCurrentUser();
++        recyclerView = view.findViewById(R.id.city_post_recycleview);
+ 
+-        recyclerView = view.findViewById(R.id.recycleview);
+         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+ 
+-        FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>()
+-                .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts"), Post.class).build();
+-        if(options!=null){
++
++        FirebaseRecyclerOptions<Post> options = new FirebaseRecyclerOptions.Builder<Post>().setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("postCity").equalTo("Ahmedabad"), Post.class).build();
++        //options.getSnapshots().addAll(new FirebaseRecyclerOptions.Builder<Post>().setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("postCity").startAfter("Ahmedabad"), Post.class).build().getSnapshots());
++        //options.getSnapshots().addAll(new FirebaseRecyclerOptions.Builder<Post>().setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("postCity").endBefore("Ahmedabad"), Post.class).build().getSnapshots());
++
++        if (options != null) {
+             postAdapter = new PostAdapter(options, getContext());
++            //postAdapter.filterOptions(options,getContext());
+             recyclerView.setAdapter(postAdapter);
+         }
+-
+-
+         return view;
+     }//end of oncreateview
+ 
++    private void getInfoOfCurrentUser() {
++        try {
++            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(FirebaseAuth.getInstance().getUid());
++            databaseReference.addValueEventListener(new ValueEventListener() {
++                @Override
++                public void onDataChange(@NonNull DataSnapshot snapshot) {
++                    UserModel user = snapshot.getValue(UserModel.class);
++                    setLocalVariable(user.getCity(),user.getUserId());
++                   // Toast.makeText(getContext(), user.getCity()+user.getUserId()+"", Toast.LENGTH_SHORT).show();
++                }
++
++                @Override
++                public void onCancelled(@NonNull DatabaseError error) {
++                    Toast.makeText(getContext(), error.getMessage() + "", Toast.LENGTH_SHORT).show();
++                }
++
++            });
++        } catch (Exception e) {
++            Toast.makeText(getContext(), e.getMessage() + "", Toast.LENGTH_SHORT).show();
++        }
++    }
++
++    private void setLocalVariable(String city, String userId) {
++        this.city = city;
++        this.userId=userId;
++    }
++
+     @Override
+     public void onStart() {
+         super.onStart();
+Index: app/src/main/res/layout/post_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:background=\"@color/white\"\r\n    android:orientation=\"vertical\">\r\n\r\n    <View\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"1dp\"\r\n        android:background=\"#11BFB9B9\" />\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"horizontal\">\r\n\r\n        <de.hdodenhof.circleimageview.CircleImageView\r\n            android:id=\"@+id/user_profile_imageView\"\r\n            android:layout_width=\"35dp\"\r\n            android:layout_height=\"35dp\"\r\n            android:layout_margin=\"5dp\"\r\n            android:src=\"@mipmap/ic_launcher\"\r\n            app:civ_border_color=\"@color/hint_color\" />\r\n\r\n        <com.google.android.material.textview.MaterialTextView\r\n            android:id=\"@+id/username_textView\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_vertical\"\r\n            android:text=\"username\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"20sp\"\r\n            app:fontFamily=\"serif-monospace\" />\r\n    </LinearLayout>\r\n\r\n    <ImageView\r\n        android:id=\"@+id/post_image_imageView_postItem\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"350dp\"\r\n        android:background=\"@color/black\" />\r\n\r\n\r\n    <RelativeLayout\r\n        android:id=\"@+id/btn_layout\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"5dp\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:background=\"@color/white\"\r\n        android:gravity=\"center_horizontal\"\r\n        android:orientation=\"horizontal\">\r\n\r\n\r\n        <com.google.android.material.textview.MaterialTextView\r\n            android:id=\"@+id/post_status_textView\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginLeft=\"5dp\"\r\n            android:text=\"Available Now\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"10sp\"\r\n            app:fontFamily=\"serif-monospace\" />\r\n\r\n        <com.google.android.material.textview.MaterialTextView\r\n            android:id=\"@+id/post_type_textView\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_below=\"@id/post_status_textView\"\r\n            android:layout_marginLeft=\"5dp\"\r\n            android:text=\"Luxurius - 2 BHK\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"@dimen/btn_textsize\"\r\n            app:fontFamily=\"serif-monospace\" />\r\n\r\n        <androidx.appcompat.widget.AppCompatRatingBar\r\n            android:id=\"@+id/post_ratings_ratingBar\"\r\n            style=\"?android:attr/ratingBarStyleIndicator\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_alignParentRight=\"true\"\r\n            android:isIndicator=\"true\"\r\n            android:numStars=\"5\"\r\n            android:progressBackgroundTint=\"@color/black\"\r\n            android:progressTint=\"#FFC107\"\r\n            android:rating=\"4\"\r\n            android:scaleX=\".5\"\r\n            android:scaleY=\".5\" />\r\n    </RelativeLayout>\r\n</LinearLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/post_item.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/res/layout/post_item.xml	(date 1619946545269)
+@@ -46,8 +46,8 @@
+         android:id="@+id/btn_layout"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_marginTop="5dp"
+         android:layout_alignParentBottom="true"
++        android:layout_marginTop="5dp"
+         android:background="@color/white"
+         android:gravity="center_horizontal"
+         android:orientation="horizontal">
+@@ -74,18 +74,57 @@
+             android:textSize="@dimen/btn_textsize"
+             app:fontFamily="serif-monospace" />
+ 
+-        <androidx.appcompat.widget.AppCompatRatingBar
+-            android:id="@+id/post_ratings_ratingBar"
+-            style="?android:attr/ratingBarStyleIndicator"
++
++        <!--        <com.google.android.material.textview.MaterialTextView-->
++        <!--            android:id="@+id/post_city_textView"-->
++        <!--            android:layout_width="wrap_content"-->
++        <!--            android:layout_height="wrap_content"-->
++        <!--            android:layout_below="@id/post_status_textView"-->
++        <!--            android:layout_alignRight="@+id/post_type_textView"-->
++        <!--            android:text="in Ahmedabad"-->
++        <!--            android:textColor="@color/black"-->
++        <!--            android:textSize="@dimen/btn_textsize"-->
++        <!--            app:fontFamily="serif-monospace" />-->
++
++        <TextView
++            android:id="@+id/city_textview_postitem"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="in Ahemedabad"
++            android:layout_marginLeft="5dp"
++            android:layout_marginTop="15dp"
++            android:layout_toRightOf="@+id/post_type_textView"
++            android:textSize="8sp"
++            android:textColor="@color/hint_color" />
++        <com.google.android.material.imageview.ShapeableImageView
++            android:id="@+id/like_btn_postitem"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_alignParentRight="true"
++            android:src="@drawable/ic_baseline_unlike_empty_heart"
++            app:tint="@color/black" />
++
++        <TextView
++            android:id="@+id/likes_textview"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+-            android:isIndicator="true"
+-            android:numStars="5"
+-            android:progressBackgroundTint="@color/black"
+-            android:progressTint="#FFC107"
+-            android:rating="4"
+-            android:scaleX=".5"
+-            android:scaleY=".5" />
++            android:layout_below="@+id/like_btn_postitem"
++            android:text="0 likes"
++            android:textSize="8sp"
++            android:textColor="@color/black" />
++        <!--        <androidx.appcompat.widget.AppCompatRatingBar-->
++        <!--            android:id="@+id/post_ratings_ratingBar"-->
++        <!--            style="?android:attr/ratingBarStyleIndicator"-->
++        <!--            android:layout_width="wrap_content"-->
++        <!--            android:layout_height="wrap_content"-->
++        <!--            android:layout_alignParentRight="true"-->
++        <!--            android:isIndicator="true"-->
++        <!--            android:numStars="5"-->
++        <!--            android:progressBackgroundTint="@color/black"-->
++        <!--            android:progressTint="#FFC107"-->
++        <!--            android:rating="4"-->
++        <!--            android:scaleX=".5"-->
++        <!--            android:scaleY=".5" />-->
+     </RelativeLayout>
+ </LinearLayout>
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/Post.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\npublic class Post {\r\n    private String postId;\r\n    private String postType;\r\n    private String postImage;\r\n    private String postDescription;\r\n    private String postRent;\r\n    private String postAddress;\r\n    private String postRatings;\r\n    private String postStatus;\r\n    private String postOwner;\r\n    private String lat;\r\n    private String longi;\r\n    private String facility;\r\n\r\n    public Post(){}\r\n\r\n    public Post(String postId, String postType, String postImage, String postDescription, String postRent, String postAddress, String postRatings, String postStatus, String postOwner, String lat, String longi, String facility) {\r\n        this.postId = postId;\r\n        this.postType = postType;\r\n        this.postImage = postImage;\r\n        this.postDescription = postDescription;\r\n        this.postRent = postRent;\r\n        this.postAddress = postAddress;\r\n        this.postRatings = postRatings;\r\n        this.postStatus = postStatus;\r\n        this.postOwner = postOwner;\r\n        this.lat = lat;\r\n        this.longi = longi;\r\n        this.facility = facility;\r\n    }\r\n\r\n    public String getPostId() {\r\n        return postId;\r\n    }\r\n\r\n    public void setPostId(String postId) {\r\n        this.postId = postId;\r\n    }\r\n\r\n    public String getPostType() {\r\n        return postType;\r\n    }\r\n\r\n    public void setPostType(String postType) {\r\n        this.postType = postType;\r\n    }\r\n\r\n    public String getPostImage() {\r\n        return postImage;\r\n    }\r\n\r\n    public void setPostImage(String postImage) {\r\n        this.postImage = postImage;\r\n    }\r\n\r\n    public String getPostDescription() {\r\n        return postDescription;\r\n    }\r\n\r\n    public void setPostDescription(String postDescription) {\r\n        this.postDescription = postDescription;\r\n    }\r\n\r\n    public String getPostRent() {\r\n        return postRent;\r\n    }\r\n\r\n    public void setPostRent(String postRent) {\r\n        this.postRent = postRent;\r\n    }\r\n\r\n    public String getPostAddress() {\r\n        return postAddress;\r\n    }\r\n\r\n    public void setPostAddress(String postAddress) {\r\n        this.postAddress = postAddress;\r\n    }\r\n\r\n    public String getPostRatings() {\r\n        return postRatings;\r\n    }\r\n\r\n    public void setPostRatings(String postRatings) {\r\n        this.postRatings = postRatings;\r\n    }\r\n\r\n    public String getPostStatus() {\r\n        return postStatus;\r\n    }\r\n\r\n    public void setPostStatus(String postStatus) {\r\n        this.postStatus = postStatus;\r\n    }\r\n\r\n    public String getPostOwner() {\r\n        return postOwner;\r\n    }\r\n\r\n    public void setPostOwner(String postOwner) {\r\n        this.postOwner = postOwner;\r\n    }\r\n\r\n    public String getLat() {\r\n        return lat;\r\n    }\r\n\r\n    public void setLat(String lat) {\r\n        this.lat = lat;\r\n    }\r\n\r\n    public String getLongi() {\r\n        return longi;\r\n    }\r\n\r\n    public void setLongi(String longi) {\r\n        this.longi = longi;\r\n    }\r\n\r\n    public String getFacility() {\r\n        return facility;\r\n    }\r\n\r\n    public void setFacility(String facility) {\r\n        this.facility = facility;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/Post.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/Post.java	(date 1619946951485)
+@@ -14,6 +14,16 @@
+     private String longi;
+     private String facility;
+ 
++    public String getPostCity() {
++        return postCity;
++    }
++
++    public void setPostCity(String postCity) {
++        this.postCity = postCity;
++    }
++
++    private String postCity;
++
+     public Post(){}
+ 
+     public Post(String postId, String postType, String postImage, String postDescription, String postRent, String postAddress, String postRatings, String postStatus, String postOwner, String lat, String longi, String facility) {
+Index: app/src/main/res/layout/fragment_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    android:background=\"@color/white\"\r\n    tools:context=\".HomeFragment\">\r\n\r\n    <com.google.android.material.textview.MaterialTextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Discover\"\r\n        android:layout_marginLeft=\"2dp\"\r\n        android:textStyle=\"bold\"\r\n        android:fontFamily=\"serif-monospace\"\r\n        android:textColor=\"@color/black\"\r\n        android:textSize=\"42dp\" />\r\n\r\n    <com.google.android.material.textview.MaterialTextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"what's best for you\"\r\n        android:fontFamily=\"serif-monospace\"\r\n        android:textAllCaps=\"true\"\r\n        android:textColor=\"@color/black\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:textSize=\"18dp\" />\r\n\r\n    <androidx.recyclerview.widget.RecyclerView\r\n        android:id=\"@+id/recycleview\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:layout_height=\"wrap_content\">\r\n    </androidx.recyclerview.widget.RecyclerView>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_home.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/res/layout/fragment_home.xml	(date 1619952586636)
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+@@ -8,6 +8,7 @@
+     tools:context=".HomeFragment">
+ 
+     <com.google.android.material.textview.MaterialTextView
++        android:id="@+id/discover"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Discover"
+@@ -18,7 +19,9 @@
+         android:textSize="42dp" />
+ 
+     <com.google.android.material.textview.MaterialTextView
+-        android:layout_width="match_parent"
++        android:id="@+id/best"
++        android:layout_below="@+id/discover"
++        android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="what's best for you"
+         android:fontFamily="serif-monospace"
+@@ -27,11 +30,30 @@
+         android:layout_marginTop="10dp"
+         android:textSize="18dp" />
+ 
++
+     <androidx.recyclerview.widget.RecyclerView
+-        android:id="@+id/recycleview"
++        android:id="@+id/city_post_recycleview"
+         android:layout_width="match_parent"
+         android:layout_marginTop="10dp"
+-        android:layout_height="wrap_content">
++        android:layout_height="wrap_content"
++        android:layout_below="@id/best"
++        android:layout_weight="1">
+     </androidx.recyclerview.widget.RecyclerView>
+ 
+-</LinearLayout>
+\ No newline at end of file
++<!--    <androidx.recyclerview.widget.RecyclerView-->
++<!--        android:id="@+id/other_city_recycleview1"-->
++<!--        android:layout_width="match_parent"-->
++<!--        android:layout_below="@+id/city_post_recycleview"-->
++<!--        android:layout_marginTop="10dp"-->
++<!--        android:layout_height="wrap_content"-->
++<!--        android:layout_weight="1">-->
++<!--    </androidx.recyclerview.widget.RecyclerView>-->
++
++<!--    <androidx.recyclerview.widget.RecyclerView-->
++<!--        android:id="@+id/other_city_recycleview2"-->
++<!--        android:layout_width="match_parent"-->
++<!--        android:layout_marginTop="10dp"-->
++<!--        android:layout_height="wrap_content">-->
++<!--    </androidx.recyclerview.widget.RecyclerView>-->
++
++</RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.app.ProgressDialog;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageButton;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.android.material.textview.MaterialTextView;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\n\r\nimport static android.view.View.*;\r\nimport static com.example.dhruv.pg_accomodation.ValidationUtility.isValidEmail;\r\nimport static com.example.dhruv.pg_accomodation.ValidationUtility.isValidPassword;\r\n\r\npublic class LoginActivity extends AppCompatActivity {\r\n\r\n    private TextInputEditText emailEdittext;\r\n    private TextInputEditText passwordEdittext;\r\n\r\n    private ProgressDialog progressDialog;\r\n    private FirebaseAuth firebaseAuth;\r\n    private PrefManager prefManager;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_login);\r\n\r\n        progressDialog = new ProgressDialog(LoginActivity.this);\r\n        firebaseAuth = FirebaseAuth.getInstance();\r\n        emailEdittext = findViewById(R.id.email_edittext);\r\n        passwordEdittext = findViewById(R.id.password_edittext);\r\n\r\n        prefManager = new PrefManager(getApplicationContext());\r\n\r\n        MaterialTextView forgotPasswordTextView = findViewById(R.id.forgot_password_tv);\r\n        MaterialButton btnLogin = findViewById(R.id.btn_login);\r\n        ImageButton btnBack = findViewById(R.id.btn_back);\r\n\r\n\r\n        //go back btn\r\n        btnBack.setOnClickListener(new OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));\r\n            }\r\n        });\r\n\r\n\r\n        forgotPasswordTextView.setOnClickListener(new OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));\r\n            }\r\n        });\r\n\r\n        btnLogin.setOnClickListener(new OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                processLogin();\r\n            }\r\n        });\r\n    }\r\n\r\n    @Override\r\n    protected void onPause() {\r\n        super.onPause();\r\n        emailEdittext.setError(null);\r\n        passwordEdittext.setError(null);\r\n    }\r\n\r\n    private void processLogin() {\r\n\r\n        String email = emailEdittext.getText().toString();\r\n        String password = passwordEdittext.getText().toString();\r\n        if (isValidEmail(email)) {\r\n            if (isValidPassword(password)) {\r\n                progressDialog.setMessage(\"Processing...\");\r\n                progressDialog.show();\r\n                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<AuthResult> task) {\r\n                        if (task.isSuccessful()) {\r\n                            prefManager.setIsLoggedIn(true);\r\n                            progressDialog.dismiss();\r\n                            //Toast.makeText(LoginActivity.this, \"Login successful !\", Toast.LENGTH_SHORT).show();\r\n                            startActivity(new Intent(LoginActivity.this, Home.class));\r\n                            finish();\r\n                        }\r\n                    }\r\n                }).addOnFailureListener(new OnFailureListener() {\r\n                    @Override\r\n                    public void onFailure(@NonNull Exception e) {\r\n                        progressDialog.dismiss();\r\n                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                    }\r\n                });\r\n            } else {\r\n                passwordEdittext.setError(\"Invalid password!\");\r\n            }\r\n        } else {\r\n            emailEdittext.setError(\"Invalid email address!\");\r\n        }\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/LoginActivity.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/LoginActivity.java	(date 1619887563181)
+@@ -22,6 +22,7 @@
+ import com.google.firebase.auth.AuthResult;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
++import com.google.firebase.database.FirebaseDatabase;
+ 
+ import static android.view.View.*;
+ import static com.example.dhruv.pg_accomodation.ValidationUtility.isValidEmail;
+@@ -84,23 +85,30 @@
+         passwordEdittext.setError(null);
+     }
+ 
++
+     private void processLogin() {
+ 
+         String email = emailEdittext.getText().toString();
+         String password = passwordEdittext.getText().toString();
+         if (isValidEmail(email)) {
+             if (isValidPassword(password)) {
++                // FirebaseAuth.getInstance().signOut();
+                 progressDialog.setMessage("Processing...");
+                 progressDialog.show();
+                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
+-                            prefManager.setIsLoggedIn(true);
+                             progressDialog.dismiss();
+-                            //Toast.makeText(LoginActivity.this, "Login successful !", Toast.LENGTH_SHORT).show();
+-                            startActivity(new Intent(LoginActivity.this, Home.class));
+-                            finish();
++                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
++                                prefManager.setIsLoggedIn(true);
++                                startActivity(new Intent(LoginActivity.this, Home.class));
++                                finish();
++                            } else {
++                                Toast.makeText(LoginActivity.this, "Please verify your email.", Toast.LENGTH_SHORT).show();
++                            }
++
++                            //Toast.makeText(LoginActivity.this, "Login successful !", Toast.LENGTH_SHORT).show();
+                         }
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+Index: app/src/main/res/layout/fragment_profile.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/white\"\r\n    tools:context=\".ProfileFragment\">\r\n\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_margin=\"3dp\"\r\n            android:orientation=\"vertical\">\r\n\r\n            <RelativeLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:paddingLeft=\"5dp\"\r\n                android:paddingRight=\"5dp\">\r\n\r\n                <TextView\r\n                    android:id=\"@+id/profile_Editbtn\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_alignParentEnd=\"true\"\r\n                    android:layout_alignParentRight=\"true\"\r\n                    android:layout_margin=\"20dp\"\r\n                    android:layout_marginLeft=\"10dp\"\r\n                    android:text=\"Edit\"\r\n                    android:textColor=\"@color/black\"\r\n                    android:textSize=\"30dp\"\r\n                    android:textStyle=\"bold\" />\r\n            </RelativeLayout>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"vertical\">\r\n\r\n                <de.hdodenhof.circleimageview.CircleImageView\r\n                    android:id=\"@+id/profile_profileimg\"\r\n                    android:layout_width=\"120dp\"\r\n                    android:layout_height=\"120dp\"\r\n                    android:layout_gravity=\"center_horizontal\"\r\n                    android:src=\"@mipmap/ic_launcher\" />\r\n            </LinearLayout>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginLeft=\"10dp\"\r\n                android:layout_marginTop=\"10dp\"\r\n                android:orientation=\"vertical\"\r\n                android:padding=\"5dp\">\r\n\r\n                <com.google.android.material.textview.MaterialTextView\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginTop=\"10dp\"\r\n                    android:fontFamily=\"serif-monospace\"\r\n                    android:text=\"Username\"\r\n                    android:textColor=\"@color/hint_color\" />\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"horizontal\">\r\n\r\n                    <com.google.android.material.textview.MaterialTextView\r\n                        android:id=\"@+id/profile_username\"\r\n                        android:layout_width=\"380dp\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:fontFamily=\"serif-monospace\"\r\n                        android:text=\"USername\"\r\n                        android:textColor=\"@color/black\"\r\n                        android:textSize=\"@dimen/btn_textsize\"\r\n                        android:textStyle=\"bold\" />\r\n                </LinearLayout>\r\n\r\n                <com.google.android.material.textview.MaterialTextView\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginTop=\"10dp\"\r\n                    android:fontFamily=\"serif-monospace\"\r\n                    android:text=\"Email id\"\r\n                    android:textColor=\"@color/hint_color\" />\r\n\r\n                <com.google.android.material.textview.MaterialTextView\r\n                    android:id=\"@+id/profile_emailid\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:fontFamily=\"serif-monospace\"\r\n                    android:text=\"Email id\"\r\n                    android:textColor=\"@color/black\"\r\n                    android:textSize=\"@dimen/btn_textsize\"\r\n                    android:textStyle=\"bold\" />\r\n\r\n                <com.google.android.material.textview.MaterialTextView\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginTop=\"10dp\"\r\n                    android:fontFamily=\"serif-monospace\"\r\n                    android:text=\"Mobile number\"\r\n                    android:textColor=\"@color/hint_color\" />\r\n\r\n                <com.google.android.material.textview.MaterialTextView\r\n                    android:id=\"@+id/post_facility1_textView\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:fontFamily=\"serif-monospace\"\r\n                    android:text=\"000-000-0000\"\r\n                    android:textColor=\"@color/black\"\r\n                    android:textSize=\"@dimen/btn_textsize\"\r\n                    android:textStyle=\"bold\" />\r\n            </LinearLayout>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"vertical\">\r\n\r\n                <TextView\r\n                    android:layout_width=\"175dp\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginLeft=\"10dp\"\r\n                    android:layout_marginTop=\"5dp\"\r\n                    android:text=\"Your Posts: \"\r\n                    android:textColor=\"@color/black\"\r\n                    android:textSize=\"30dp\" />\r\n\r\n                <androidx.recyclerview.widget.RecyclerView\r\n                    android:id=\"@+id/recycleview1\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\" />\r\n\r\n            </LinearLayout>\r\n        </LinearLayout>\r\n    </ScrollView>\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_profile.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/res/layout/fragment_profile.xml	(date 1619875081887)
+@@ -36,18 +36,32 @@
+                     android:textStyle="bold" />
+             </RelativeLayout>
+ 
+-            <LinearLayout
++
++            <FrameLayout
+                 android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="vertical">
++                android:layout_height="wrap_content">
+ 
+                 <de.hdodenhof.circleimageview.CircleImageView
+-                    android:id="@+id/profile_profileimg"
+-                    android:layout_width="120dp"
+-                    android:layout_height="120dp"
++                    android:id="@+id/profile_pic"
++                    android:layout_width="200dp"
++                    android:layout_height="200dp"
+                     android:layout_gravity="center_horizontal"
+-                    android:src="@mipmap/ic_launcher" />
+-            </LinearLayout>
++                    android:src="@drawable/deafult_user_pic" />
++
++                <TextView
++                    android:id="@+id/change_profile_pic_textview"
++                    android:layout_width="match_parent"
++                    android:layout_height="40dp"
++                    android:gravity="center"
++                    android:textSize="20dp"
++                    android:textColor="#B9000000"
++                    android:fontFamily="serif-monospace"
++                    android:textStyle="bold"
++                    android:background="@color/white"
++                    android:layout_marginTop="84dp"
++                    android:layout_gravity="center_vertical"
++                    android:text="Change" />
++            </FrameLayout>
+ 
+             <LinearLayout
+                 android:layout_width="match_parent"
+@@ -75,7 +89,7 @@
+                         android:layout_width="380dp"
+                         android:layout_height="wrap_content"
+                         android:fontFamily="serif-monospace"
+-                        android:text="USername"
++                        android:text="Username"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/btn_textsize"
+                         android:textStyle="bold" />
+@@ -108,7 +122,7 @@
+                     android:textColor="@color/hint_color" />
+ 
+                 <com.google.android.material.textview.MaterialTextView
+-                    android:id="@+id/post_facility1_textView"
++                    android:id="@+id/proflie_mobile_no_textView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:fontFamily="serif-monospace"
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/ViewPostActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.appcompat.widget.AppCompatRatingBar;\r\nimport androidx.core.content.res.ResourcesCompat;\r\n\r\nimport de.hdodenhof.circleimageview.CircleImageView;\r\n\r\nimport android.annotation.TargetApi;\r\nimport android.content.DialogInterface;\r\nimport android.content.Intent;\r\nimport android.content.pm.PackageManager;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.Typeface;\r\nimport android.location.Location;\r\nimport android.net.Uri;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.text.Layout;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageButton;\r\nimport android.widget.ImageView;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.dhruv.pg_accomodation.map_oprations.LocationProvider;\r\nimport com.google.android.material.imageview.ShapeableImageView;\r\nimport com.google.android.material.textview.MaterialTextView;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Locale;\r\n\r\nimport static android.Manifest.permission.ACCESS_COARSE_LOCATION;\r\nimport static android.Manifest.permission.ACCESS_FINE_LOCATION;\r\nimport static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;\r\nimport static com.example.dhruv.pg_accomodation.R.drawable.vector;\r\n\r\npublic class ViewPostActivity extends AppCompatActivity {\r\n\r\n    private ImageButton viewInMapBtn;\r\n    private LinearLayout linearLayout;\r\n    private CircleImageView userProfileImageView;\r\n    private MaterialTextView usernameTextView;\r\n    private ShapeableImageView postImageView;\r\n    private MaterialTextView postStatusTextView;\r\n    private MaterialTextView postTypeTextView;\r\n    private MaterialTextView postAddressTextView;\r\n    private MaterialTextView postDescriptionTextView;\r\n    private MaterialTextView postFacilityTextView;\r\n    private AppCompatRatingBar ratingBar;\r\n    private Post post;\r\n\r\n\r\n    //new code\r\n    private ArrayList permissionsToRequest;\r\n    private ArrayList permissionsRejected = new ArrayList();\r\n    private ArrayList permissions = new ArrayList();\r\n\r\n    private final static int ALL_PERMISSIONS_RESULT = 101;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_view_post);\r\n\r\n        viewInMapBtn = findViewById(R.id.view_in_map_btn);\r\n        userProfileImageView = findViewById(R.id.user_profile_imageView);\r\n        postDescriptionTextView = findViewById(R.id.post_description_textView);\r\n        usernameTextView = findViewById(R.id.username_textView);\r\n        postImageView = findViewById(R.id.post_image_imageView);\r\n        postStatusTextView = findViewById(R.id.post_status_textView);\r\n        postTypeTextView = findViewById(R.id.post_type_textView);\r\n        postAddressTextView = findViewById(R.id.post_address_textView);\r\n        postFacilityTextView = findViewById(R.id.post_facility1_textView);\r\n        ratingBar = findViewById(R.id.post_ratings_ratingBar);\r\n/*\r\n        linearLayout=findViewById(R.id.linear_layout);\r\n\r\n        LinearLayout parent = new LinearLayout(ViewPostActivity.this);\r\n\r\n        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT\r\n                , LinearLayout.LayoutParams.WRAP_CONTENT);\r\n        params.setMargins(0, 10, 0, 0);\r\n        parent.setLayoutParams(params);\r\n        parent.setOrientation(LinearLayout.HORIZONTAL);\r\n\r\n\r\n//children of parent linearlayout\r\n\r\n        ImageView iconImageView = new ImageView(ViewPostActivity.this);\r\n        iconImageView.setImageResource(vector);\r\n        //iconImageView.setLayoutParams(params);\r\n        ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);\r\n        iconImageView.setLayoutParams(layoutParams);\r\n\r\n\r\n\r\n        TextView tv = new TextView(ViewPostActivity.this);\r\n        LinearLayout.LayoutParams tvParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);\r\n        params.setMargins(10,10,10,10);\r\n        tv.setLayoutParams(params);\r\n        tv.setLayoutParams(layoutParams);\r\n        tv.setText(\"This is text\");\r\n        tv.setTextSize(R.dimen.btn_textsize);\r\n\r\n        parent.addView(iconImageView);\r\n        parent.addView(tv);\r\n\r\n        linearLayout.addView(parent);\r\n        */\r\n\r\n        Intent intent = getIntent();\r\n        final String postid = intent.getStringExtra(\"postId\");\r\n        String publisherid = intent.getStringExtra(\"ownerId\");\r\n\r\n\r\n        //set profile pic and username\r\n        try {\r\n            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"user\").child(publisherid);\r\n            databaseReference.addValueEventListener(new ValueEventListener() {\r\n                @Override\r\n                public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                    UserModel user = snapshot.getValue(UserModel.class);\r\n                    usernameTextView.setText(\"@\" + user.getUsername().toLowerCase());\r\n                    Glide.with(ViewPostActivity.this).load(user.getProfileImage()).into(userProfileImageView);\r\n                }\r\n\r\n                @Override\r\n                public void onCancelled(@NonNull DatabaseError error) {\r\n                    Toast.makeText(ViewPostActivity.this, error.getMessage() + \"\", Toast.LENGTH_SHORT).show();\r\n                }\r\n\r\n            });\r\n        } catch (Exception e) {\r\n            Toast.makeText(this, e.getMessage() + \"\", Toast.LENGTH_SHORT).show();\r\n        }\r\n\r\n\r\n        //load data from database\r\n        try {\r\n            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"Posts\").child(postid);\r\n            databaseReference.addValueEventListener(new ValueEventListener() {\r\n                @Override\r\n                public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                    post = snapshot.getValue(Post.class);\r\n                    if (post != null) {\r\n                        postTypeTextView.setText(post.getPostType());\r\n                        postStatusTextView.setText(post.getPostStatus());\r\n                        ratingBar.setRating(Float.parseFloat(post.getPostRatings()));\r\n                        postAddressTextView.setText(post.getPostAddress());\r\n                        postDescriptionTextView.setText(post.getPostDescription());\r\n                        Glide.with(ViewPostActivity.this).load(post.getPostImage()).into(postImageView);\r\n                        postFacilityTextView.setText(post.getFacility());\r\n                    }\r\n                }\r\n\r\n                @Override\r\n                public void onCancelled(@NonNull DatabaseError error) {\r\n                    Toast.makeText(ViewPostActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();\r\n                }\r\n            });\r\n        } catch (Exception e) {\r\n            Toast.makeText(this, e.getMessage() + \"\", Toast.LENGTH_SHORT).show();\r\n        }\r\n\r\n        //view address in map\r\n        viewInMapBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"Posts\").child(postid);\r\n                databaseReference.addValueEventListener(new ValueEventListener() {\r\n                    @Override\r\n                    public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                        post = snapshot.getValue(Post.class);\r\n                        String lat = post.getLat();\r\n                        String longi = post.getLongi();\r\n                        LocationTracker currentLocation = new LocationTracker(ViewPostActivity.this);\r\n                        //Toast.makeText(ViewPostActivity.this, \"current location: \" + currentLocation, Toast.LENGTH_SHORT).show();\r\n                        try {\r\n                            if (currentLocation.canGetLocation()) {\r\n                                String uri = String.format(Locale.ENGLISH, \"http://maps.google.com/maps?saddr=%f,%f(%s)&daddr=%f,%f (%s)\",\r\n                                        currentLocation.getLatitude(), currentLocation.getLongitude(), \"Source\"\r\n                                        , Double.parseDouble(lat), Double.parseDouble(longi), \"Destination\");\r\n                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));\r\n                                startActivity(intent);\r\n                            } else {\r\n                                currentLocation.showSettingsAlert();\r\n                            }\r\n                        } catch (Exception e) {\r\n                            Toast.makeText(ViewPostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                        }\r\n                    }\r\n\r\n                    @Override\r\n                    public void onCancelled(@NonNull DatabaseError error) {\r\n                        Toast.makeText(ViewPostActivity.this, \"Error: \" + error.getMessage(), Toast.LENGTH_SHORT).show();\r\n                    }\r\n                });\r\n\r\n\r\n            }\r\n        });\r\n\r\n        //new code\r\n        permissions.add(ACCESS_FINE_LOCATION);\r\n        permissions.add(ACCESS_COARSE_LOCATION);\r\n\r\n        permissionsToRequest = findUnAskedPermissions(permissions);\r\n        //get the permissions we have asked for before but are not granted..\r\n        //we will store this in a global list to access later.\r\n\r\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n            if (permissionsToRequest.size() > 0)\r\n                requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);\r\n        }\r\n    }\r\n\r\n    //check needed permisi=sion allowed or not\r\n    private ArrayList findUnAskedPermissions(ArrayList wanted) {\r\n        ArrayList result = new ArrayList();\r\n\r\n        for (Object perm : wanted) {\r\n            if (!hasPermission((String) perm)) {\r\n                result.add(perm);\r\n            }\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private boolean hasPermission(String permission) {\r\n        if (canMakeSmores()) {\r\n            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);\r\n            }\r\n        }\r\n        return true;\r\n    }\r\n\r\n    private boolean canMakeSmores() {\r\n        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);\r\n    }\r\n\r\n\r\n    @TargetApi(Build.VERSION_CODES.M)\r\n    @Override\r\n    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\r\n\r\n        switch (requestCode) {\r\n\r\n            case ALL_PERMISSIONS_RESULT:\r\n                for (Object perms : permissionsToRequest) {\r\n                    if (!hasPermission((String) perms)) {\r\n                        permissionsRejected.add(perms);\r\n                    }\r\n                }\r\n\r\n                if (permissionsRejected.size() > 0) {\r\n                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                        if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {\r\n                            showMessageOKCancel(\"These permissions are mandatory for this service. Please allow access.\",\r\n                                    new DialogInterface.OnClickListener() {\r\n                                        @Override\r\n                                        public void onClick(DialogInterface dialog, int which) {\r\n                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                                                requestPermissions((String[]) permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);\r\n                                            }\r\n                                        }\r\n                                    });\r\n                            break;\r\n                        }\r\n                    }\r\n                }\r\n                break;\r\n        }\r\n    }\r\n\r\n    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {\r\n        new AlertDialog.Builder(ViewPostActivity.this)\r\n                .setMessage(message)\r\n                .setPositiveButton(\"OK\", okListener)\r\n                .setNegativeButton(\"Cancel\", null)\r\n                .create()\r\n                .show();\r\n    }//oncreate\r\n}//class
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/ViewPostActivity.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/ViewPostActivity.java	(date 1619888742059)
+@@ -121,12 +121,12 @@
+ 
+         Intent intent = getIntent();
+         final String postid = intent.getStringExtra("postId");
+-        String publisherid = intent.getStringExtra("ownerId");
++        String ownerId = intent.getStringExtra("ownerId");
+ 
+ 
+         //set profile pic and username
+         try {
+-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(publisherid);
++            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(ownerId);
+             databaseReference.addValueEventListener(new ValueEventListener() {
+                 @Override
+                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+Index: .idea/render.experimental.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/render.experimental.xml	(date 1619883594457)
++++ .idea/render.experimental.xml	(date 1619883594457)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RenderSettings">
++    <option name="showDecorations" value="true" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/RegisterActivity3.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport android.app.ProgressDialog;\r\nimport android.content.ContentResolver;\r\nimport android.content.DialogInterface;\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.BitmapFactory;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\nimport android.provider.MediaStore;\r\nimport android.util.Base64;\r\nimport android.view.View;\r\nimport android.webkit.MimeTypeMap;\r\nimport android.widget.ImageButton;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.storage.FirebaseStorage;\r\nimport com.google.firebase.storage.StorageReference;\r\nimport com.google.firebase.storage.UploadTask;\r\n\r\nimport java.io.ByteArrayOutputStream;\r\nimport java.io.IOException;\r\nimport java.util.regex.Matcher;\r\nimport java.util.regex.Pattern;\r\n\r\nimport de.hdodenhof.circleimageview.CircleImageView;\r\n\r\nimport static com.example.dhruv.pg_accomodation.BitMapUtility.BitMapToString;\r\nimport static com.example.dhruv.pg_accomodation.BitMapUtility.StringToBitMap;\r\nimport static com.example.dhruv.pg_accomodation.ValidationUtility.isValidUsername;\r\n\r\npublic class RegisterActivity3 extends AppCompatActivity {\r\n\r\n    private ImageButton btnBack;\r\n    private MaterialButton btnSignup;\r\n    private CircleImageView btnImage;\r\n    private TextInputEditText usernameEdittext;\r\n    private ProgressDialog progressDialog;\r\n    private TextView changeProfilePicTV;\r\n\r\n    //firebase code\r\n    private FirebaseAuth firebaseAuth;\r\n    private FirebaseUser currentUser;\r\n    private FirebaseDatabase firebaseDatabase;\r\n    private DatabaseReference databaseReference;\r\n    private FirebaseStorage firebaseStorage;\r\n    private StorageReference storageReference;\r\n\r\n\r\n    //User data model\r\n    private UserModel user;\r\n    private Uri imageUri;\r\n    private String imageUriString;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_register3);\r\n\r\n        progressDialog = new ProgressDialog(RegisterActivity3.this);\r\n\r\n\r\n        //firbase instance initialization\r\n        firebaseStorage = FirebaseStorage.getInstance();\r\n        storageReference = firebaseStorage.getReference();\r\n\r\n\r\n        firebaseAuth = FirebaseAuth.getInstance();\r\n        firebaseDatabase = FirebaseDatabase.getInstance();\r\n        databaseReference = firebaseDatabase.getReference().child(\"user\");\r\n        user = new UserModel();\r\n\r\n        btnBack = findViewById(R.id.btn_back);\r\n        btnSignup = findViewById(R.id.btn_signup);\r\n        changeProfilePicTV = findViewById(R.id.profile_pic_textview);\r\n\r\n        btnImage = findViewById(R.id.profile_pic);\r\n        usernameEdittext = findViewById(R.id.username_edittext);\r\n\r\n        // go back btn\r\n        btnBack.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(RegisterActivity3.this, RegisterActivity2.class));\r\n            }\r\n        });\r\n\r\n        //select profile picture btn\r\n        btnImage.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent();\r\n                intent.setType(\"image/*\");\r\n                intent.setAction(Intent.ACTION_GET_CONTENT);\r\n                startActivityForResult(intent, 1);\r\n            }\r\n        });\r\n\r\n        //sign up btn\r\n        btnSignup.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                processSignup();\r\n            }\r\n        });\r\n    }\r\n\r\n    public boolean isInternetConnected() {\r\n        try {\r\n            String command = \"ping -c 1 google.com\";\r\n            return (Runtime.getRuntime().exec(command).waitFor() == 0);\r\n        } catch (Exception e) {\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private void processSignup() {\r\n        if (isInternetConnected()) {\r\n            String username = usernameEdittext.getText().toString();\r\n            if (isValidUsername(username)) {\r\n                confirmSignup();\r\n            } else {\r\n                usernameEdittext.setError(\"Invalid username!\");\r\n            }\r\n        } else {\r\n            AlertDialog.Builder builder1 = new AlertDialog.Builder(RegisterActivity3.this);\r\n            builder1.setTitle(\"Network Error\");\r\n            builder1.setMessage(\"Please check your network connection and try again!\");\r\n            builder1.setCancelable(true);\r\n            builder1.setPositiveButton(\r\n                    \"OK\",\r\n                    new DialogInterface.OnClickListener() {\r\n                        public void onClick(DialogInterface dialog, int id) {\r\n                            dialog.cancel();\r\n                        }\r\n                    });\r\n\r\n            AlertDialog alert11 = builder1.create();\r\n            alert11.show();\r\n        }\r\n    }\r\n\r\n    private void showConfirmationMessage() {\r\n        AlertDialog.Builder builder1 = new AlertDialog.Builder(RegisterActivity3.this);\r\n        builder1.setMessage(\"Please verify email and login with your credentials!\");\r\n        builder1.setCancelable(true);\r\n        builder1.setPositiveButton(\r\n                \"OK\",\r\n                new DialogInterface.OnClickListener() {\r\n                    public void onClick(DialogInterface dialog, int id) {\r\n                        startActivity(new Intent(RegisterActivity3.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));\r\n                        finish();\r\n                        dialog.cancel();\r\n                    }\r\n                });\r\n\r\n        AlertDialog alert11 = builder1.create();\r\n        alert11.show();\r\n    }\r\n\r\n    private void uploadUserProfile() {\r\n\r\n        progressDialog.setMessage(\"Processing...\");\r\n        progressDialog.show();\r\n        prepareUserProfile();\r\n        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(RegisterActivity3.this, new OnCompleteListener<AuthResult>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<AuthResult> task) {\r\n                if (task.isSuccessful()) {\r\n                    currentUser = firebaseAuth.getCurrentUser();\r\n                    if (currentUser != null) {\r\n                        String userId = currentUser.getUid();\r\n                        user.setUserId(userId);\r\n                        //upload profile image\r\n                        uploadPicture();\r\n                        databaseReference.child(user.getUserId()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                            @Override\r\n                            public void onSuccess(Void aVoid) {\r\n                                //send email verification\r\n                                progressDialog.setMessage(\"Sending verification mail...\");\r\n                                currentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                                    @Override\r\n                                    public void onSuccess(Void aVoid) {\r\n                                        progressDialog.dismiss();\r\n                                        showConfirmationMessage();\r\n                                    }\r\n                                }).addOnFailureListener(new OnFailureListener() {\r\n                                    @Override\r\n                                    public void onFailure(@NonNull Exception e) {\r\n                                        progressDialog.dismiss();\r\n                                        Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                                    }\r\n                                });\r\n                            }\r\n                        }).addOnFailureListener(new OnFailureListener() {\r\n                            @Override\r\n                            public void onFailure(@NonNull Exception e) {\r\n                                Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                            }\r\n                        });\r\n                    }\r\n                }\r\n            }\r\n        }).addOnFailureListener(new OnFailureListener() {\r\n            @Override\r\n            public void onFailure(@NonNull Exception e) {\r\n                progressDialog.dismiss();\r\n                Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_LONG).show();\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n    private void confirmSignup() {\r\n        AlertDialog.Builder builder1 = new AlertDialog.Builder(RegisterActivity3.this);\r\n        builder1.setTitle(\"Confirmation\");\r\n        builder1.setMessage(\"Email verification is necessary to use our services. To confirm please click \\\"OK\\\" and check your inbox!\");\r\n        builder1.setPositiveButton(\r\n                \"OK\",\r\n                new DialogInterface.OnClickListener() {\r\n                    public void onClick(DialogInterface dialog, int id) {\r\n                        uploadUserProfile();\r\n                        dialog.cancel();\r\n                    }\r\n                });\r\n\r\n        builder1.setNegativeButton(\r\n                \"Cancel\",\r\n                new DialogInterface.OnClickListener() {\r\n                    public void onClick(DialogInterface dialog, int id) {\r\n\r\n                        startActivity(new Intent(RegisterActivity3.this, WelcomeActivity.class));\r\n                        finish();\r\n                        dialog.cancel();\r\n                    }\r\n                });\r\n\r\n        AlertDialog alert11 = builder1.create();\r\n        alert11.show();\r\n    }\r\n\r\n    private void prepareUserProfile() {\r\n        String email = getIntent().getStringExtra(\"email\");\r\n        String password = getIntent().getStringExtra(\"password\");\r\n        String mobile = getIntent().getStringExtra(\"mobile\");\r\n        String city = getIntent().getStringExtra(\"city\");\r\n        String username = usernameEdittext.getText().toString();\r\n        user.setEmail(email);\r\n        user.setPassword(password);\r\n        user.setMobileNumber(mobile);\r\n        user.setCity(city);\r\n        if(imageUriString==null){\r\n            //default user profile link\r\n            imageUriString=\"https://firebasestorage.googleapis.com/v0/b/pghunter-c0bcb.appspot.com/o/user-profiles%2Fdefault-user-profile-pic%2Fdeafult-user-profile-picture.png?alt=media&token=fed865fc-fab3-4648-ae69-899788475774\";\r\n        }\r\n        user.setProfileImage(imageUriString);\r\n        user.setUsername(username);\r\n    }\r\n\r\n    private void setLocalVaribale(String string) {\r\n        imageUriString = string;\r\n    }\r\n\r\n    private void uploadPicture() {\r\n        if(imageUri==null){\r\n            return;\r\n        }\r\n        ContentResolver contentResolver = getContentResolver();\r\n        MimeTypeMap mime = MimeTypeMap.getSingleton();\r\n\r\n        //creating path and file name to store image\r\n        StorageReference postImageRef = storageReference.child(\"user-profiles\").child(FirebaseAuth.getInstance().getUid()).child(System.currentTimeMillis()\r\n                + \".\" + mime.getExtensionFromMimeType(contentResolver.getType(imageUri)));\r\n        postImageRef.putFile(imageUri)\r\n                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {\r\n                    @Override\r\n                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {\r\n                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {\r\n                            @Override\r\n                            public void onSuccess(Uri uri) {\r\n                                setLocalVaribale(uri.toString());\r\n                                prepareUserProfile();\r\n                            }\r\n                        });\r\n                    }\r\n                })\r\n                .addOnFailureListener(new OnFailureListener() {\r\n                    @Override\r\n                    public void onFailure(@NonNull Exception exception) {\r\n                        progressDialog.dismiss();\r\n                        Toast.makeText(RegisterActivity3.this, exception.getMessage(), Toast.LENGTH_SHORT).show();\r\n                    }\r\n                });\r\n    }\r\n\r\n    @Override\r\n    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {\r\n        super.onActivityResult(requestCode, resultCode, data);\r\n        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {\r\n            imageUri = data.getData();\r\n            changeProfilePicTV.setVisibility(View.GONE);\r\n            Glide.with(RegisterActivity3.this).load(imageUri).into(btnImage);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void onPause() {\r\n        super.onPause();\r\n        usernameEdittext.setError(null);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/RegisterActivity3.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/RegisterActivity3.java	(date 1619887650458)
+@@ -188,7 +188,7 @@
+                 if (task.isSuccessful()) {
+                     currentUser = firebaseAuth.getCurrentUser();
+                     if (currentUser != null) {
+-                        String userId = currentUser.getUid();
++                        final String userId = currentUser.getUid();
+                         user.setUserId(userId);
+                         //upload profile image
+                         uploadPicture();
+@@ -231,6 +231,7 @@
+     }
+ 
+     private void confirmSignup() {
++
+         AlertDialog.Builder builder1 = new AlertDialog.Builder(RegisterActivity3.this);
+         builder1.setTitle("Confirmation");
+         builder1.setMessage("Email verification is necessary to use our services. To confirm please click \"OK\" and check your inbox!");
+Index: app/src/main/res/layout/activity_register3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/white\"\r\n    android:orientation=\"vertical\"\r\n    android:padding=\"15dp\">\r\n\r\n    <androidx.appcompat.widget.AppCompatImageButton\r\n        android:id=\"@+id/btn_back\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"5dp\"\r\n        android:background=\"@color/white\"\r\n        android:scaleType=\"center\"\r\n        android:src=\"@drawable/union\" />\r\n\r\n    <com.google.android.material.textview.MaterialTextView\r\n        android:id=\"@+id/login_textview\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:text=\"Register\"\r\n        android:fontFamily=\"serif-monospace\"\r\n        android:textStyle=\"bold\"\r\n        android:textColor=\"@color/black\"\r\n        android:textSize=\"30sp\" />\r\n\r\n    <FrameLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\">\r\n        <de.hdodenhof.circleimageview.CircleImageView\r\n            android:id=\"@+id/profile_pic\"\r\n            android:layout_width=\"200dp\"\r\n            android:layout_height=\"200dp\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:src=\"@drawable/deafult_user_pic\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/profile_pic_textview\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"40dp\"\r\n            android:gravity=\"center\"\r\n            android:textSize=\"20dp\"\r\n            android:textColor=\"#B9000000\"\r\n            android:fontFamily=\"serif-monospace\"\r\n            android:textStyle=\"bold\"\r\n            android:background=\"@color/white\"\r\n            android:layout_marginTop=\"84dp\"\r\n            android:layout_gravity=\"center_vertical\"\r\n            android:text=\"Change\" />\r\n    </FrameLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/username_layout\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        app:boxStrokeColor=\"@color/black\"\r\n        app:boxStrokeWidth=\"2dp\"\r\n        app:hintEnabled=\"false\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/username_edittext\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:inputType=\"text\"\r\n            android:hint=\"Username\"\r\n            android:textColorHint=\"@color/hint_color\"\r\n            android:textColor=\"@color/black\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/btn_signup\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"@dimen/btn_height\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:backgroundTint=\"@color/black\"\r\n        android:text=\"@string/signup\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"@dimen/btn_textsize\"\r\n        app:cornerRadius=\"@dimen/btn_radius\"\r\n        app:rippleColor=\"#CDFFFFFF\" />\r\n\r\n    <com.google.android.material.textview.MaterialTextView\r\n        android:id=\"@+id/desc_textview\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:text=\"@string/terms_desc\"\r\n        android:textColor=\"@color/black\"\r\n        android:fontFamily=\"serif-monospace\"\r\n        android:textStyle=\"bold\"\r\n        android:textSize=\"@dimen/btn_textsize\" />\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_register3.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/res/layout/activity_register3.xml	(date 1619874865888)
+@@ -30,6 +30,7 @@
+     <FrameLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
++
+         <de.hdodenhof.circleimageview.CircleImageView
+             android:id="@+id/profile_pic"
+             android:layout_width="200dp"
+Index: app/src/main/res/layout/activity_upload_post2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/white\"\r\n    android:orientation=\"vertical\"\r\n    android:padding=\"15dp\"\r\n    tools:context=\".UploadPostActivity1\">\r\n\r\n\r\n    <ImageView\r\n        android:id=\"@+id/btn_back_uploadpost2\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentStart=\"true\"\r\n        android:layout_alignParentLeft=\"true\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:src=\"@drawable/union\" />\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/postTypeSpinnerLayout\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        app:hintEnabled=\"false\"\r\n        app:boxStrokeColor=\"@color/black\"\r\n        app:boxStrokeWidth=\"2dp\">\r\n\r\n        <androidx.appcompat.widget.AppCompatAutoCompleteTextView\r\n            android:id=\"@+id/postTypeTextView\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"PG type\"\r\n            android:textColor=\"@color/black\"\r\n            android:textColorHint=\"@color/hint_color\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"15dp\"\r\n        android:hint=\"PG rent(per month)\"\r\n        app:hintEnabled=\"false\"\r\n        app:boxStrokeColor=\"@color/black\"\r\n        app:boxStrokeWidth=\"2dp\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/post_rent_edittext\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"PG rent(per month)\"\r\n            android:inputType=\"numberDecimal\"\r\n            android:textColor=\"@color/black\"\r\n            android:textColorHint=\"@color/hint_color\" />\r\n\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"15dp\"\r\n        android:hint=\"Available facilitites\"\r\n        app:boxStrokeColor=\"@color/black\"\r\n        app:hintEnabled=\"false\"\r\n        app:boxStrokeWidth=\"2dp\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/post_facility_edittext\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"Available facilities\"\r\n            android:inputType=\"textMultiLine\"\r\n            android:textColor=\"@color/black\"\r\n            android:textColorHint=\"@color/hint_color\" />\r\n\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/availability_layout\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        app:hintEnabled=\"false\"\r\n        app:boxStrokeColor=\"@color/black\"\r\n        app:boxStrokeWidth=\"2dp\">\r\n\r\n        <androidx.appcompat.widget.AppCompatAutoCompleteTextView\r\n            android:id=\"@+id/availability_edittext\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"Availability status\"\r\n            android:textColor=\"@color/black\"\r\n            android:textColorHint=\"@color/hint_color\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/btn_upload\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"@dimen/btn_height\"\r\n        android:layout_marginTop=\"40dp\"\r\n        android:backgroundTint=\"@color/black\"\r\n        android:text=\"Upload\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"@dimen/btn_textsize\"\r\n        app:cornerRadius=\"@dimen/btn_radius\"\r\n        app:rippleColor=\"#CDFFFFFF\" />\r\n</LinearLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_upload_post2.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/res/layout/activity_upload_post2.xml	(date 1619947632961)
+@@ -19,6 +19,27 @@
+         android:layout_marginTop="20dp"
+         android:src="@drawable/union" />
+ 
++    <com.google.android.material.textfield.TextInputLayout
++        android:id="@+id/citySpinnerLayout"
++        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="10dp"
++        android:backgroundTint="@color/white"
++        app:boxStrokeColor="@color/black"
++        app:boxStrokeWidth="2dp"
++        app:hintEnabled="false">
++
++        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
++            android:id="@+id/post_city_uploadpost2"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:clickable="true"
++            android:hint="City"
++            android:textColor="@color/black"
++            android:textColorHint="@color/hint_color" />
++    </com.google.android.material.textfield.TextInputLayout>
++
+     <com.google.android.material.textfield.TextInputLayout
+         android:id="@+id/postTypeSpinnerLayout"
+         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+Index: app/src/main/java/com/example/dhruv/pg_accomodation/UploadPostActivity2.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.dhruv.pg_accomodation;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.app.ProgressDialog;\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.location.Location;\r\nimport android.location.LocationListener;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.AdapterView;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.AutoCompleteTextView;\r\nimport android.widget.ImageView;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.UUID;\r\n\r\npublic class UploadPostActivity2 extends AppCompatActivity {\r\n\r\n    private TextInputEditText postRentEditText;\r\n    private TextInputEditText postFacilityEditText;\r\n    private ImageView btnBack;\r\n    private MaterialButton btnUpload;\r\n    private ProgressDialog progressDialog;\r\n    private AutoCompleteTextView postTypeAutoTV;\r\n    private AutoCompleteTextView availabilityStatusTV;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_upload_post2);\r\n        postTypeAutoTV = findViewById(R.id.postTypeTextView);\r\n        setPGTypeAdapter();\r\n\r\n        availabilityStatusTV=findViewById(R.id.availability_edittext);\r\n        setAvailabilityAdapter();\r\n\r\n        postRentEditText=findViewById(R.id.post_rent_edittext);\r\n        postFacilityEditText=findViewById(R.id.post_facility_edittext);\r\n        progressDialog = new ProgressDialog(UploadPostActivity2.this);\r\n\r\n        btnBack = findViewById(R.id.btn_back_uploadpost2);\r\n        btnUpload = findViewById(R.id.btn_upload);\r\n\r\n        btnBack.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(UploadPostActivity2.this, UploadPostActivity1.class));\r\n            }\r\n        });\r\n\r\n\r\n        btnUpload.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                progressDialog.setMessage(\"Processing...\");\r\n                progressDialog.show();\r\n\r\n                String address = getIntent().getStringExtra(\"address\");\r\n                String description = getIntent().getStringExtra(\"description\");\r\n                double lat =getIntent().getDoubleExtra(\"latitude\",0.0d);\r\n                double logi = getIntent().getDoubleExtra(\"longitude\",0.0d);\r\n                String imageString = getIntent().getStringExtra(\"imageUri\");\r\n\r\n\r\n                String rent = postRentEditText.getText().toString();\r\n                String facility = postFacilityEditText.getText().toString();\r\n                String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();\r\n                String type=postTypeAutoTV.getText().toString();\r\n                String status= availabilityStatusTV.getText().toString();\r\n\r\n                Post post = new Post();\r\n                post.setPostImage(imageString);\r\n                post.setPostAddress(address);\r\n                post.setPostDescription(description);\r\n                post.setFacility(facility);\r\n                post.setPostRent(rent);\r\n                post.setPostType(type);\r\n                post.setPostRatings(\"0.0\");\r\n                post.setPostOwner(ownerId);\r\n                post.setPostStatus(status);\r\n                post.setLat(lat+\"\");\r\n                post.setLongi(logi+\"\");\r\n                saveDatatoDatabase(post);\r\n                progressDialog.dismiss();\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    private void setPGTypeAdapter() {\r\n\r\n        ArrayList<String> houseTypes = new ArrayList<>();\r\n        houseTypes.add(\"1-BHK\");\r\n        houseTypes.add(\"2-BHK\");\r\n        houseTypes.add(\"2-BHK Flat\");\r\n        houseTypes.add(\"3-BHK House\");\r\n        houseTypes.add(\"Row house\");\r\n        houseTypes.add(\"Luxurious Bunglow\");\r\n        postTypeAutoTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, houseTypes));\r\n    }\r\n    private void setAvailabilityAdapter(){\r\n        ArrayList<String> availabilityList = new ArrayList<>();\r\n        availabilityList.add(\"Available Now\");\r\n        availabilityList.add(\"Available Soon\");\r\n        availabilityList.add(\"Not Available\");\r\n        availabilityStatusTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, availabilityList));\r\n    }\r\n\r\n\r\n    //save database\r\n    private void saveDatatoDatabase(Post post) {\r\n\r\n\r\n        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(\"Posts\");\r\n        String postId = databaseReference.push().getKey();\r\n        post.setPostId(postId);\r\n        databaseReference.child(postId).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<Void> task) {\r\n                if (task.isSuccessful()) {\r\n                    progressDialog.dismiss();\r\n                    startActivity(new Intent(UploadPostActivity2.this,Home.class));\r\n                    finish();\r\n                }\r\n            }\r\n        }).addOnFailureListener(new OnFailureListener() {\r\n            @Override\r\n            public void onFailure(@NonNull Exception e) {\r\n                progressDialog.dismiss();\r\n                Toast.makeText(UploadPostActivity2.this, e.getMessage(), Toast.LENGTH_LONG).show();\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dhruv/pg_accomodation/UploadPostActivity2.java	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/java/com/example/dhruv/pg_accomodation/UploadPostActivity2.java	(date 1619948301955)
+@@ -37,20 +37,19 @@
+     private MaterialButton btnUpload;
+     private ProgressDialog progressDialog;
+     private AutoCompleteTextView postTypeAutoTV;
+-    private AutoCompleteTextView availabilityStatusTV;
++    private AutoCompleteTextView availabilityStatusTV,postCityAutoTV;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_upload_post2);
+         postTypeAutoTV = findViewById(R.id.postTypeTextView);
+-        setPGTypeAdapter();
+-
+-        availabilityStatusTV=findViewById(R.id.availability_edittext);
+-        setAvailabilityAdapter();
++        availabilityStatusTV = findViewById(R.id.availability_edittext);
++        postTypeAutoTV=findViewById(R.id.post_city_uploadpost2);
++        initDropdownLists();
+ 
+-        postRentEditText=findViewById(R.id.post_rent_edittext);
+-        postFacilityEditText=findViewById(R.id.post_facility_edittext);
++        postRentEditText = findViewById(R.id.post_rent_edittext);
++        postFacilityEditText = findViewById(R.id.post_facility_edittext);
+         progressDialog = new ProgressDialog(UploadPostActivity2.this);
+ 
+         btnBack = findViewById(R.id.btn_back_uploadpost2);
+@@ -72,16 +71,17 @@
+ 
+                 String address = getIntent().getStringExtra("address");
+                 String description = getIntent().getStringExtra("description");
+-                double lat =getIntent().getDoubleExtra("latitude",0.0d);
+-                double logi = getIntent().getDoubleExtra("longitude",0.0d);
++                double lat = getIntent().getDoubleExtra("latitude", 0.0d);
++                double logi = getIntent().getDoubleExtra("longitude", 0.0d);
+                 String imageString = getIntent().getStringExtra("imageUri");
+ 
+ 
+                 String rent = postRentEditText.getText().toString();
+                 String facility = postFacilityEditText.getText().toString();
+                 String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+-                String type=postTypeAutoTV.getText().toString();
+-                String status= availabilityStatusTV.getText().toString();
++                String type = postTypeAutoTV.getText().toString();
++                String status = availabilityStatusTV.getText().toString();
++                String city=postCityAutoTV.getText().toString();
+ 
+                 Post post = new Post();
+                 post.setPostImage(imageString);
+@@ -93,8 +93,9 @@
+                 post.setPostRatings("0.0");
+                 post.setPostOwner(ownerId);
+                 post.setPostStatus(status);
+-                post.setLat(lat+"");
+-                post.setLongi(logi+"");
++                post.setLat(lat + "");
++                post.setLongi(logi + "");
++                post.setPostCity(city);
+                 saveDatatoDatabase(post);
+                 progressDialog.dismiss();
+             }
+@@ -102,8 +103,16 @@
+ 
+     }
+ 
+-    private void setPGTypeAdapter() {
++    private void initDropdownLists() {
+ 
++        //set post type dropdwon
++        ArrayList<String> availabilityList = new ArrayList<>();
++        availabilityList.add("Available Now");
++        availabilityList.add("Available Soon");
++        availabilityList.add("Not Available");
++        availabilityStatusTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, availabilityList));
++
++        //set post type
+         ArrayList<String> houseTypes = new ArrayList<>();
+         houseTypes.add("1-BHK");
+         houseTypes.add("2-BHK");
+@@ -112,30 +121,54 @@
+         houseTypes.add("Row house");
+         houseTypes.add("Luxurious Bunglow");
+         postTypeAutoTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, houseTypes));
+-    }
+-    private void setAvailabilityAdapter(){
+-        ArrayList<String> availabilityList = new ArrayList<>();
+-        availabilityList.add("Available Now");
+-        availabilityList.add("Available Soon");
+-        availabilityList.add("Not Available");
+-        availabilityStatusTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, availabilityList));
++
++
++        //set post city dropdwon
++        ArrayList<String> cities = new ArrayList<>();
++        cities.add("Ahmedabad");
++        cities.add("Gandhinagar");
++        cities.add("Surat");
++        cities.add("Vadodara");
++        cities.add("Mehsana");
++        cities.add("Modasa");
++        cities.add("Junagadh");
++        cities.add("Mumbai");
++        ArrayAdapter<String> adapter = new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, cities);
++        postCityAutoTV.setAdapter(adapter);
+     }
+ 
+ 
+     //save database
+-    private void saveDatatoDatabase(Post post) {
+-
++    private void saveDatatoDatabase(final Post post) {
+ 
+         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+         String postId = databaseReference.push().getKey();
+         post.setPostId(postId);
++
+         databaseReference.child(postId).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+             @Override
+             public void onComplete(@NonNull Task<Void> task) {
+                 if (task.isSuccessful()) {
+-                    progressDialog.dismiss();
+-                    startActivity(new Intent(UploadPostActivity2.this,Home.class));
+-                    finish();
++
++                    //upload data for likes
++                    DatabaseReference likeReference = FirebaseDatabase.getInstance().getReference("likes");
++                    likeReference.child(post.getPostId()).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
++                        @Override
++                        public void onComplete(@NonNull Task<Void> task) {
++                            if (task.isSuccessful()) {
++                                progressDialog.dismiss();
++                                startActivity(new Intent(UploadPostActivity2.this, Home.class));
++                                finish();
++                            }
++                        }
++                    }).addOnFailureListener(new OnFailureListener() {
++                        @Override
++                        public void onFailure(@NonNull Exception e) {
++                            progressDialog.dismiss();
++                            Toast.makeText(UploadPostActivity2.this, e.getMessage(), Toast.LENGTH_LONG).show();
++
++                        }
++                    });
+                 }
+             }
+         }).addOnFailureListener(new OnFailureListener() {
+Index: app/src/main/res/layout/activity_uploadpost.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/white\"\r\n    android:orientation=\"vertical\"\r\n    android:padding=\"15dp\"\r\n    tools:context=\".UploadPostActivity1\">\r\n\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:orientation=\"vertical\">\r\n\r\n            <ImageView\r\n                android:id=\"@+id/btn_back_uploadpost1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_alignParentStart=\"true\"\r\n                android:layout_alignParentLeft=\"true\"\r\n                android:layout_marginTop=\"15dp\"\r\n                android:src=\"@drawable/union\" />\r\n\r\n            <FrameLayout\r\n                android:id=\"@+id/post_framelayout\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/post_image_uploadpost1\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"330dp\"\r\n                    android:layout_gravity=\"center\"\r\n                    android:layout_marginTop=\"20dp\"\r\n                    android:scaleType=\"centerInside\"\r\n                    android:src=\"@drawable/default_upload_post_image\" />\r\n                <TextView\r\n                    android:id=\"@+id/post_image_textview_uploadpost1\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"Upload Picture\"\r\n                    android:textAllCaps=\"true\"\r\n                    android:textSize=\"20sp\"\r\n                    android:background=\"@color/black\"\r\n                    android:textColor=\"@color/white\"\r\n                    android:gravity=\"center\"\r\n                    android:layout_gravity=\"bottom\" />\r\n\r\n            </FrameLayout>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"vertical\">\r\n\r\n                <com.google.android.material.textfield.TextInputLayout\r\n                    android:id=\"@+id/address_edittext_uploadpost1\"\r\n                    style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginTop=\"15dp\"\r\n                    app:boxStrokeColor=\"@color/black\"\r\n                    app:boxStrokeWidth=\"2dp\"\r\n                    app:endIconDrawable=\"@drawable/my_location\"\r\n                    app:endIconMode=\"custom\"\r\n                    app:endIconTint=\"@color/black\"\r\n                    app:hintEnabled=\"false\">\r\n\r\n                    <com.google.android.material.textfield.TextInputEditText\r\n                        android:id=\"@+id/post_address_edittext\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"match_parent\"\r\n                        android:hint=\"Address here\"\r\n                        android:inputType=\"text\"\r\n                        android:textColor=\"@color/black\"\r\n                        android:textColorHint=\"@color/hint_color\" />\r\n                </com.google.android.material.textfield.TextInputLayout>\r\n\r\n            </LinearLayout>\r\n\r\n\r\n            <com.google.android.material.textfield.TextInputLayout\r\n                style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_below=\"@+id/login_textview\"\r\n                android:layout_marginTop=\"20dp\"\r\n                app:boxStrokeColor=\"@color/black\"\r\n                app:boxStrokeWidth=\"2dp\"\r\n                app:hintEnabled=\"false\">\r\n\r\n                <com.google.android.material.textfield.TextInputEditText\r\n                    android:id=\"@+id/post_description_edittext\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:hint=\"Description here\"\r\n                    android:textColor=\"@color/black\"\r\n                    android:textColorHint=\"@color/hint_color\" />\r\n\r\n            </com.google.android.material.textfield.TextInputLayout>\r\n\r\n\r\n            <com.google.android.material.button.MaterialButton\r\n                android:id=\"@+id/btn_next_uploadpost1\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"@dimen/btn_height\"\r\n                android:layout_marginTop=\"40dp\"\r\n                android:backgroundTint=\"@color/black\"\r\n                android:text=\"@string/next\"\r\n                android:textColor=\"@color/white\"\r\n                android:textSize=\"@dimen/btn_textsize\"\r\n                app:cornerRadius=\"@dimen/btn_radius\"\r\n                app:rippleColor=\"#CDFFFFFF\" />\r\n\r\n        </LinearLayout>\r\n\r\n    </ScrollView>\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_uploadpost.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/src/main/res/layout/activity_uploadpost.xml	(date 1619947632974)
+@@ -76,7 +76,7 @@
+                         android:id="@+id/post_address_edittext"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+-                        android:hint="Address here"
++                        android:hint="Full address "
+                         android:inputType="text"
+                         android:textColor="@color/black"
+                         android:textColorHint="@color/hint_color" />
+Index: .idea/assetWizardSettings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"WizardSettings\">\r\n    <option name=\"children\">\r\n      <map>\r\n        <entry key=\"imageWizard\">\r\n          <value>\r\n            <PersistentState>\r\n              <option name=\"children\">\r\n                <map>\r\n                  <entry key=\"imageAssetPanel\">\r\n                    <value>\r\n                      <PersistentState>\r\n                        <option name=\"children\">\r\n                          <map>\r\n                            <entry key=\"actionbar\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"children\">\r\n                                    <map>\r\n                                      <entry key=\"clipArt\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                                <entry key=\"imagePath\" value=\"C:\\Users\\ADMIN\\AppData\\Local\\Temp\\baseline_location_on_24.xml\" />\r\n                                                <entry key=\"opacityPercent\" value=\"60\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"clipartAsset\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"url\" value=\"file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/location_on/baseline_location_on_24.xml\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"text\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"textAsset\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                    </map>\r\n                                  </option>\r\n                                  <option name=\"values\">\r\n                                    <map>\r\n                                      <entry key=\"outputName\" value=\"view_location_map\" />\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                            <entry key=\"launcher\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"children\">\r\n                                    <map>\r\n                                      <entry key=\"foregroundClipArt\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"imagePath\" value=\"C:\\Users\\ADMIN\\AppData\\Local\\Temp\\ic_android_black_24dp.xml\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"foregroundImage\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"foregroundText\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"foregroundTextAsset\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                            <entry key=\"launcherLegacy\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"children\">\r\n                                    <map>\r\n                                      <entry key=\"clipArt\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                                <entry key=\"imagePath\" value=\"C:\\Users\\ADMIN\\AppData\\Local\\Temp\\ic_android_black_24dp.xml\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"text\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"textAsset\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                            <entry key=\"notification\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"children\">\r\n                                    <map>\r\n                                      <entry key=\"clipArt\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                                <entry key=\"imagePath\" value=\"C:\\Users\\ADMIN\\AppData\\Local\\Temp\\ic_android_black_24dp.xml\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"text\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"textAsset\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                            <entry key=\"tvBanner\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"children\">\r\n                                    <map>\r\n                                      <entry key=\"foregroundText\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                            <entry key=\"tvChannel\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"children\">\r\n                                    <map>\r\n                                      <entry key=\"foregroundClipArt\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"imagePath\" value=\"C:\\Users\\ADMIN\\AppData\\Local\\Temp\\ic_android_black_24dp.xml\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"foregroundImage\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"foregroundText\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                      <entry key=\"foregroundTextAsset\">\r\n                                        <value>\r\n                                          <PersistentState>\r\n                                            <option name=\"values\">\r\n                                              <map>\r\n                                                <entry key=\"color\" value=\"000000\" />\r\n                                              </map>\r\n                                            </option>\r\n                                          </PersistentState>\r\n                                        </value>\r\n                                      </entry>\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                          </map>\r\n                        </option>\r\n                        <option name=\"values\">\r\n                          <map>\r\n                            <entry key=\"outputIconType\" value=\"ACTIONBAR\" />\r\n                          </map>\r\n                        </option>\r\n                      </PersistentState>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </PersistentState>\r\n          </value>\r\n        </entry>\r\n        <entry key=\"vectorWizard\">\r\n          <value>\r\n            <PersistentState>\r\n              <option name=\"children\">\r\n                <map>\r\n                  <entry key=\"vectorAssetStep\">\r\n                    <value>\r\n                      <PersistentState>\r\n                        <option name=\"children\">\r\n                          <map>\r\n                            <entry key=\"clipartAsset\">\r\n                              <value>\r\n                                <PersistentState>\r\n                                  <option name=\"values\">\r\n                                    <map>\r\n                                      <entry key=\"url\" value=\"file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/vertical_align_top/baseline_vertical_align_top_24.xml\" />\r\n                                    </map>\r\n                                  </option>\r\n                                </PersistentState>\r\n                              </value>\r\n                            </entry>\r\n                          </map>\r\n                        </option>\r\n                        <option name=\"values\">\r\n                          <map>\r\n                            <entry key=\"outputName\" value=\"ic_upload\" />\r\n                            <entry key=\"sourceFile\" value=\"C:\\Users\\Shivang\\AndroidStudioProjects\\PG_Accomodation\" />\r\n                          </map>\r\n                        </option>\r\n                      </PersistentState>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </PersistentState>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/assetWizardSettings.xml	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ .idea/assetWizardSettings.xml	(date 1619944439678)
+@@ -321,7 +321,7 @@
+                                 <PersistentState>
+                                   <option name="values">
+                                     <map>
+-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/vertical_align_top/baseline_vertical_align_top_24.xml" />
++                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/favorite_border/baseline_favorite_border_24.xml" />
+                                     </map>
+                                   </option>
+                                 </PersistentState>
+@@ -331,7 +331,7 @@
+                         </option>
+                         <option name="values">
+                           <map>
+-                            <entry key="outputName" value="ic_upload" />
++                            <entry key="outputName" value="ic_baseline_favorite_border_24" />
+                             <entry key="sourceFile" value="C:\Users\Shivang\AndroidStudioProjects\PG_Accomodation" />
+                           </map>
+                         </option>
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\n\r\nandroid {\r\n    compileSdkVersion 30\r\n    defaultConfig {\r\n        applicationId \"com.example.dhruv.pg_accomodation\"\r\n        minSdkVersion 16\r\n        targetSdkVersion 30\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        multiDexEnabled true\r\n        testInstrumentationRunner \"android.support.test.runner.AndroidJUnitRunner\"\r\n    }\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation 'com.android.support:appcompat-v7:30.0.0'\r\n    implementation 'com.android.support:design:30.0.0'\r\n\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'com.google.android.material:material:1.3.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'\r\n    implementation \"androidx.recyclerview:recyclerview:1.2.0\"\r\n    implementation \"androidx.cardview:cardview:1.0.0\"\r\n\r\n    implementation platform('com.google.firebase:firebase-bom:25.12.0')\r\n\r\n    implementation 'com.firebaseui:firebase-ui-database:6.3.0'\r\n\r\n\r\n    implementation 'com.android.support:multidex:1.0.3'\r\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n    implementation 'com.android.support.constraint:constraint-layout:2.0.4'\r\n\r\n    implementation files('com.google.android.material')\r\n    implementation 'com.github.bumptech.glide:glide:4.11.0'\r\n    implementation 'com.orhanobut:dialogplus:1.11@aar'\r\n    implementation 'com.google.firebase:firebase-analytics:18.0.3'\r\n    implementation 'com.google.firebase:firebase-auth:20.0.4'\r\n    implementation 'com.google.firebase:firebase-database:19.7.0'\r\n    implementation 'com.google.firebase:firebase-firestore:22.1.2'\r\n    implementation 'com.google.firebase:firebase-storage:19.2.2'\r\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'\r\n\r\n\r\n    testImplementation 'junit:junit:4.13.1'\r\n    androidTestImplementation 'com.android.support.test:runner:1.0.2'\r\n    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'\r\n}\r\napply plugin: 'com.google.gms.google-services'
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 8997bfc0dc54b392d8d0307b6b81925bc0de9f11)
++++ app/build.gradle	(date 1619896219096)
+@@ -47,8 +47,11 @@
+     implementation 'com.google.firebase:firebase-database:19.7.0'
+     implementation 'com.google.firebase:firebase-firestore:22.1.2'
+     implementation 'com.google.firebase:firebase-storage:19.2.2'
++    //glide lib for image loading
+     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+ 
++    //like button
++    implementation 'com.jackandphantom.android:androidlikebutton:1.2.0'
+ 
+     testImplementation 'junit:junit:4.13.1'
+     androidTestImplementation 'com.android.support.test:runner:1.0.2'
