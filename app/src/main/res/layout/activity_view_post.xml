@@ -84,13 +84,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Type"
+                        android:fontFamily="serif-monospace"
                         android:textColor="@color/hint_color" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/post_type_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="serif-monospace"
                         android:text="Luxurius - 2 BHK"
+                        android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/btn_textsize" />
 
