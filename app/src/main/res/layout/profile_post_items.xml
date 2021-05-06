@@ -5,18 +5,25 @@
     android:layout_margin="5dp"
     android:padding="5dp"
     android:layout_centerHorizontal="true">
-    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="1dp"
         android:background="@color/white">
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
         <ImageView
             android:id="@+id/post_image_edit"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginTop="1dp"
             android:scaleType="centerCrop"
             android:layout_marginRight="10dp"
             android:src="@drawable/deafult_user_pic" />

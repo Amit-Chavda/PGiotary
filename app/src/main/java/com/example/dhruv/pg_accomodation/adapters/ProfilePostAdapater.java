@@ -19,6 +19,8 @@ import com.example.dhruv.pg_accomodation.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.FirebaseDatabase;
@@ -90,15 +92,19 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
                         map.put("postAddress", address.getText().toString());
                         map.put("postRent", rent.getText().toString());
 
-                        FirebaseDatabase.getInstance().getReference().child("Posts").child(String.valueOf(getRef(position)))
-                                .updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        getRef(position).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onSuccess(Void aVoid) {
                                 Toast.makeText(context, "Update successfully", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         });
-
                     }
                 });
                 dialog.show();
@@ -117,14 +123,16 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Posts")
-                                .child(getRef(position).getKey())
-                                .removeValue()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        getRef(position).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
+                                    public void onSuccess(Void aVoid) {
                                         Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
@@ -141,7 +149,7 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
             }
         });
 
-    }//onbidview
+    }
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
