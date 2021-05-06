@@ -46,7 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        ((AppCompatActivity) this).getSupportActionBar().hide();
+        this.getSupportActionBar().hide();
         username = findViewById(R.id.chat_username);
         profilepic = findViewById(R.id.chat_profilepic);
         recyclerView = findViewById(R.id.chat_recyclerview);

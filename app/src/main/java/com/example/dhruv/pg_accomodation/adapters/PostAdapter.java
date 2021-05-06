@@ -2,6 +2,8 @@ package com.example.dhruv.pg_accomodation.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -188,10 +191,12 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                         int likeCount = (int) snapshot.child(pid).getChildrenCount();
                         likesTextView.setText(likeCount + " likes");
                         likeBtn.setImageResource(R.drawable.ic_baseline_like_filled_heart);
+                        likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
                     } else {
                         int likeCount = (int) snapshot.child(pid).getChildrenCount();
                         likesTextView.setText(likeCount + " likes");
                         likeBtn.setImageResource(R.drawable.ic_baseline_unlike_empty_heart);
+                        likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
                     }
                 }
 
