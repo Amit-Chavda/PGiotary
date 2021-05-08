@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Message"
+        android:textColor="@color/black"
+        android:fontFamily="serif"
+        android:textSize="70px"/>
+
+    <EditText
+        android:id="@+id/upmessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:hint="Message"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
+        android:textColorHint="@color/hint_color"
+        android:text="Message"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mumessageupdatebtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/black"
+        android:text="Update"
+        android:textColor="@color/white"
+        android:textSize="@dimen/btn_textsize"
+        app:cornerRadius="@dimen/btn_radius"
+        app:rippleColor="#CDFFFFFF" />
+
+</LinearLayout>

@@ -84,10 +84,13 @@ public class ChatActivity extends AppCompatActivity {
 
                 user_chatsReference = firebaseDatabase.getReference().child("user_chats");
                 ChatModel message = new ChatModel();
+                String messageid = user_chatsReference.child(chatid).push().getKey();
+                message.setChatid(chatid);
+                message.setMessageid(messageid);
                 message.setMessage(msgtext);
                 message.setSender(firstuser + "");
                 message.setReceiver(seconduser + "");
-                user_chatsReference.child(chatid).push().setValue(message);
+                user_chatsReference.child(chatid).child(messageid).setValue(message);
                 editText.setText("");
             }
         } catch (Exception e) {
@@ -128,6 +131,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         if (!chatid.equals("1")) {
@@ -142,6 +151,8 @@ public class ChatActivity extends AppCompatActivity {
         if (!chatid.equals("1")) {
             messageViewAdapter.stopListening();
         }
+        finish();
+
 
     }
 }
