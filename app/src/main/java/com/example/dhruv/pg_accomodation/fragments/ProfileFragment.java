@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dhruv.pg_accomodation.helper_classes.ValidationUtility;
 import com.example.dhruv.pg_accomodation.models.Post;
 import com.example.dhruv.pg_accomodation.R;
 import com.example.dhruv.pg_accomodation.models.UserModel;
@@ -35,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,9 +62,7 @@ public class ProfileFragment extends Fragment {
     private String currentFirebaseUser;
 
 
-    public ProfileFragment() {
-
-    }
+    public ProfileFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,26 +120,14 @@ public class ProfileFragment extends Fragment {
     }
 
     private void createImageChooser() {
-        //if (isInternetConnected()) {
+        if (ValidationUtility.isInternetAvailable(getContext())) {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, 1);
-        /*//} else {
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-            builder1.setTitle("Network Connection Error");
-            builder1.setMessage("Please check your internet connection and try again!");
-            builder1.setPositiveButton(
-                    "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
-        }*/
+        } else {
+            Toast.makeText(context, "You are offline!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

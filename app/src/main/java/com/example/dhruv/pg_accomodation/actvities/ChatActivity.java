@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.dhruv.pg_accomodation.R;
+import com.example.dhruv.pg_accomodation.fragments.ChatFragment;
 import com.example.dhruv.pg_accomodation.models.UserModel;
 import com.example.dhruv.pg_accomodation.models.ChatModel;
 import com.example.dhruv.pg_accomodation.adapters.MessageViewAdapter;
@@ -133,7 +134,6 @@ public class ChatActivity extends AppCompatActivity {
         if (!chatid.equals("1")) {
             messageViewAdapter.startListening();
         }
-
     }
 
     @Override
@@ -142,6 +142,12 @@ public class ChatActivity extends AppCompatActivity {
         if (!chatid.equals("1")) {
             messageViewAdapter.stopListening();
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(ChatActivity.this, ChatFragment.class));
+        finish();
     }
 }

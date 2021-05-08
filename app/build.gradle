@@ -11,6 +11,10 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -34,10 +38,13 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-database:6.3.0'
 
-
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+
+    //sinch call
+    implementation(name: 'sinch-android-rtc', version: '+', ext: 'aar')
+
 
     implementation files('com.google.android.material')
     implementation 'com.github.bumptech.glide:glide:4.11.0'

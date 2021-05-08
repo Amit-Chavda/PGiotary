@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.dhruv.pg_accomodation.Home;
 import com.example.dhruv.pg_accomodation.helper_classes.LocationTracker;
 import com.example.dhruv.pg_accomodation.R;
+import com.example.dhruv.pg_accomodation.helper_classes.ValidationUtility;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
@@ -57,6 +58,7 @@ public class UploadPostActivity1 extends AppCompatActivity {
     private ImageView btnBack;
     private MaterialButton btnNext;
     private Uri imageUri;
+    private String imageUriString;
 
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -127,8 +129,12 @@ public class UploadPostActivity1 extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(UploadPostActivity1.this, UploadPostActivity2.class));
-                uploadPicture();
+                if (ValidationUtility.isInternetAvailable(UploadPostActivity1.this)) {
+                    processUpload();
+                    //uploadPicture();
+                } else {
+                    Toast.makeText(UploadPostActivity1.this, "Your are offline!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -155,6 +161,15 @@ public class UploadPostActivity1 extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+        }
+    }
+
+    private void processUpload() {
+        if (imageUri!=null){
+            uploadPicture();
+        }else{
+            imageUriString="https://firebasestorage.googleapis.com/v0/b/pghunter-c0bcb.appspot.com/o/post-images%2Fdefault-post-image%2Fpost_image.png?alt=media&token=775e6db6-f0ac-4814-be97-35a269421963";
+            launchNextScreen(imageUriString);
         }
     }
 
@@ -233,10 +248,15 @@ public class UploadPostActivity1 extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
+            imageUriString=imageUri.toString();
+            Toast.makeText(this, imageUri.toString()+"imageuri", Toast.LENGTH_SHORT).show();
             uploadPictureTextView.setVisibility(View.GONE);
+
             Glide.with(UploadPostActivity1.this).load(imageUri).into(postImageView);
         }
     }
+
+
 
     //process of uploading post
     private void uploadPicture() {
@@ -262,17 +282,7 @@ public class UploadPostActivity1 extends AppCompatActivity {
                             taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-
-                                    //passing data to next activity by intent
-                                    Intent intent = new Intent(UploadPostActivity1.this, UploadPostActivity2.class);
-                                    String address = postAdddressEditText.getText().toString();
-                                    String description = postDescriptionEditText.getText().toString();
-                                    intent.putExtra("latitude", mLatitude);
-                                    intent.putExtra("longitude", mLongitude);
-                                    intent.putExtra("imageUri", uri.toString());
-                                    intent.putExtra("address", address);
-                                    intent.putExtra("description", description);
-                                    startActivity(intent);
+                                    launchNextScreen(uri.toString());
                                 }
                             });
                         }
@@ -288,4 +298,19 @@ public class UploadPostActivity1 extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void launchNextScreen(String uri) {
+        //passing data to next activity by intent
+        Intent intent = new Intent(UploadPostActivity1.this, UploadPostActivity2.class);
+        String address = postAdddressEditText.getText().toString();
+        String description = postDescriptionEditText.getText().toString();
+        intent.putExtra("latitude", mLatitude);
+        intent.putExtra("longitude", mLongitude);
+        intent.putExtra("imageUri", uri);
+        intent.putExtra("address", address);
+        intent.putExtra("description", description);
+        startActivity(intent);
+    }
+
+
 }

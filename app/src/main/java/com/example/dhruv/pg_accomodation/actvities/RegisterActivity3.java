@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.dhruv.pg_accomodation.R;
+import com.example.dhruv.pg_accomodation.helper_classes.ValidationUtility;
 import com.example.dhruv.pg_accomodation.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -115,17 +116,8 @@ public class RegisterActivity3 extends AppCompatActivity {
         });
     }
 
-    public boolean isInternetConnected() {
-        try {
-            String command = "ping -c 1 google.com";
-            return (Runtime.getRuntime().exec(command).waitFor() == 0);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     private void processSignup() {
-        if (isInternetConnected()) {
+        if (ValidationUtility.isInternetAvailable(this)){
             String username = usernameEdittext.getText().toString();
             if (isValidUsername(username)) {
                 confirmSignup();
@@ -133,20 +125,7 @@ public class RegisterActivity3 extends AppCompatActivity {
                 usernameEdittext.setError("Invalid username!");
             }
         } else {
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(RegisterActivity3.this);
-            builder1.setTitle("Network Error");
-            builder1.setMessage("Please check your network connection and try again!");
-            builder1.setCancelable(true);
-            builder1.setPositiveButton(
-                    "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
+            Toast.makeText(this, "You are offline!", Toast.LENGTH_LONG).show();
         }
     }
 

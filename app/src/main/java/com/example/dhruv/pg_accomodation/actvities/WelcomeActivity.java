@@ -13,17 +13,22 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.dhruv.pg_accomodation.Home;
+import com.example.dhruv.pg_accomodation.call_support.BaseActivity;
+import com.example.dhruv.pg_accomodation.call_support.SinchService;
 import com.example.dhruv.pg_accomodation.helper_classes.PrefManager;
 import com.example.dhruv.pg_accomodation.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sinch.android.rtc.SinchError;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -45,14 +50,16 @@ public class WelcomeActivity extends AppCompatActivity {
         prefManager = new PrefManager(this);
         if (prefManager.isIsLoggedIn()) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            prefManager.setCallerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Toast.makeText(this, prefManager.getCallerID() + "", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(WelcomeActivity.this, Home.class));
             finish();
         }
 
-        viewPager =  findViewById(R.id.view_pager);
+        viewPager = findViewById(R.id.view_pager);
         dotsLayout = findViewById(R.id.layoutDots);
         btnRegister = findViewById(R.id.btn_register);
-        btnLogin =  findViewById(R.id.btn_login);
+        btnLogin = findViewById(R.id.btn_login);
 
 
         // layouts of welcome sliders
@@ -128,11 +135,48 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) { }
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
 
         @Override
-        public void onPageScrollStateChanged(int arg0) { }
+        public void onPageScrollStateChanged(int arg0) {
+        }
     };
+
+    @Override
+    protected void onServiceConnected() {
+        getSinchServiceInterface().setStartListener(this);
+        startCallListening();
+    }
+
+    @Override
+    public void onStartFailed(SinchError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onStarted() {
+
+    }
+
+
+    private void startCallListening() {
+
+        String userName = prefManager.getCallerID();
+        if (userName.isEmpty()) {
+            Toast.makeText(this, "Please enter a name", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!userName.equals(getSinchServiceInterface().getUserName())) {
+            getSinchServiceInterface().stopClient();
+        }
+
+        if (!getSinchServiceInterface().isStarted()) {
+            getSinchServiceInterface().startClient(userName);
+            Toast.makeText(this, "call started", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     /**
      * View pager adapter
@@ -140,8 +184,7 @@ public class WelcomeActivity extends AppCompatActivity {
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
-        public MyViewPagerAdapter() {
-        }
+        public MyViewPagerAdapter() { }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {

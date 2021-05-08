@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.dhruv.pg_accomodation.R;
+import com.example.dhruv.pg_accomodation.helper_classes.ValidationUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -37,9 +38,14 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnSendMail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = resetEditText.getText().toString();
-                if (isValidEmail(email)) {
-                    sendMail(email);
+
+                if (ValidationUtility.isInternetAvailable(ResetPasswordActivity.this)) {
+                    String email = resetEditText.getText().toString();
+                    if (isValidEmail(email)) {
+                        sendMail(email);
+                    }
+                } else {
+                    Toast.makeText(ResetPasswordActivity.this, "Your are offline!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -65,7 +71,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void sendMail(String email) {
-        final ProgressDialog progressDialog=new ProgressDialog(ResetPasswordActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(ResetPasswordActivity.this);
         progressDialog.setMessage("Processing...");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.sendPasswordResetEmail(email)
@@ -81,7 +87,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(ResetPasswordActivity.this, e.getMessage()+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPasswordActivity.this, e.getMessage() + "", Toast.LENGTH_SHORT).show();
             }
         });
     }

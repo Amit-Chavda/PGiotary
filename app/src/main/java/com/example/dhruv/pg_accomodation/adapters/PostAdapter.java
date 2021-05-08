@@ -121,7 +121,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (isLiked == true) {
                                 if (snapshot.child(postId).hasChild(currentUserId)) {
-                                    likeRef.child(postId).removeValue();
+                                    likeRef.child(postId).child(currentUserId).removeValue();
                                     isLiked = false;
                                 } else {
                                     likeRef.child(postId).child(currentUserId).setValue(true);
@@ -142,24 +142,6 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 
     }
 
-    private int getPostCount() {
-        DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("Posts");
-        likeRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                setLocalVar((int) snapshot.getChildrenCount());
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return postCount;
-    }
-
-    private void setLocalVar(int var){
-         postCount=var;
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

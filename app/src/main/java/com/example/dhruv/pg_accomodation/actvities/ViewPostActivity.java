@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dhruv.pg_accomodation.helper_classes.BottomSheetDialog;
 import com.example.dhruv.pg_accomodation.helper_classes.LocationTracker;
 import com.example.dhruv.pg_accomodation.models.Post;
 import com.example.dhruv.pg_accomodation.R;
@@ -75,6 +76,8 @@ public class ViewPostActivity extends AppCompatActivity {
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     private boolean isLiked;
+    private String recepientName;
+    private String callerName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +124,24 @@ public class ViewPostActivity extends AppCompatActivity {
         });
 
         //contact owner
-        contactBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processChat();
-            }
-        });
+        contactBtn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //processChat();
+                        //startActivity(new Intent(ViewPostActivity.this,CallActivity.class));
+                        BottomSheetDialog bottomSheet = new BottomSheetDialog();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("firstuser",currentUserId);
+                        bundle.putString("seconduser",ownerId);
+                        bundle.putString("chatId",chatId);
+                        bundle.putString("recepientName",recepientName);
+                        bundle.putString("callerName",callerName);
+                        bottomSheet.setArguments(bundle);
+                        bottomSheet.show(getSupportFragmentManager(), "ModalBottomSheet");
+                    }
+                });
 
 
         //set like status and like count
@@ -160,7 +175,7 @@ public class ViewPostActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (isLiked == true) {
                     if (snapshot.child(postId).hasChild(currentUserId)) {
-                        likeRef.child(postId).removeValue();
+                        likeRef.child(postId).child(currentUserId).removeValue();
                         isLiked = false;
                     } else {
                         likeRef.child(postId).child(currentUserId).setValue(true);
@@ -210,6 +225,28 @@ public class ViewPostActivity extends AppCompatActivity {
     }
 
     private void initializePostContent(String postId, String ownerId) {
+
+
+        try {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(currentUserId);
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    UserModel user = snapshot.getValue(UserModel.class);
+                    setCurrentUserNameVar(user.getUsername());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(ViewPostActivity.this, error.getMessage() + "", Toast.LENGTH_SHORT).show();
+                }
+
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+        }
+
+
         //set profile pic and username
         try {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(ownerId);
@@ -217,6 +254,7 @@ public class ViewPostActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UserModel user = snapshot.getValue(UserModel.class);
+                    setLocalVar(user.getUsername());
                     usernameTextView.setText("@" + user.getUsername().toLowerCase());
                     Glide.with(ViewPostActivity.this).load(user.getProfileImage()).into(userProfileImageView);
                 }
@@ -259,6 +297,14 @@ public class ViewPostActivity extends AppCompatActivity {
         }
     }
 
+    private void setCurrentUserNameVar(String username) {
+    callerName=username;
+    }
+
+    private void setLocalVar(String username) {
+        recepientName=username;
+    }
+/*
     private void processChat() {
         databaseReference = firebaseDatabase.getReference().child("user_chatswith").child(currentUserId).child("chatwith").child(ownerId);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -267,6 +313,12 @@ public class ViewPostActivity extends AppCompatActivity {
                 if (snapshot.hasChildren()) {
                     UserListModel user = snapshot.getValue(UserListModel.class);
                     setChatId(user.getChatid());
+                    Intent intent = new Intent(ViewPostActivity.this, ChatActivity.class);
+                    intent.putExtra("firstuser", currentUserId);
+                    intent.putExtra("seconduser", ownerId);
+                    intent.putExtra("chatid", chatId + "");
+//                    startActivity(intent);
+//                    finish();
                 } else {
                     DatabaseReference user_chatswithReference = firebaseDatabase.getReference().child("user_chatswith").child(currentUserId).child("chatwith").child(ownerId);
                     DatabaseReference user_chatswithReference1 = firebaseDatabase.getReference().child("user_chatswith");
@@ -281,20 +333,19 @@ public class ViewPostActivity extends AppCompatActivity {
                     users2.setChatid(chatId);
                     users2.setUserid(currentUserId);
                     user_chatswithReference1.child(ownerId).child("chatwith").child(currentUserId).setValue(users2);
+                    Intent intent = new Intent(ViewPostActivity.this, ChatActivity.class);
+                    intent.putExtra("firstuser", currentUserId);
+                    intent.putExtra("seconduser", ownerId);
+                    intent.putExtra("chatid", chatId + "");
                 }
-                Intent intent = new Intent(ViewPostActivity.this, ChatActivity.class);
-                intent.putExtra("firstuser", currentUserId);
-                intent.putExtra("seconduser", ownerId);
-                intent.putExtra("chatid", chatId + "");
-                startActivity(intent);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ViewPostActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewPostActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
     public void getLikeBtnStatus(final String pid, final String uid) {
         DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("likes");

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:background="@color/black"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/remoteUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="14dp"
+            android:fontFamily="serif"
+            android:text="Sample user"
+            android:textColor="@color/white"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/callState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="serif"
+            android:text="Incoming call"
+            android:textAllCaps="true"
+            android:textColor="#CDF8F3F3"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/answerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#4CAF50"
+            android:text="Accept"
+            android:textColor="@color/white"
+            android:textSize="@dimen/btn_textsize"
+            android:textStyle="bold"
+            app:cornerRadius="100dp"
+            app:rippleColor="#CDFFFFFF" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/declineButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#FF0303"
+            android:text="Decline"
+            android:textColor="@color/white"
+            android:textSize="@dimen/btn_textsize"
+            android:textStyle="bold"
+            app:cornerRadius="100dp"
+            app:rippleColor="#CDFFFFFF" />
+    </LinearLayout>
+</RelativeLayout>
