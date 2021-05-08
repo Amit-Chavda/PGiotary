@@ -34,7 +34,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MessageViewAdapter extends FirebaseRecyclerAdapter<ChatModel, MessageViewAdapter.ViewHolder> {
     public Context context;
-    int viewtype;
 
     public MessageViewAdapter(@NonNull FirebaseRecyclerOptions<ChatModel> options, Context context) {
         super(options);
@@ -44,14 +43,14 @@ public class MessageViewAdapter extends FirebaseRecyclerAdapter<ChatModel, Messa
     @NonNull
     @Override
     public MessageViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == viewtype){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.leftmessageview_item, parent, false);
-            return new MessageViewAdapter.ViewHolder(view);
 
-        }else {
+        if(viewType == 2){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rightmessageview_item, parent, false);
             return new MessageViewAdapter.ViewHolder(view);
 
+        }else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.leftmessageview_item, parent, false);
+            return new MessageViewAdapter.ViewHolder(view);
 
         }
 
@@ -65,7 +64,8 @@ public class MessageViewAdapter extends FirebaseRecyclerAdapter<ChatModel, Messa
         holder.message.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(viewtype == 1){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(model.getSender().equals(user.getUid())){
                     //Toast.makeText(context, "on long press", Toast.LENGTH_SHORT).show();
 
                     final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -175,11 +175,10 @@ public class MessageViewAdapter extends FirebaseRecyclerAdapter<ChatModel, Messa
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(model.getSender().equals(user.getUid())){
-            viewtype = 1;
-            return viewtype;
+            return 1;
         }else {
-            viewtype = 2;
-            return viewtype;
+
+            return 2;
         }
     }
 
