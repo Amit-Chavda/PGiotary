@@ -1,9 +1,11 @@
 package com.example.dhruv.pg_accomodation.actvities;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import com.example.dhruv.pg_accomodation.R;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatRatingBar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -14,7 +16,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,10 +46,9 @@ import java.util.Locale;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class ViewPostActivity extends AppCompatActivity {
+public class ViewPostActivity2 extends AppCompatActivity {
 
     private ImageButton viewInMapBtn;
-    private MaterialButton contactBtn;
     private CircleImageView userProfileImageView;
     private MaterialTextView usernameTextView;
     private ShapeableImageView postImageView;
@@ -58,12 +58,8 @@ public class ViewPostActivity extends AppCompatActivity {
     private MaterialTextView postDescriptionTextView;
     private MaterialTextView postFacilityTextView;
     private Post post;
-    private String chatId;
     private String postId;
-    private String currentUserId;
     private String ownerId;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
 
 
     //new code
@@ -71,18 +67,13 @@ public class ViewPostActivity extends AppCompatActivity {
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
 
-    private ImageView likeBtn;
     private TextView likesTextView;
-
     private final static int ALL_PERMISSIONS_RESULT = 101;
-    private boolean isLiked;
-    private String recepientName;
-    private String callerName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_post);
+        setContentView(R.layout.activity_view_post2);
 
         //initalization
         viewInMapBtn = findViewById(R.id.view_in_map_btn);
@@ -94,10 +85,7 @@ public class ViewPostActivity extends AppCompatActivity {
         postTypeTextView = findViewById(R.id.post_type_textView);
         postAddressTextView = findViewById(R.id.post_address_textView);
         postFacilityTextView = findViewById(R.id.post_facility1_textView);
-        likeBtn = findViewById(R.id.like_btn_postitem);
         likesTextView = findViewById(R.id.likes_textview);
-        contactBtn = findViewById(R.id.btn_cotact);
-        firebaseDatabase = FirebaseDatabase.getInstance();
 
 
         //hide action bar
@@ -107,7 +95,6 @@ public class ViewPostActivity extends AppCompatActivity {
         Intent intent = getIntent();
         postId = intent.getStringExtra("postId");
         ownerId = intent.getStringExtra("ownerId");
-        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
         //set up post info
@@ -123,36 +110,6 @@ public class ViewPostActivity extends AppCompatActivity {
             }
         });
 
-        //contact owner
-        contactBtn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        //processChat();
-                        //startActivity(new Intent(ViewPostActivity.this,CallActivity.class));
-                        BottomSheetDialog bottomSheet = new BottomSheetDialog();
-                        Bundle bundle=new Bundle();
-                        bundle.putString("firstuser",currentUserId);
-                        bundle.putString("seconduser",ownerId);
-                        bundle.putString("chatId",chatId);
-                        bundle.putString("recepientName",recepientName);
-                        bundle.putString("callerName",callerName);
-                        bottomSheet.setArguments(bundle);
-                        bottomSheet.show(getSupportFragmentManager(), "ModalBottomSheet");
-                    }
-                });
-
-
-        //set like status and like count
-        likeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processLike();
-            }
-        });
-
-
         //new code
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
@@ -167,30 +124,6 @@ public class ViewPostActivity extends AppCompatActivity {
 
     }//oncreate
 
-    private void processLike() {
-        isLiked = true;
-        final DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("likes");
-        likeRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (isLiked == true) {
-                    if (snapshot.child(postId).hasChild(currentUserId)) {
-                        likeRef.child(postId).child(currentUserId).removeValue();
-                        isLiked = false;
-                    } else {
-                        likeRef.child(postId).child(currentUserId).setValue(true);
-                        isLiked = false;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ViewPostActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void loadAddressInMap(String postId) {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child(postId);
@@ -200,7 +133,7 @@ public class ViewPostActivity extends AppCompatActivity {
                 post = snapshot.getValue(Post.class);
                 String lat = post.getLat();
                 String longi = post.getLongi();
-                LocationTracker currentLocation = new LocationTracker(ViewPostActivity.this);
+                LocationTracker currentLocation = new LocationTracker(ViewPostActivity2.this);
                 //Toast.makeText(ViewPostActivity.this, "current location: " + currentLocation, Toast.LENGTH_SHORT).show();
                 try {
                     if (currentLocation.canGetLocation()) {
@@ -213,39 +146,18 @@ public class ViewPostActivity extends AppCompatActivity {
                         currentLocation.showSettingsAlert();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(ViewPostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewPostActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ViewPostActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewPostActivity2.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void initializePostContent(String postId, String ownerId) {
-
-
-        try {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(currentUserId);
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    UserModel user = snapshot.getValue(UserModel.class);
-                    setCurrentUserNameVar(user.getUsername());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(ViewPostActivity.this, error.getMessage() + "", Toast.LENGTH_SHORT).show();
-                }
-
-            });
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage() + "", Toast.LENGTH_SHORT).show();
-        }
-
 
         //set profile pic and username
         try {
@@ -254,14 +166,13 @@ public class ViewPostActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UserModel user = snapshot.getValue(UserModel.class);
-                    setLocalVar(user.getUsername());
                     usernameTextView.setText("@" + user.getUsername().toLowerCase());
-                    Glide.with(ViewPostActivity.this).load(user.getProfileImage()).into(userProfileImageView);
+                    Glide.with(ViewPostActivity2.this).load(user.getProfileImage()).into(userProfileImageView);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(ViewPostActivity.this, error.getMessage() + "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewPostActivity2.this, error.getMessage() + "", Toast.LENGTH_SHORT).show();
                 }
 
             });
@@ -282,27 +193,19 @@ public class ViewPostActivity extends AppCompatActivity {
                         postStatusTextView.setText(post.getPostStatus());
                         postAddressTextView.setText(post.getPostAddress());
                         postDescriptionTextView.setText(post.getPostDescription());
-                        Glide.with(ViewPostActivity.this).load(post.getPostImage()).into(postImageView);
+                        Glide.with(ViewPostActivity2.this).load(post.getPostImage()).into(postImageView);
                         postFacilityTextView.setText(post.getFacility());
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(ViewPostActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewPostActivity2.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage() + "", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void setCurrentUserNameVar(String username) {
-    callerName=username;
-    }
-
-    private void setLocalVar(String username) {
-        recepientName=username;
     }
 
 
@@ -311,27 +214,17 @@ public class ViewPostActivity extends AppCompatActivity {
         likeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(pid).hasChild(uid)) {
-                    likeBtn.setImageResource(R.drawable.ic_baseline_like_filled_heart);
-                    likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
-                } else {
-                    likeBtn.setImageResource(R.drawable.ic_baseline_unlike_empty_heart);
-                    likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
-                }
                 int likeCount = (int) snapshot.child(pid).getChildrenCount();
                 likesTextView.setText(likeCount + " likes");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ViewPostActivity.this, error.getMessage() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewPostActivity2.this, error.getMessage() + "", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void setChatId(String s) {
-        chatId = s;
-    }
 
     //check needed permisi=sion allowed or not
     private ArrayList findUnAskedPermissions(ArrayList wanted) {
@@ -392,7 +285,7 @@ public class ViewPostActivity extends AppCompatActivity {
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(ViewPostActivity.this)
+        new AlertDialog.Builder(ViewPostActivity2.this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)

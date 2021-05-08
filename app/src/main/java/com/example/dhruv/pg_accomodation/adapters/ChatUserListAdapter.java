@@ -122,13 +122,12 @@ public class ChatUserListAdapter extends FirebaseRecyclerAdapter<UserListModel, 
 
 
                         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Delete Chat");
-                        builder.setMessage("Are you sure you want to delete this Chat?");
+                        builder.setTitle("Delete chat");
+                        builder.setMessage("Are you sure to delete all chats to this contact?");
 
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                                 if(!(chatid == null)){
                                     deletchat(chatid, model.getUserid());
                                 }

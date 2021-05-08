@@ -72,5 +72,4 @@ public class ChatFragment extends Fragment {
         chatUserListAdapter.stopListening();
     }
 
-
 }//class

@@ -17,9 +17,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -28,7 +26,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents">
-        <activity android:name=".actvities.CallActivity2"></activity>
+        <activity android:name=".actvities.ViewPostActivity2"></activity>
+        <activity android:name=".actvities.CallActivity2" />
         <activity android:name=".actvities.CallActivity" />
         <activity android:name=".actvities.ChatActivity" />
         <activity android:name=".actvities.UploadPostActivity2" />
@@ -38,13 +37,10 @@
             android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity android:name=".actvities.ResetPasswordActivity" />
         <activity android:name=".Home" />
-
-
         <activity android:name=".actvities.RegisterActivity1" />
         <activity android:name=".actvities.RegisterActivity2" />
         <activity android:name=".actvities.RegisterActivity3" />
         <activity android:name=".actvities.LoginActivity" />
-
         <activity
             android:name=".actvities.WelcomeActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar">
@@ -53,9 +49,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--Call support Activities-->
+        </activity> <!-- Call support Activities -->
         <service android:name=".call_support.SinchService" />
 
         <activity
@@ -70,7 +64,6 @@
         <activity
             android:name=".call_support.PlaceCallActivity"
             android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

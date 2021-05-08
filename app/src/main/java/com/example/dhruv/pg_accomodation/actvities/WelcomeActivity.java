@@ -50,8 +50,9 @@ public class WelcomeActivity extends BaseActivity implements SinchService.StartF
         prefManager = new PrefManager(this);
         if (prefManager.isIsLoggedIn()) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            prefManager.setCallerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            Toast.makeText(this, prefManager.getCallerID() + "", Toast.LENGTH_SHORT).show();
+            if (prefManager.getCallerID()==null || prefManager.getCallerID().isEmpty()){
+                prefManager.setCallerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            }
             startActivity(new Intent(WelcomeActivity.this, Home.class));
             finish();
         }
@@ -155,9 +156,7 @@ public class WelcomeActivity extends BaseActivity implements SinchService.StartF
     }
 
     @Override
-    public void onStarted() {
-
-    }
+    public void onStarted() { }
 
 
     private void startCallListening() {
@@ -174,7 +173,6 @@ public class WelcomeActivity extends BaseActivity implements SinchService.StartF
 
         if (!getSinchServiceInterface().isStarted()) {
             getSinchServiceInterface().startClient(userName);
-            Toast.makeText(this, "call started", Toast.LENGTH_SHORT).show();
         }
     }
 

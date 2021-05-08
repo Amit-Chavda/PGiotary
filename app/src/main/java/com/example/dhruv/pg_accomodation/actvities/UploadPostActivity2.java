@@ -111,11 +111,18 @@ public class UploadPostActivity2 extends AppCompatActivity {
 
         //set post type
         ArrayList<String> houseTypes = new ArrayList<>();
-        houseTypes.add("1-BHK");
-        houseTypes.add("2-BHK");
+
+        houseTypes.add("1-BHK Flat");
+        houseTypes.add("1-BHK Row House");
+
+
         houseTypes.add("2-BHK Flat");
-        houseTypes.add("3-BHK House");
-        houseTypes.add("Row house");
+        houseTypes.add("2-BHK Row House");;
+
+
+        houseTypes.add("3-BHK Flat");
+        houseTypes.add("3-BHK Row House");
+
         houseTypes.add("Luxurious Bunglow");
         postTypeAutoTV.setAdapter(new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, houseTypes));
 
@@ -124,12 +131,10 @@ public class UploadPostActivity2 extends AppCompatActivity {
         ArrayList<String> cities = new ArrayList<>();
         cities.add("Ahmedabad");
         cities.add("Gandhinagar");
-        cities.add("Surat");
         cities.add("Vadodara");
         cities.add("Mehsana");
         cities.add("Modasa");
-        cities.add("Junagadh");
-        cities.add("Mumbai");
+        cities.add("Surat");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(UploadPostActivity2.this, android.R.layout.simple_spinner_dropdown_item, cities);
         postCityAutoTV.setAdapter(adapter);
     }

@@ -1,9 +1,9 @@
 package com.example.dhruv.pg_accomodation.adapters;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.dhruv.pg_accomodation.R;
 import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity;
 import com.example.dhruv.pg_accomodation.models.Post;
 import com.example.dhruv.pg_accomodation.models.UserModel;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,38 +28,39 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+public class PostAdapter2 extends RecyclerView.Adapter<PostAdapter2.ViewHolder2> {
 
-public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewHolder> {
-    public Context context;
+    private Context context;
+    private ArrayList<Post> posts;
     private boolean isLiked;
 
-
-    public PostAdapter(@NonNull FirebaseRecyclerOptions<Post> options, Context context) {
-        super(options);
-        this.context = context;
+    public PostAdapter2(Context context,ArrayList<Post> posts){
+        this.context=context;
+        this.posts=posts;
     }
-
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-        return new ViewHolder(view);
+    public ViewHolder2 onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        ViewHolder2 viewHolder = new ViewHolder2(v);
+        return viewHolder;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Post post) {
-                preparePostItem(post, holder);
+    public void onBindViewHolder(@NonNull ViewHolder2 holder, int position) {
+        preparePostItem(posts.get(position),holder);
     }
 
+    @Override
+    public int getItemCount() {
+        return posts.size();
+    }
 
-
-    private void preparePostItem(final Post model, final ViewHolder holder) {
+    private void preparePostItem(final Post model, final ViewHolder2 holder) {
         if (model != null) {
             //set username
             try {
@@ -118,7 +120,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
                     likeRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (isLiked == true) {
+                            if (isLiked) {
                                 if (snapshot.child(postId).hasChild(currentUserId)) {
                                     likeRef.child(postId).child(currentUserId).removeValue();
                                     isLiked = false;
@@ -142,16 +144,19 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+     class ViewHolder2 extends RecyclerView.ViewHolder {
 
-        private ImageView postImageView;
-        private CircleImageView profileImageView;
-        private MaterialTextView usernameTextView, postTypeTextView, postStatustextView, postCityTextView;
+        private final ImageView postImageView;
+        private final CircleImageView profileImageView;
+        private final MaterialTextView usernameTextView;
+         private final MaterialTextView postTypeTextView;
+         private final MaterialTextView postStatustextView;
+         private final MaterialTextView postCityTextView;
 
-        private ImageView likeBtn;
-        private TextView likesTextView;
+        private final ImageView likeBtn;
+        private final TextView likesTextView;
 
-        public ViewHolder(@NotNull View itemView) {
+        public ViewHolder2(@NotNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.user_profile_imageView);
             postImageView = itemView.findViewById(R.id.post_image_imageView_postItem);
@@ -183,7 +188,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Post, PostAdapter.ViewH
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Toast.makeText(context, error.getMessage()+"", Toast.LENGTH_SHORT).show();
                 }
             });
         }

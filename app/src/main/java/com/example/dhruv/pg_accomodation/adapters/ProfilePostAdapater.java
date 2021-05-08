@@ -3,6 +3,7 @@ package com.example.dhruv.pg_accomodation.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity;
+import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity2;
 import com.example.dhruv.pg_accomodation.models.Post;
 import com.example.dhruv.pg_accomodation.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -146,6 +149,16 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
                 });
 
                 builder.show();
+            }
+        });
+
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, ViewPostActivity2.class);
+                intent.putExtra("postId",post.getPostId());
+                intent.putExtra("ownerId",post.getPostOwner());
+                context.startActivity(intent);
             }
         });
 

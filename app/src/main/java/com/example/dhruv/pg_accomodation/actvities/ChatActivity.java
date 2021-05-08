@@ -143,7 +143,6 @@ public class ChatActivity extends AppCompatActivity {
         if (!chatid.equals("1")) {
             messageViewAdapter.startListening();
         }
-
     }
 
     @Override
@@ -152,13 +151,6 @@ public class ChatActivity extends AppCompatActivity {
         if (!chatid.equals("1")) {
             messageViewAdapter.stopListening();
         }
-        finish();
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(ChatActivity.this, ChatFragment.class));
         finish();
     }
 }
