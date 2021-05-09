@@ -7,6 +7,8 @@
     android:padding="10dp"
     android:orientation="vertical">
 
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,17 +17,24 @@
         android:fontFamily="serif"
         android:textSize="70px"/>
 
-    <EditText
-        android:id="@+id/upposttitle"
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/up_post_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:layout_marginTop="10dp"
-        android:hint="Type"
-        android:backgroundTintMode="add"
-        android:backgroundTint="@color/black"
-        android:textColorHint="@color/hint_color"
-        android:text="Type"/>
+        android:clickable="true"
+        android:hint="City"
+        android:textColor="@color/black"
+        android:textColorHint="@color/hint_color" />
+
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/up_postTypeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="PG type"
+        android:textColor="@color/black"
+        android:textColorHint="@color/hint_color" />
 
     <EditText
         android:id="@+id/uppostdescription"
@@ -61,6 +70,15 @@
         android:textColorHint="@color/hint_color"
         android:textColor="@color/black"
         android:text="Rent"/>
+
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/up_availability_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Availability status"
+        android:textColor="@color/black"
+        android:textColorHint="@color/hint_color" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/uppostupdatebtn"

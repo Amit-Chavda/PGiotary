@@ -43,6 +43,7 @@ public class UploadPostActivity2 extends AppCompatActivity {
         postTypeAutoTV = findViewById(R.id.postTypeTextView);
         availabilityStatusTV = findViewById(R.id.availability_edittext);
         postCityAutoTV=findViewById(R.id.post_city_uploadpost2);
+
         initDropdownLists();
 
         postRentEditText = findViewById(R.id.post_rent_edittext);

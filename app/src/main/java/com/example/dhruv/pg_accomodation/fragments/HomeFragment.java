@@ -36,8 +36,7 @@ public class HomeFragment extends Fragment {
     private String city;
     private String userId;
 
-    public HomeFragment() {
-    }
+    public HomeFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

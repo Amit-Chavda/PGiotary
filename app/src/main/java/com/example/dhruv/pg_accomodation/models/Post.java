@@ -13,6 +13,8 @@ public class Post {
     private String lat;
     private String longi;
     private String facility;
+    private String postCity;
+
 
     public String getPostCity() {
         return postCity;
@@ -22,7 +24,7 @@ public class Post {
         this.postCity = postCity;
     }
 
-    private String postCity;
+
 
     public Post(){}
 

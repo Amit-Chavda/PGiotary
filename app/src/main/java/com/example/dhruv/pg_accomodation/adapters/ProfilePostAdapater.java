@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dhruv.pg_accomodation.actvities.UploadPostActivity2;
 import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity;
 import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity2;
 import com.example.dhruv.pg_accomodation.models.Post;
@@ -29,6 +32,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.FirebaseDatabase;
 import com.orhanobut.dialogplus.DialogPlus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,14 +78,55 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
                         .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
                         .create();
                 final View postholder = dialog.getHolderView();
-                final EditText title = postholder.findViewById(R.id.upposttitle);
+                final AutoCompleteTextView postTypeAutoTV = postholder.findViewById(R.id.up_postTypeTextView);
+                final AutoCompleteTextView availabilityStatusTV = postholder.findViewById(R.id.up_availability_edittext);
+                final AutoCompleteTextView postCityAutoTV = postholder.findViewById(R.id.up_post_city);
                 final EditText description = postholder.findViewById(R.id.uppostdescription);
                 final EditText address = postholder.findViewById(R.id.uppostaddress);
                 final EditText rent = postholder.findViewById(R.id.uppostrent);
                 MaterialButton update = postholder.findViewById(R.id.uppostupdatebtn);
 
+                //set post type dropdwon
+                ArrayList<String> availabilityList = new ArrayList<>();
+                availabilityList.add("Available Now");
+                availabilityList.add("Available Soon");
+                availabilityList.add("Not Available");
+                availabilityStatusTV.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, availabilityList));
 
-                title.setText(post.getPostType());
+
+                //set post type
+                ArrayList<String> houseTypes = new ArrayList<>();
+
+                houseTypes.add("1-BHK Flat");
+                houseTypes.add("1-BHK Row House");
+
+
+                houseTypes.add("2-BHK Flat");
+                houseTypes.add("2-BHK Row House");;
+
+
+                houseTypes.add("3-BHK Flat");
+                houseTypes.add("3-BHK Row House");
+
+                houseTypes.add("Luxurious Bunglow");
+                postTypeAutoTV.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, houseTypes));
+
+
+                //set post city dropdwon
+                ArrayList<String> cities = new ArrayList<>();
+                cities.add("Ahmedabad");
+                cities.add("Gandhinagar");
+                cities.add("Vadodara");
+                cities.add("Mehsana");
+                cities.add("Modasa");
+                cities.add("Surat");
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, cities);
+                postCityAutoTV.setAdapter(adapter);
+
+
+                availabilityStatusTV.setText(post.getPostStatus());
+                postCityAutoTV.setText(post.getPostCity());
+                postTypeAutoTV.setText(post.getPostType());
                 description.setText(post.getPostDescription());
                 address.setText(post.getPostAddress());
                 rent.setText(post.getPostRent());
@@ -90,7 +135,9 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
                     @Override
                     public void onClick(View v) {
                         Map<String, Object> map = new HashMap<>();
-                        map.put("postType", title.getText().toString());
+                        map.put("postStatus", availabilityStatusTV.getText().toString());
+                        map.put("postCity", postCityAutoTV.getText().toString());
+                        map.put("postType", postTypeAutoTV.getText().toString());
                         map.put("postDescription", description.getText().toString());
                         map.put("postAddress", address.getText().toString());
                         map.put("postRent", rent.getText().toString());
@@ -163,6 +210,11 @@ public class ProfilePostAdapater extends FirebaseRecyclerAdapter<Post, ProfilePo
         });
 
     }
+
+
+
+
+
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {

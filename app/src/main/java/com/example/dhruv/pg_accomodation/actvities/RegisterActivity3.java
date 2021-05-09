@@ -117,6 +117,7 @@ public class RegisterActivity3 extends AppCompatActivity {
     }
 
     private void processSignup() {
+
         if (ValidationUtility.isInternetAvailable(this)){
             String username = usernameEdittext.getText().toString();
             if (isValidUsername(username)) {

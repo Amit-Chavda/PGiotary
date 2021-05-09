@@ -249,7 +249,7 @@ public class UploadPostActivity1 extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             imageUriString=imageUri.toString();
-            Toast.makeText(this, imageUri.toString()+"imageuri", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, imageUri.toString()+"imageuri", Toast.LENGTH_SHORT).show();
             uploadPictureTextView.setVisibility(View.GONE);
 
             Glide.with(UploadPostActivity1.this).load(imageUri).into(postImageView);

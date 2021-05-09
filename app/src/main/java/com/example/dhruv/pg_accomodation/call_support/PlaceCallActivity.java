@@ -21,7 +21,7 @@ public class PlaceCallActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.main);
+        setContentView(R.layout.main);
 
         recepientID = getIntent().getStringExtra("recepientID");
         recepientName = getIntent().getStringExtra("recepientName");

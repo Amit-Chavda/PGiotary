@@ -7,9 +7,7 @@ public class ChatModel {
     private String sender;
     private String receiver;
 
-    public ChatModel() {
-
-    }
+    public ChatModel() { }
 
     public ChatModel(String chatid, String messageid, String message, String sender, String receiver) {
         this.chatid = chatid;
