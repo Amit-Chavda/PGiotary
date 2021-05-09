@@ -3,7 +3,14 @@ package com.example.dhruv.pg_accomodation.call_support;
 import com.example.dhruv.pg_accomodation.R;
 import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity;
 import com.example.dhruv.pg_accomodation.fragments.HomeFragment;
+import com.example.dhruv.pg_accomodation.helper_classes.PrefManager;
+import com.example.dhruv.pg_accomodation.models.UserModel;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
@@ -25,6 +32,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.annotation.NonNull;
+
 public class CallScreenActivity extends BaseActivity {
 
     static final String TAG = CallScreenActivity.class.getSimpleName();
@@ -33,12 +42,13 @@ public class CallScreenActivity extends BaseActivity {
     private Timer mTimer;
     private UpdateCallDurationTask mDurationTask;
 
-    private String recepientName;
+    //private String recepientName;
     private String mCallId;
 
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
+    String recepientName = "default";
 
     private class UpdateCallDurationTask extends TimerTask {
 
@@ -58,12 +68,13 @@ public class CallScreenActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.callscreen);
 
-        recepientName = getIntent().getStringExtra("recepientName");
+        //recepientName = getIntent().getStringExtra("recepientName");
         mAudioPlayer = new AudioPlayer(this);
         mCallDuration = (TextView) findViewById(R.id.callDuration);
         mCallerName = (TextView) findViewById(R.id.remoteUser);
         mCallState = (TextView) findViewById(R.id.callState);
         MaterialButton endCallButton =findViewById(R.id.hangupButton);
+
 
         endCallButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -72,6 +83,8 @@ public class CallScreenActivity extends BaseActivity {
             }
         });
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
+        recepientName = getIntent().getStringExtra("recepientName");
+
     }
 
     @Override
@@ -86,6 +99,8 @@ public class CallScreenActivity extends BaseActivity {
             finish();
         }
     }
+
+
 
     @Override
     public void onPause() {

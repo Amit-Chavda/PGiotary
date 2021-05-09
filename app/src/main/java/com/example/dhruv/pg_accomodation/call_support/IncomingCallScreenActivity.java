@@ -1,7 +1,14 @@
 package com.example.dhruv.pg_accomodation.call_support;
 
 import com.example.dhruv.pg_accomodation.R;
+import com.example.dhruv.pg_accomodation.helper_classes.PrefManager;
+import com.example.dhruv.pg_accomodation.models.UserModel;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sinch.android.rtc.MissingPermissionException;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
@@ -18,6 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import java.util.List;
@@ -29,6 +37,7 @@ public class IncomingCallScreenActivity extends BaseActivity {
     private AudioPlayer mAudioPlayer;
     private String recepientName;
     private String callerName;
+    String name = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +45,7 @@ public class IncomingCallScreenActivity extends BaseActivity {
         setContentView(R.layout.incoming);
 
         recepientName=getIntent().getStringExtra("recepientName");
-        callerName=getIntent().getStringExtra("callerName");
+        callerName = getIntent().getStringExtra("callerName");
 
         MaterialButton answer =  findViewById(R.id.answerButton);
         answer.setOnClickListener(mClickListener);
@@ -53,12 +62,33 @@ public class IncomingCallScreenActivity extends BaseActivity {
         Call call = getSinchServiceInterface().getCall(mCallId);
         if (call != null) {
             call.addCallListener(new SinchCallListener());
-            TextView remoteUser = findViewById(R.id.remoteUser);
-            remoteUser.setText(callerName);
+            getCollername(call.getRemoteUserId());
         } else {
             Log.e(TAG, "Started with invalid callId, aborting");
             finish();
         }
+    }
+
+    private void getCollername(String userID) {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("user").child(userID);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel user = snapshot.getValue(UserModel.class);
+                if(!(user == null)){
+                    name = user.getUsername();
+                    TextView remoteUser = findViewById(R.id.remoteUser);
+                    remoteUser.setText(name);
+                    Toast.makeText(IncomingCallScreenActivity.this, "name: "+name, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(IncomingCallScreenActivity.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void answerClicked() {
@@ -69,6 +99,8 @@ public class IncomingCallScreenActivity extends BaseActivity {
                 call.answer();
                 Intent intent = new Intent(this, CallScreenActivity.class);
                 intent.putExtra(SinchService.CALL_ID, mCallId);
+                Toast.makeText(this, "name2: "+name, Toast.LENGTH_SHORT).show();
+                intent.putExtra("recepientName", name);
                 startActivity(intent);
             } catch (MissingPermissionException e) {
                 ActivityCompat.requestPermissions(this, new String[]{e.getRequiredPermission()}, 0);

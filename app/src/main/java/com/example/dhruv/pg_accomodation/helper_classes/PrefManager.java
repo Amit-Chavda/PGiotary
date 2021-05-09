@@ -11,6 +11,9 @@ public class PrefManager {
     private int PRIVATE_MODE = 0;
 
     private String callerID;
+    private String callerName;
+    private String recepientName;
+
     // Shared preferences file name
     private static final String PREF_NAME = "isLoggedIn";
 
@@ -18,6 +21,26 @@ public class PrefManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public String getCallerName() {
+        callerName=pref.getString("callerName","");
+        return callerName;
+    }
+
+    public void setCallerName(String callerName) {
+        this.callerName = callerName;
+        editor.putString("callerName",callerName);
+    }
+
+    public String getRecepientName() {
+        recepientName=pref.getString("recepientName","");
+        return recepientName;
+    }
+
+    public void setRecepientName(String recepientName) {
+        this.recepientName = recepientName;
+        editor.putString("recepientName",recepientName);
     }
 
     public String getCallerID() {
