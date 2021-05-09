@@ -255,6 +255,8 @@ public class SinchService extends Service {
             Log.d(TAG, "Incoming call");
             Intent intent = new Intent(SinchService.this, IncomingCallScreenActivity.class);
             intent.putExtra(CALL_ID, call.getCallId());
+            callerName=intent.getStringExtra("callerName");
+            intent.putExtra("callerName",callerName);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SinchService.this.startActivity(intent);
         }

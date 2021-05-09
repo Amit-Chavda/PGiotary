@@ -99,7 +99,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             progressDialog.dismiss();
                             if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+
                                 prefManager.setIsLoggedIn(true);
+                                prefManager.setCallerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
                                 startActivity(new Intent(LoginActivity.this, Home.class));
                                 finish();
                             } else {

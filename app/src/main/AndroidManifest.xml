@@ -31,10 +31,12 @@
         <activity android:name=".actvities.CallActivity" />
         <activity android:name=".actvities.ChatActivity" />
         <activity android:name=".actvities.UploadPostActivity2" />
-        <activity android:name=".actvities.ViewPostActivity" />
+        <activity android:name=".actvities.ViewPostActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".actvities.UploadPostActivity1"
             android:theme="@style/Theme.MaterialComponents.NoActionBar" />
+
         <activity android:name=".actvities.ResetPasswordActivity" />
         <activity android:name=".Home" />
         <activity android:name=".actvities.RegisterActivity1" />

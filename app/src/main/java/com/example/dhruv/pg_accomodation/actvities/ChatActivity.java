@@ -105,9 +105,11 @@ public class ChatActivity extends AppCompatActivity {
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+
             FirebaseRecyclerOptions<ChatModel> options = new FirebaseRecyclerOptions.Builder<ChatModel>().
                     setQuery(FirebaseDatabase.getInstance().getReference().child("user_chats").child(chatid), ChatModel.class).build();
             messageViewAdapter = new MessageViewAdapter(options, ChatActivity.this);
+
             recyclerView.setAdapter(messageViewAdapter);
             progressDialog.dismiss();
         }

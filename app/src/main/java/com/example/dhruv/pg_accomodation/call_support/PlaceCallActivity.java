@@ -53,8 +53,8 @@ public class PlaceCallActivity extends BaseActivity {
             callScreen.putExtra(SinchService.CALL_ID, callId);
             callScreen.putExtra("recepientName", recepientName);
             callScreen.putExtra("callerName", callerName);
-            callScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(callScreen);
+            finish();
         } catch (MissingPermissionException e) {
             ActivityCompat.requestPermissions(this, new String[]{e.getRequiredPermission()}, 0);
         }

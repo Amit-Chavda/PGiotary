@@ -50,9 +50,7 @@ public class WelcomeActivity extends BaseActivity implements SinchService.StartF
         prefManager = new PrefManager(this);
         if (prefManager.isIsLoggedIn()) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            if (prefManager.getCallerID()==null || prefManager.getCallerID().isEmpty()){
-                prefManager.setCallerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            }
+
             startActivity(new Intent(WelcomeActivity.this, Home.class));
             finish();
         }

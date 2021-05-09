@@ -2,6 +2,7 @@ package com.example.dhruv.pg_accomodation.call_support;
 
 import com.example.dhruv.pg_accomodation.R;
 import com.example.dhruv.pg_accomodation.actvities.ViewPostActivity;
+import com.example.dhruv.pg_accomodation.fragments.HomeFragment;
 import com.google.android.material.button.MaterialButton;
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.PushPair;
@@ -104,10 +105,6 @@ public class CallScreenActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         // User should exit activity by ending call, not by going back.
-        Intent intent = new Intent(this, ViewPostActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 
     private void endCall() {
@@ -116,6 +113,8 @@ public class CallScreenActivity extends BaseActivity {
         if (call != null) {
             call.hangup();
         }
+        //Intent intent = new Intent(this, HomeFragment.class);
+        //startActivity(intent);
         finish();
     }
 

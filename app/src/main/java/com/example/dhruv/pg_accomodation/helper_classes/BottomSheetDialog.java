@@ -1,6 +1,7 @@
 package com.example.dhruv.pg_accomodation.helper_classes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -89,14 +90,15 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     }
 
     private void processChat() {
+        Context context=getContext();
         databaseReference = firebaseDatabase.getReference().child("user_chatswith").child(currentUserId).child("chatwith").child(ownerId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChildren()) {
                     UserListModel user = snapshot.getValue(UserListModel.class);
                     setChatId(user.getChatid());
-                    Intent intent = new Intent(getContext(), ChatActivity.class);
+                    Intent intent = new Intent(context, ChatActivity.class);
                     intent.putExtra("firstuser", currentUserId);
                     intent.putExtra("seconduser", ownerId);
                     intent.putExtra("chatid", chatId + "");
