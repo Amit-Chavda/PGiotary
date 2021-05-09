@@ -24,6 +24,8 @@
         android:layout_marginTop="10dp"
         android:clickable="true"
         android:hint="City"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
         android:textColor="@color/black"
         android:textColorHint="@color/hint_color" />
 
@@ -33,6 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="PG type"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
         android:textColor="@color/black"
         android:textColorHint="@color/hint_color" />
 
@@ -77,6 +81,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Availability status"
+        android:backgroundTintMode="add"
+        android:backgroundTint="@color/black"
         android:textColor="@color/black"
         android:textColorHint="@color/hint_color" />
 
