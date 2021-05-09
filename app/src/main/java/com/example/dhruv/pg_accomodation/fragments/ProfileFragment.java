@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
                 usernameTextView.setText(user.getUsername());
                 emailTextView.setText(user.getEmail());
                 mobileTextView.setText(user.getMobileNumber());
-                Glide.with(profileImageView.getContext()).load(user.getProfileImage()).into(profileImageView);
+                Glide.with(getContext()).load(user.getProfileImage()).into(profileImageView);
             }
 
             @Override

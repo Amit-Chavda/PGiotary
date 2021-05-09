@@ -43,7 +43,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String callerName;
-    PrefManager prefManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable
@@ -54,7 +53,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         Button callButton = v.findViewById(R.id.call_button);
         Button chatButton = v.findViewById(R.id.chat_button);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        prefManager = new PrefManager(getContext());
 
         Bundle bundle = getArguments();
         currentUserId = bundle.getString("firstuser", "");
@@ -63,11 +61,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         recepientName = bundle.getString("recepientName", "");
         callerName = bundle.getString("callerName");
 
-
-
         callButton.setOnClickListener(v1 -> {
-            prefManager.setCallerName(callerName);
-            prefManager.setRecepientName(recepientName);
             processCall();
             dismiss();
         });

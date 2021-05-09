@@ -59,7 +59,7 @@ public class RegisterActivity3 extends AppCompatActivity {
 
 
     //User data model
-    private UserModel user;
+    private static UserModel user;
     private Uri imageUri;
     private String imageUriString;
 
@@ -118,7 +118,7 @@ public class RegisterActivity3 extends AppCompatActivity {
 
     private void processSignup() {
 
-        if (ValidationUtility.isInternetAvailable(this)){
+        if (ValidationUtility.isInternetAvailable(this)) {
             String username = usernameEdittext.getText().toString();
             if (isValidUsername(username)) {
                 confirmSignup();
@@ -136,12 +136,10 @@ public class RegisterActivity3 extends AppCompatActivity {
         builder1.setCancelable(true);
         builder1.setPositiveButton(
                 "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        startActivity(new Intent(RegisterActivity3.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                        finish();
-                        dialog.cancel();
-                    }
+                (dialog, id) -> {
+                    startActivity(new Intent(RegisterActivity3.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    finish();
+                    dialog.cancel();
                 });
 
         AlertDialog alert11 = builder1.create();
@@ -152,7 +150,9 @@ public class RegisterActivity3 extends AppCompatActivity {
 
         progressDialog.setMessage("Processing...");
         progressDialog.show();
+
         prepareUserProfile();
+
         firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(RegisterActivity3.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -161,33 +161,55 @@ public class RegisterActivity3 extends AppCompatActivity {
                     if (currentUser != null) {
                         final String userId = currentUser.getUid();
                         user.setUserId(userId);
-                        //upload profile image
-                        uploadPicture();
-                        databaseReference.child(user.getUserId()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+
+                        //default profile image
+                        if (imageUri == null) {
+
+                            imageUriString = "https://firebasestorage.googleapis.com/v0/b/pghunter-c0bcb.appspot.com/o/user-profiles%2Fdefault-user-profile-pic%2Fdeafult-user-profile-picture.png?alt=media&token=fed865fc-fab3-4648-ae69-899788475774";
+                            user.setProfileImage(imageUriString);
+
+                            databaseReference.child(user.getUserId()).setValue(user).addOnSuccessListener(aVoid -> {
                                 //send email verification
                                 progressDialog.setMessage("Sending verification mail...");
-                                currentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        progressDialog.dismiss();
-                                        showConfirmationMessage();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
+                                currentUser.sendEmailVerification().addOnSuccessListener(aVoid12 -> {
+                                    progressDialog.dismiss();
+                                    showConfirmationMessage();
+                                }).addOnFailureListener(e -> {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                 });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            }).addOnFailureListener(e -> Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+
+                        } else {
+
+                            ContentResolver contentResolver = getContentResolver();
+                            MimeTypeMap mime = MimeTypeMap.getSingleton();
+
+                            //creating path and file name to store image
+                            StorageReference postImageRef = storageReference.child("user-profiles").child(userId).child(System.currentTimeMillis()
+                                    + "." + mime.getExtensionFromMimeType(contentResolver.getType(imageUri)));
+                            postImageRef.putFile(imageUri)
+                                    .addOnSuccessListener(taskSnapshot -> taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+
+                                        RegisterActivity3.user.setProfileImage(uri.toString());
+
+                                        databaseReference.child(user.getUserId()).setValue(user).addOnSuccessListener(aVoid -> {
+                                            //send email verification
+                                            progressDialog.setMessage("Sending verification mail...");
+                                            currentUser.sendEmailVerification().addOnSuccessListener(aVoid1 -> {
+                                                progressDialog.dismiss();
+                                                showConfirmationMessage();
+                                            }).addOnFailureListener(e -> {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            });
+                                        }).addOnFailureListener(e -> Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                                    }))
+                                    .addOnFailureListener(exception -> {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(RegisterActivity3.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        }
                     }
                 }
             }
@@ -196,7 +218,6 @@ public class RegisterActivity3 extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
                 Toast.makeText(RegisterActivity3.this, e.getMessage(), Toast.LENGTH_LONG).show();
-
             }
         });
     }
@@ -240,48 +261,7 @@ public class RegisterActivity3 extends AppCompatActivity {
         user.setPassword(password);
         user.setMobileNumber(mobile);
         user.setCity(city);
-        if(imageUriString==null){
-            //default user profile link
-            imageUriString="https://firebasestorage.googleapis.com/v0/b/pghunter-c0bcb.appspot.com/o/user-profiles%2Fdefault-user-profile-pic%2Fdeafult-user-profile-picture.png?alt=media&token=fed865fc-fab3-4648-ae69-899788475774";
-        }
-        user.setProfileImage(imageUriString);
         user.setUsername(username);
-    }
-
-    private void setLocalVaribale(String string) {
-        imageUriString = string;
-    }
-
-    private void uploadPicture() {
-        if(imageUri==null){
-            return;
-        }
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-
-        //creating path and file name to store image
-        StorageReference postImageRef = storageReference.child("user-profiles").child(FirebaseAuth.getInstance().getUid()).child(System.currentTimeMillis()
-                + "." + mime.getExtensionFromMimeType(contentResolver.getType(imageUri)));
-        postImageRef.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                setLocalVaribale(uri.toString());
-                                prepareUserProfile();
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        progressDialog.dismiss();
-                        Toast.makeText(RegisterActivity3.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     @Override

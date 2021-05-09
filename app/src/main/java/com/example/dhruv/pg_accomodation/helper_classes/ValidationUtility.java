@@ -25,7 +25,6 @@ public class ValidationUtility {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-
     public static boolean isValidateCity(String city){
         if(city.isEmpty()){
             return false;

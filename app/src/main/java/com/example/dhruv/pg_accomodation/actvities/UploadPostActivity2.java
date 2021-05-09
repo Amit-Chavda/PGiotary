@@ -98,7 +98,6 @@ public class UploadPostActivity2 extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
-
     }
 
     private void initDropdownLists() {

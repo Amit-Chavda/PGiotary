@@ -18,8 +18,6 @@ public class RegisterActivity1 extends AppCompatActivity {
 
     private ImageButton btnBack;
     private MaterialButton btnNext;
-
-
     private TextInputEditText emailEditText, passwordEditText;
 
     @Override

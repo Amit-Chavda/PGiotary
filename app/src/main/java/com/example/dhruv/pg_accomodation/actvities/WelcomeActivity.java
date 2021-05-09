@@ -48,6 +48,7 @@ public class WelcomeActivity extends BaseActivity implements SinchService.StartF
 
         setContentView(R.layout.activity_welcome);
         prefManager = new PrefManager(this);
+
         if (prefManager.isIsLoggedIn()) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 

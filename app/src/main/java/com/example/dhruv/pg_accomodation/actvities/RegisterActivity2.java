@@ -34,7 +34,6 @@ public class RegisterActivity2 extends AppCompatActivity {
         //initialize city dropdown list
         initCityAdapterUI();
 
-
         btnBack = findViewById(R.id.btn_back);
         btnNext = findViewById(R.id.btn_next);
 
@@ -65,6 +64,7 @@ public class RegisterActivity2 extends AppCompatActivity {
                         intent.putExtra("mobile", mobile);
                         intent.putExtra("city", city);
                         startActivity(intent);
+                        finish();
                     }else {
                         cityAutoTV.setError("Invalid City Selected!");
                     }
@@ -95,5 +95,4 @@ public class RegisterActivity2 extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity2.this, android.R.layout.simple_spinner_dropdown_item, cities);
         cityAutoTV.setAdapter(adapter);
     }
-
 }

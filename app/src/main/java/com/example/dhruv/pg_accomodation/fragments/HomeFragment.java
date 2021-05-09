@@ -100,15 +100,25 @@ public class HomeFragment extends Fragment {
 
     private void filterPosts(ArrayList<Post> postArrayList) {
         ArrayList<Post> filteredPosts = new ArrayList<>();
+        ArrayList<Post> posts = new ArrayList<>();
 
+        //not of current user
         for (Post post : postArrayList) {
-            if (post.getPostCity().equals(city) && post.getPostOwner().equals(userId)) {
+            if (!post.getPostOwner().equals(userId)) {
+                posts.add(post);
+            }
+        }
+
+        //matches with city
+        for (Post post : posts) {
+            if (post.getPostCity().equals(city)) {
                 filteredPosts.add(post);
             }
         }
 
-        for (Post post : postArrayList) {
-            if (!post.getPostOwner().equals(userId)) {
+        //other city
+        for (Post post : posts) {
+            if (!post.getPostCity().equals(city)) {
                 filteredPosts.add(post);
             }
         }
