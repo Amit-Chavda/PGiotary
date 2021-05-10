@@ -70,7 +70,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 processChat();
-                dismiss();
+                //dismiss();
             }
         });
 
@@ -132,4 +132,3 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         });
     }
 }
-

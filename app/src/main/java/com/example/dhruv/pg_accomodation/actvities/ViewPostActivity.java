@@ -55,6 +55,7 @@ public class ViewPostActivity extends AppCompatActivity {
     private MaterialTextView postStatusTextView;
     private MaterialTextView postTypeTextView;
     private MaterialTextView postAddressTextView;
+    private MaterialTextView postRentTextView;
     private MaterialTextView postDescriptionTextView;
     private MaterialTextView postFacilityTextView;
     private Post post;
@@ -92,6 +93,7 @@ public class ViewPostActivity extends AppCompatActivity {
         postImageView = findViewById(R.id.post_image_imageView);
         postStatusTextView = findViewById(R.id.post_status_textView);
         postTypeTextView = findViewById(R.id.post_type_textView);
+        postRentTextView=findViewById(R.id.post_rent_textView);
         postAddressTextView = findViewById(R.id.post_address_textView);
         postFacilityTextView = findViewById(R.id.post_facility1_textView);
         likeBtn = findViewById(R.id.like_btn_postitem);
@@ -280,6 +282,7 @@ public class ViewPostActivity extends AppCompatActivity {
                     if (post != null) {
                         postTypeTextView.setText(post.getPostType());
                         postStatusTextView.setText(post.getPostStatus());
+                        postRentTextView.setText(post.getPostRent()+" / month");
                         postAddressTextView.setText(post.getPostAddress());
                         postDescriptionTextView.setText(post.getPostDescription());
                         Glide.with(ViewPostActivity.this).load(post.getPostImage()).into(postImageView);

@@ -162,7 +162,7 @@ public class WelcomeActivity extends BaseActivity implements SinchService.StartF
 
         String userName = prefManager.getCallerID();
         if (userName.isEmpty()) {
-            Toast.makeText(this, "Please enter a name", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Please enter a name", Toast.LENGTH_LONG).show();
             return;
         }
 

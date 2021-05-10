@@ -127,6 +127,22 @@
                 </LinearLayout>
 
             </LinearLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rent price"
+                android:fontFamily="serif-monospace"
+                android:textColor="@color/hint_color" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/post_rent_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif-monospace"
+                android:text="10,000/month"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/btn_textsize" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
